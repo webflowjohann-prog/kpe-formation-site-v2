@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Joël Prieur",
+  "jobTitle": "Formateur en Kinésiologie Psycho-Énergétique",
+  "description": "Créateur de la méthode KPE, ancien professionnel de santé, formateur en kinésiologie depuis plus de 20 ans.",
+  "url": "https://www.formation-kinesiologie.com/joel-prieur",
+  "image": "https://www.formation-kinesiologie.com/images/blog/joel-expert-bibliotheque.webp",
+  "sameAs": [
+    "https://www.facebook.com/joelkpe/",
+    "https://www.instagram.com/formation_passion_kinesiologie/",
+    "https://www.linkedin.com/in/joel-prieur-b445087a/"
+  ],
+  "worksFor": { "@type": "Organization", "name": "KPE" }
+};
+---
+
+<BaseLayout title="Joël Prieur — Formateur en Kinésiologie Psycho-Énergétique | KPE" description="Découvrez le parcours de Joël Prieur, ancien professionnel de santé et créateur de la méthode KPE. Plus de 6 000 étudiants formés en kinésiologie psycho-énergétique." breadcrumbs={[{name: "Joël Prieur", url: "/joel-prieur"}]}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">Le Formateur</div>
+    <h1>Joël Prieur</h1>
+    <p class="page-hero-sub">Créateur de la méthode KPE — une vie dédiée à la compréhension du lien entre le corps, l'énergie et la psyché.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="joel-grid">
+      <div class="joel-photo">
+        <img src="/images/blog/joel-expert-bibliotheque.webp" alt="Joël Prieur - Formateur en Kinésiologie" style="width:100%;height:100%;object-fit:cover;border-radius:20px;">
+      </div>
+      <div class="joel-content">
+        <h2 style="font-family:var(--font-display);font-size:clamp(24px,2.5vw,34px);color:var(--gray-900);margin-bottom:20px;line-height:1.2;">La synthèse de <em style="color:var(--teal-700);font-style:italic;">toutes les kinésiologies</em></h2>
+        <p>Ancien professionnel de santé, Joël n'a eu de cesse d'améliorer sa pratique auprès de ses patients. Cela l'a amené à appréhender la personne dans sa globalité et à se former à différents types de kinésiologie : Touch For Health, Kinésiologie avancée, appliquée, spécialisée, Kinésiologie "Être ou ne pas Être", Brain Gym, et thérapie des corps subtils.</p>
+        <p>Dans sa pratique de la kinésithérapie, Joël a rapidement été interpellé par le fossé entre les symptômes douloureux et les signes radiologiques. Certains clichés étaient catastrophiques alors que le patient ne ressentait aucune douleur. Inversement, des patients souffraient terriblement sans aucune lésion structurelle visible.</p>
+        <p>Ce constat l'a mené vers l'ostéopathie, puis la kinésiologie — et finalement à l'édification de la méthode KPE : la synthèse de toutes ces approches en un outil unique, complet et performant.</p>
+        <div class="joel-extra-img"><img src="/images/blog/seance-test-epaule.webp" alt="Joël Prieur en séance de kinésiologie" style="width:100%;border-radius:12px;margin-bottom:24px;"></div>
+        <div class="joel-credentials">
+          <div class="credential">⚕ Ancien professionnel de santé</div>
+          <div class="credential">🧠 Touch For Health, Brain Gym</div>
+          <div class="credential">⚡ Kinésiologie avancée & spécialisée</div>
+          <div class="credential">🤲 Ostéopathe D.O.</div>
+          <div class="credential">✦ Thérapie des corps subtils</div>
+          <div class="credential">🎓 +6 000 étudiants formés</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container" style="text-align:center;">
+    <img src="/images/logo-teal.png" alt="KPE" width="48" height="48" style="margin:0 auto 20px;">
+    <h2 style="font-family:var(--font-display);font-size:clamp(24px,3vw,40px);color:var(--gray-900);margin-bottom:16px;">La philosophie KPE</h2>
+    <p style="color:var(--gray-500);max-width:650px;margin:0 auto 30px;font-size:16px;line-height:1.7;">« Nous sommes en présence de personnes en souffrance et il convient de la prendre en considération. La prise de conscience sans correction est loin d'être suffisante. Là réside la puissance de la KPE. »</p>
+    <a href="/formation-en-ligne" class="btn-primary">Découvrir la formation →</a>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 600px; line-height: 1.7; }
+.joel-grid { display: grid; grid-template-columns: 1fr 1.3fr; gap: 60px; align-items: start; }
+.joel-photo { aspect-ratio: 3/4; border-radius: 20px; overflow: hidden; }
+.joel-content p { font-size: 16px; color: var(--gray-500); line-height: 1.8; margin-bottom: 16px; }
+.joel-credentials { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+.credential { background: var(--gray-50); padding: 10px 16px; border-radius: 10px; font-size: 13px; font-weight: 500; color: var(--gray-700); }
+@media (max-width: 768px) { .joel-grid { grid-template-columns: 1fr; } .joel-photo { max-width: 350px; } }
+</style>

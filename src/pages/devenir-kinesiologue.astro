@@ -1,0 +1,134 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Formation pour devenir kinésiologue — Méthode KPE",
+  "description": "Devenez kinésiologue certifié avec la méthode KPE. Formation complète accessible à tous, sans pré-requis. En ligne ou en présentiel.",
+  "provider": { "@type": "Organization", "name": "KPE" },
+  "offers": [
+    { "@type": "Offer", "price": "1580", "priceCurrency": "EUR", "name": "Formation en ligne" },
+    { "@type": "Offer", "price": "3999", "priceCurrency": "EUR", "name": "Formation présentiel" }
+  ]
+};
+---
+
+<BaseLayout title="Devenir Kinésiologue — Formation KPE | En ligne 1 580€ ou Présentiel à Aurillac" description="Devenez kinésiologue certifié avec la méthode KPE de Joël Prieur. Formation accessible à tous, sans pré-requis. En ligne ou en présentiel. +6 000 étudiants formés." schema={schema} breadcrumbs={[{name: "Devenir kinésiologue", url: "/devenir-kinesiologue"}]}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">Votre nouvelle carrière</div>
+    <h1>Devenez kinésiologue<br><em style="color:var(--teal-700);font-style:italic;">certifié KPE</em></h1>
+    <p class="page-hero-sub">La méthode KPE est la synthèse de toutes les kinésiologies — accessible à tous, sans pré-requis médical. Plus de 6 000 étudiants formés par <a href="/joel-prieur" style="color:var(--teal-500);">Joël Prieur</a>.</p>
+    <div style="margin-top:30px;border-radius:16px;overflow:hidden;max-width:600px;">
+      <img src="/images/blog/formation-groupe.webp" alt="Formation en kinésiologie KPE avec Joël Prieur" style="width:100%;height:auto;">
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">Pourquoi la KPE</div>
+    <h2 class="section-title">Ce qui rend cette formation différente</h2>
+    <div class="diff-grid">
+      <div class="diff-card">
+        <h3>La synthèse complète</h3>
+        <p>Touch For Health, Brain Gym, kinésiologie avancée, thérapie des corps subtils — tout en un seul programme. Pas besoin de cumuler 3-4 formations différentes.</p>
+      </div>
+      <div class="diff-card">
+        <h3>Un formateur, pas un système</h3>
+        <p><a href="/joel-prieur">Joël Prieur</a> vous accompagne personnellement. Vous avez accès direct au créateur de la méthode — pas à un formateur de formateur.</p>
+      </div>
+      <div class="diff-card">
+        <h3>Le prix le plus juste</h3>
+        <p>1 580€ en ligne vs 8 000-10 000€ ailleurs pour un contenu équivalent ou supérieur. Découvrez toutes les <a href="/financement">options de financement</a>.</p>
+      </div>
+      <div class="diff-card">
+        <h3>Un module installation pro</h3>
+        <p>Le module 8 vous prépare concrètement à <a href="/blog/sinstaller-kinesiologue-guide-pratique">vous installer</a> : création de clientèle, positionnement, communication.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="section-label">Deux formats</div>
+    <h2 class="section-title">Choisissez votre parcours</h2>
+    <div class="format-grid">
+      <div class="format-card main">
+        <div class="format-badge">Le + populaire</div>
+        <h3>En ligne</h3>
+        <div class="format-price">1 580 €</div>
+        <p class="format-sub">ou 3× 527€ sans frais</p>
+        <ul>
+          <li>8 modules vidéo HD (20h+)</li>
+          <li>Supports PDF téléchargeables</li>
+          <li>Accompagnement direct avec Joël</li>
+          <li>Communauté Facebook & WhatsApp</li>
+          <li>À votre rythme, sans limite</li>
+          <li>Certificat de praticien KPE</li>
+        </ul>
+        <a href="https://kpeonline.podia.com/formation-kpe-peurs-croyances" target="_blank" rel="noopener" class="btn-primary" style="width:100%;justify-content:center;">S'inscrire →</a>
+      </div>
+      <div class="format-card">
+        <h3>Présentiel</h3>
+        <div class="format-price">3 999 €</div>
+        <p class="format-sub">999€ + 3× 1 000€</p>
+        <ul>
+          <li>8 week-ends à Aurillac</li>
+          <li>2 formateurs, pratique intensive</li>
+          <li>Tout le contenu vidéo inclus</li>
+          <li>Cas réels supervisés</li>
+          <li>Rentrée septembre 2026</li>
+          <li>Certificat de praticien KPE</li>
+        </ul>
+        <a href="/formation-presentiel" class="btn-primary" style="width:100%;justify-content:center;background:var(--gray-800);">Voir le programme →</a>
+      </div>
+    </div>
+    <p style="text-align:center;margin-top:20px;font-size:14px;color:var(--gray-400);">Comparez en détail <a href="/blog/formation-kinesiologie-en-ligne-vs-presentiel" style="color:var(--teal-500);">en ligne vs présentiel</a> · Découvrez les <a href="/financement" style="color:var(--teal-500);">options de financement</a></p>
+  </div>
+</section>
+
+<section class="section" style="background:var(--teal-900);color:white;text-align:center;">
+  <div class="container">
+    <img src="/images/logo-white.png" alt="KPE" width="56" height="56" style="margin:0 auto 20px;opacity:0.9;">
+    <h2 style="font-family:var(--font-display);font-size:clamp(26px,3.5vw,46px);margin-bottom:16px;">Prêt à changer de vie ?</h2>
+    <p style="color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto 30px;">Rejoignez les 6 000+ étudiants qui ont choisi la méthode KPE.</p>
+    <a href="https://kpeonline.podia.com/formation-kpe-peurs-croyances" target="_blank" rel="noopener" class="btn-primary" style="background:white;color:var(--teal-900);font-size:17px;padding:18px 44px;">S'inscrire — 1 580 € →</a>
+    <p style="color:rgba(255,255,255,0.35);font-size:13px;margin-top:12px;">ou 3× 527€ sans frais · <a href="/contact" style="color:rgba(255,255,255,0.5);">Des questions ? Contactez-nous</a></p>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 600px; line-height: 1.7; }
+.diff-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 40px; }
+.diff-card { background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 16px; padding: 28px; }
+.diff-card h3 { font-family: var(--font-display); font-size: 18px; color: var(--gray-900); margin-bottom: 8px; }
+.diff-card p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+.diff-card a { color: var(--teal-500); }
+.format-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 40px; max-width: 800px; margin-left: auto; margin-right: auto; }
+.format-card { border-radius: 20px; padding: 40px 32px; border: 1px solid var(--gray-200); background: white; }
+.format-card.main { background: var(--teal-900); color: white; border: none; position: relative; }
+.format-badge { position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal-400); color: var(--teal-900); padding: 5px 18px; border-radius: 100px; font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; white-space: nowrap; }
+.format-card h3 { font-family: var(--font-display); font-size: 22px; margin-bottom: 12px; }
+.format-price { font-family: var(--font-display); font-size: 42px; font-weight: 700; }
+.format-card.main .format-price { color: white; }
+.format-card:not(.main) .format-price { color: var(--teal-900); }
+.format-sub { font-size: 14px; margin-bottom: 24px; }
+.format-card.main .format-sub { color: rgba(255,255,255,0.5); }
+.format-card:not(.main) .format-sub { color: var(--gray-400); }
+.format-card ul { list-style: none; display: flex; flex-direction: column; gap: 10px; margin-bottom: 28px; }
+.format-card ul li { font-size: 14px; display: flex; align-items: flex-start; gap: 8px; }
+.format-card ul li::before { content: "✓"; font-weight: 700; flex-shrink: 0; }
+.format-card.main ul li::before { color: var(--teal-300); }
+.format-card:not(.main) ul li::before { color: var(--teal-500); }
+.format-card.main .btn-primary { background: white; color: var(--teal-900); }
+@media (max-width: 600px) { .format-grid { grid-template-columns: 1fr; max-width: 400px; } }
+</style>

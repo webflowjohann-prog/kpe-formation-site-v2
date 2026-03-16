@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Méridien du Foie et colère : comprendre le lien corps-émotion",
+  "description": "Le méridien du Foie et son lien avec la colère en kinésiologie. Comment la frustration se cristallise dans le corps.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/meridien-foie-colere-lien-corps-emotion",
+  "image": "https://www.formation-kinesiologie.com/images/blog/points-meridien.webp"
+};
+---
+<BaseLayout title="Méridien du Foie et colère : comprendre le lien corps-émotion" description="Le méridien du Foie et son lien avec la colère en kinésiologie. Comment la frustration se cristallise dans le corps." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Méridien du Foie et colère : comprendre ...", url: "/blog/meridien-foie-colere-lien-corps-emotion"}]}>
+<article class="blog-article"><div class="container">
+<div class="blog-meta"><a href="/blog" class="blog-back">&larr; Blog</a><span class="blog-date">Mars 2026</span></div>
+<h1>Méridien du Foie et colère : comprendre le lien corps-émotion</h1>
+<div class="blog-thumb"><img src="/images/blog/points-meridien.webp" alt="Points de méridien - le lien entre le foie et la colère" loading="lazy"></div>
+<p class="blog-intro">En médecine chinoise comme en kinésiologie, le Foie est bien plus qu'un organe de détoxification. Il est le siège de la planification, de la vision, de la capacité à avancer. Quand ce méridien est en déséquilibre, c'est la colère qui s'exprime.</p>
+<h2>La colère sous toutes ses formes</h2>
+<p>La colère liée au méridien du Foie ne se manifeste pas toujours par des explosions de rage. Irritabilité chronique, impatience, frustration sourde, tensions dans les épaules, maux de tête — autant de signaux que ce <a href="/blog/14-meridiens-emotions-kinesiologie">méridien</a> est perturbé.</p>
+<div class="blog-img"><img src="/images/blog/correction-meridien.webp" alt="Correction sur le méridien du foie en kinésiologie" loading="lazy"></div>
+<h2>Ce que le test musculaire révèle</h2>
+<p>Le <a href="/blog/test-musculaire-kinesiologie-comment-ca-marche">test musculaire</a> identifie ce déséquilibre avec précision. Si le muscle associé au Foie cède, le praticien remonte à l'événement déclencheur — souvent un moment où la personne a dû réprimer sa colère ou renoncer à ses projets.</p>
+<h2>La correction KPE : aller à la racine</h2>
+<p>La <a href="/methode-kpe">méthode KPE</a> va chercher le choc émotionnel à l'origine, le ramène à la conscience et le désamorce. Résultat : la charge se dissipe, les tensions se relâchent, la personne retrouve sa capacité à décider librement.</p>
+<div class="blog-img"><img src="/images/blog/acupression-poignet.webp" alt="Stimulation des points d'acupression du méridien" loading="lazy"></div>
+<h2>Un exemple concret</h2>
+<p>Imaginez une personne avec des migraines récurrentes. Les examens ne révèlent rien. Le test KPE identifie un stress sur le méridien du Foie, lié à une frustration professionnelle — un projet abandonné sous pression. Une fois corrigé, les migraines disparaissent. Envie de maîtriser ces techniques ? Découvrez la <a href="/formation-en-ligne">formation KPE</a>.</p>
+
+<div class="blog-cta"><p><strong>Envie d'aller plus loin ?</strong> Découvrez la <a href="/formation-en-ligne">formation KPE</a> — 8 modules, 20h+ de vidéo, accompagnement par <a href="/joel-prieur">Joël Prieur</a>.</p><a href="/formation-en-ligne" class="btn-primary">Découvrir la formation &rarr;</a></div>
+
+<div class="blog-related">
+<h3>Articles connexes</h3>
+<div class="blog-related-grid">
+<a href="/blog/14-meridiens-emotions-kinesiologie" class="blog-related-card"><h4>Les 14 méridiens</h4><p>La carte complète méridiens-émotions.</p></a>
+<a href="/blog/kinesiologie-stress-anxiete-liberation-emotionnelle" class="blog-related-card"><h4>Kinésiologie et stress</h4><p>Libérer les tensions profondes.</p></a>
+<a href="/blog/test-musculaire-kinesiologie-comment-ca-marche" class="blog-related-card"><h4>Le test musculaire</h4><p>L'outil qui détecte les déséquilibres.</p></a>
+
+</div>
+</div>
+</div></article>
+</BaseLayout>
+<style>
+
+.blog-article{padding:clamp(100px,10vw,140px) 0 60px}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.blog-back{color:var(--teal-500);text-decoration:none;font-size:14px;font-weight:500}
+.blog-back:hover{text-decoration:underline}
+.blog-date{font-size:13px;color:var(--gray-400)}
+.blog-article h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;color:var(--gray-900);line-height:1.15;margin-bottom:24px}
+.blog-intro{font-size:18px;color:var(--gray-500);line-height:1.7;margin-bottom:40px;border-left:3px solid var(--teal-400);padding-left:20px}
+.blog-article h2{font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--teal-900);margin-top:40px;margin-bottom:16px}
+.blog-article p{font-size:16px;color:var(--gray-600);line-height:1.8;margin-bottom:16px;max-width:720px}
+.blog-article strong{color:var(--gray-800)}
+.blog-article a{color:var(--teal-500);text-decoration:underline}
+.blog-article a:hover{color:var(--teal-700)}
+.blog-cta{background:var(--teal-50);border-radius:16px;padding:32px;margin-top:50px}
+.blog-cta p{margin-bottom:16px}
+.blog-thumb{margin:-10px 0 40px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.blog-thumb img{width:100%;height:100%;object-fit:cover}
+.blog-img{margin:30px 0;border-radius:12px;overflow:hidden;max-width:720px}
+.blog-img img{width:100%;height:auto;display:block}
+.blog-related{margin-top:60px;padding-top:40px;border-top:1px solid var(--gray-100)}
+.blog-related h3{font-family:var(--font-display);font-size:20px;color:var(--gray-900);margin-bottom:20px}
+.blog-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.blog-related-card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:20px;text-decoration:none;color:var(--gray-800);transition:all .3s;display:block}
+.blog-related-card:hover{border-color:var(--teal-400);transform:translateY(-2px)}
+.blog-related-card h4{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gray-900)}
+.blog-related-card p{font-size:13px;color:var(--gray-400);margin:0;max-width:none}
+
+</style>

@@ -1,0 +1,80 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+const pageSchema = {
+  "@context": "https://schema.org",
+  "@type": "DefinedTerm",
+  "name": "Kinésiologie Psycho-Énergétique (KPE)",
+  "description": "Méthode holistique synthétisant toutes les kinésiologies — Touch For Health, Brain Gym, kinésiologie avancée — enrichie de la thérapie des corps subtils.",
+  "url": "https://www.formation-kinesiologie.com/methode-kpe"
+};
+---
+
+<BaseLayout title="La Méthode KPE — Kinésiologie Psycho-Énergétique | Corps, Énergie & Psyché" description="Découvrez la méthode KPE : une synthèse unique de toutes les kinésiologies reliant structure, énergie et psyché. Test musculaire de précision, méridiens, corrections profondes." breadcrumbs={[{name: "La Méthode KPE", url: "/methode-kpe"}]}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">La Méthode</div>
+    <h1>Kinésiologie Psycho-Énergétique</h1>
+    <p class="page-hero-sub">La KPE est la synthèse de toutes les kinésiologies — Touch For Health, Brain Gym, kinésiologie avancée, spécialisée — enrichie de la thérapie des corps subtils. Une méthode unique pour identifier et désamorcer les causes profondes de tout mal-être.</p>
+  </div>
+<div class="page-hero-img" style="margin-top:30px;border-radius:16px;overflow:hidden;max-width:700px;"><img src="/images/blog/correction-meridien.webp" alt="Correction sur les méridiens en kinésiologie KPE" style="width:100%;height:auto;"></div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">Les 5 piliers</div>
+    <h2 class="section-title">Une approche holistique complète</h2>
+    <p class="section-desc">Là où d'autres méthodes se limitent à un aspect, la KPE intègre les 5 dimensions de l'être humain dès le premier jour de formation.</p>
+    <div class="pillars-grid">
+      <div class="pillar"><h3>Structure</h3><p>Anatomie, muscles, méridiens. Le corps physique comme porte d'entrée vers les déséquilibres profonds.</p></div>
+      <div class="pillar"><h3>Écologie</h3><p>L'environnement du patient : stress, relations, cadre de vie. Tout ce qui influence l'homéostasie.</p></div>
+      <div class="pillar"><h3>Émotionnel</h3><p>Les chocs psycho-émotionnels conscients et inconscients. Le Baromètre du Comportement pour naviguer les émotions.</p></div>
+      <div class="pillar"><h3>Électrique</h3><p>L'énergie des méridiens, les chakras, les corps subtils. La dimension énergétique de la santé.</p></div>
+      <div class="pillar"><h3>Mental</h3><p>Les croyances limitantes, les sabotages, les schémas répétitifs. La psyché comme levier de transformation.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="section-label">Ce qui rend la KPE unique</div>
+    <h2 class="section-title">Test musculaire de précision</h2>
+    <p class="section-desc" style="margin-bottom:30px;">Le test musculaire est la base non négociable de la KPE. Contrairement au test "mou" parfois enseigné ailleurs, la méthode KPE utilise un test de précision (Pitching, Golgi) qui garantit des résultats fiables et reproductibles.</p>
+    <div style="margin-bottom:30px;border-radius:12px;overflow:hidden;max-width:700px;"><img src="/images/blog/acupression-poignet.webp" alt="Acupression et test musculaire de précision KPE" style="width:100%;height:auto;"></div>
+    <div class="method-points">
+      <div class="method-point"><strong>14 muscles associés aux 14 méridiens</strong> — une cartographie complète du corps énergétique.</div>
+      <div class="method-point"><strong>4 phases de test</strong> — contraction, extension, gamma 1 et gamma 2 pour une lecture fine.</div>
+      <div class="method-point"><strong>15 portes d'entrée</strong> — la KPE offre 15 façons d'aborder chaque problématique.</div>
+      <div class="method-point"><strong>Corrections profondes</strong> — pas de simple rééquilibrage mais un désamorçage des causes racines.</div>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="text-align:center;">
+  <div class="container">
+    <img src="/images/logo-teal.png" alt="KPE" width="48" height="48" style="margin:0 auto 20px;">
+    <h2 style="font-family:var(--font-display);font-size:clamp(24px,3vw,40px);color:var(--gray-900);margin-bottom:16px;">Apprenez la méthode KPE</h2>
+    <p style="color:var(--gray-500);max-width:500px;margin:0 auto 30px;font-size:16px;">Formation accessible à tous, sans pré-requis. En ligne ou en présentiel à Aurillac.</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="/formation-en-ligne" class="btn-primary">En ligne — 1 580 € →</a>
+      <a href="/formation-presentiel" class="btn-secondary">Présentiel — 3 999 € →</a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 650px; line-height: 1.7; }
+.pillars-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 40px; }
+.pillar { background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 16px; padding: 28px; }
+.pillar h3 { font-family: var(--font-display); font-size: 20px; color: var(--teal-900); margin-bottom: 8px; }
+.pillar p { font-size: 14px; color: var(--gray-500); line-height: 1.6; }
+.method-points { display: flex; flex-direction: column; gap: 12px; }
+.method-point { background: white; border: 1px solid var(--gray-100); border-radius: 12px; padding: 20px 24px; font-size: 15px; color: var(--gray-600); line-height: 1.6; }
+.method-point strong { color: var(--teal-900); }
+</style>

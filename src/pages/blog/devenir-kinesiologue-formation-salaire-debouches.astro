@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Devenir kinésiologue en 2026 : formation, salaire et débouchés",
+  "description": "Comment devenir kinésiologue ? Formation requise, salaire moyen, débouchés, installation. Guide complet pour votre reconversion.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/devenir-kinesiologue-formation-salaire-debouches",
+  "image": "https://www.formation-kinesiologie.com/images/blog/formation-groupe.webp"
+};
+---
+<BaseLayout title="Devenir kinésiologue en 2026 : formation, salaire et débouchés" description="Comment devenir kinésiologue ? Formation requise, salaire moyen, débouchés, installation. Guide complet pour votre reconversion." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Devenir kinésiologue en 2026 : formation...", url: "/blog/devenir-kinesiologue-formation-salaire-debouches"}]}>
+<article class="blog-article"><div class="container">
+<div class="blog-meta"><a href="/blog" class="blog-back">&larr; Blog</a><span class="blog-date">Mars 2026</span></div>
+<h1>Devenir kinésiologue en 2026 : formation, salaire et débouchés</h1>
+<div class="blog-thumb"><img src="/images/blog/formation-groupe.webp" alt="Formation en kinésiologie - Joël Prieur enseigne à ses étudiants" loading="lazy"></div>
+<p class="blog-intro">Le métier de kinésiologue attire de plus en plus de personnes en quête de sens. Accompagner les autres vers le mieux-être, comprendre les liens corps-émotions, s'installer à son compte — voici tout ce qu'il faut savoir.</p>
+<h2>Un métier en pleine expansion</h2>
+<p>La kinésiologie connaît un essor en France. De plus en plus de personnes cherchent des alternatives pour gérer le stress, les douleurs chroniques et les blocages émotionnels. Le métier s'inscrit dans le champ du bien-être — en France, la profession n'est pas réglementée, mais la qualité de la formation fait toute la différence. Découvrez <a href="/methode-kpe">ce qui rend la méthode KPE unique</a>.</p>
+<div class="blog-img"><img src="/images/blog/joel-expert-fauteuil.webp" alt="Joël Prieur - formateur en kinésiologie" loading="lazy"></div>
+<h2>Quelle formation choisir ?</h2>
+<p>Les formations varient en durée (296 à 600+ heures), en prix (87€ à 10 000€) et en profondeur. Les critères essentiels : la complétude du programme, la qualité du formateur, l'accompagnement proposé et le rapport qualité-prix. La <a href="/formation-en-ligne">formation KPE</a> intègre en un seul cursus ce que d'autres enseignent en modules séparés, pour 1 580€ en ligne ou <a href="/formation-presentiel">3 999€ en présentiel</a> à Aurillac.</p>
+<h2>Quel salaire espérer ?</h2>
+<p>Un praticien installé depuis 2-3 ans peut espérer un CA annuel entre 25 000 et 45 000€, avec des séances à 60-90€. Beaucoup commencent en parallèle de leur emploi actuel. Consultez notre <a href="/blog/sinstaller-kinesiologue-guide-pratique">guide pratique d'installation</a> pour les étapes concrètes.</p>
+<div class="blog-img"><img src="/images/blog/test-musculaire-lumiere.webp" alt="Séance pratique de test musculaire en formation" loading="lazy"></div>
+<h2>Le parcours KPE</h2>
+<p>La formation KPE se distingue par son module 8 dédié à la création de clientèle — car la compétence technique seule ne suffit pas. <a href="/joel-prieur">Joël Prieur</a> a conçu un parcours complet qui mène de la découverte du <a href="/blog/test-musculaire-kinesiologie-comment-ca-marche">test musculaire</a> jusqu'à l'installation en cabinet.</p>
+
+<div class="blog-cta"><p><strong>Envie d'aller plus loin ?</strong> Découvrez la <a href="/formation-en-ligne">formation KPE</a> — 8 modules, 20h+ de vidéo, accompagnement par <a href="/joel-prieur">Joël Prieur</a>.</p><a href="/formation-en-ligne" class="btn-primary">Découvrir la formation &rarr;</a></div>
+
+<div class="blog-related">
+<h3>Articles connexes</h3>
+<div class="blog-related-grid">
+<a href="/blog/reconversion-professionnelle-kinesiologie" class="blog-related-card"><h4>Reconversion en kinésiologie</h4><p>Pourquoi et comment changer de vie.</p></a>
+<a href="/blog/sinstaller-kinesiologue-guide-pratique" class="blog-related-card"><h4>S'installer en pratique</h4><p>Statut, assurance, cabinet — toutes les étapes.</p></a>
+<a href="/blog/formation-kinesiologie-en-ligne-vs-presentiel" class="blog-related-card"><h4>En ligne ou présentiel ?</h4><p>Comparer les deux formats de formation.</p></a>
+
+</div>
+</div>
+</div></article>
+</BaseLayout>
+<style>
+
+.blog-article{padding:clamp(100px,10vw,140px) 0 60px}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.blog-back{color:var(--teal-500);text-decoration:none;font-size:14px;font-weight:500}
+.blog-back:hover{text-decoration:underline}
+.blog-date{font-size:13px;color:var(--gray-400)}
+.blog-article h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;color:var(--gray-900);line-height:1.15;margin-bottom:24px}
+.blog-intro{font-size:18px;color:var(--gray-500);line-height:1.7;margin-bottom:40px;border-left:3px solid var(--teal-400);padding-left:20px}
+.blog-article h2{font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--teal-900);margin-top:40px;margin-bottom:16px}
+.blog-article p{font-size:16px;color:var(--gray-600);line-height:1.8;margin-bottom:16px;max-width:720px}
+.blog-article strong{color:var(--gray-800)}
+.blog-article a{color:var(--teal-500);text-decoration:underline}
+.blog-article a:hover{color:var(--teal-700)}
+.blog-cta{background:var(--teal-50);border-radius:16px;padding:32px;margin-top:50px}
+.blog-cta p{margin-bottom:16px}
+.blog-thumb{margin:-10px 0 40px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.blog-thumb img{width:100%;height:100%;object-fit:cover}
+.blog-img{margin:30px 0;border-radius:12px;overflow:hidden;max-width:720px}
+.blog-img img{width:100%;height:auto;display:block}
+.blog-related{margin-top:60px;padding-top:40px;border-top:1px solid var(--gray-100)}
+.blog-related h3{font-family:var(--font-display);font-size:20px;color:var(--gray-900);margin-bottom:20px}
+.blog-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.blog-related-card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:20px;text-decoration:none;color:var(--gray-800);transition:all .3s;display:block}
+.blog-related-card:hover{border-color:var(--teal-400);transform:translateY(-2px)}
+.blog-related-card h4{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gray-900)}
+.blog-related-card p{font-size:13px;color:var(--gray-400);margin:0;max-width:none}
+
+</style>

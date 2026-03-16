@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Kinésiologie et gestion du stress : retrouver l'équilibre",
+  "datePublished": "2026-03-04",
+  "author": { "@type": "Person", "name": "Joël Prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "url": "https://www.formation-kinesiologie.com" },
+  "description": "Comment la kinésiologie aide à gérer le stress ? Découvrez les techniques de libération émotionnelle, de rééquilibrage énergétique et leurs bienfaits concrets."
+};
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Kinésiologie et gestion du stress : retrouver l'équilibre | Blog KPE",
+  "description": "Comment la kinésiologie aide à gérer le stress ? Découvrez les techniques de libération émotionnelle, de rééquilibrage énergétique et leurs bienfaits concrets.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/kinesiologie-gestion-stress-equilibre",
+  "image": "https://www.formation-kinesiologie.com/images/blog/kinesiologie-*.webp"
+};
+---
+
+<BaseLayout title="Kinésiologie et gestion du stress : retrouver l'équilibre | Blog KPE" description="Comment la kinésiologie aide à gérer le stress ? Découvrez les techniques de libération émotionnelle, de rééquilibrage énergétique et leurs bienfaits concrets." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Kinésiologie et gestion du stress : retr...", url: "/blog/kinesiologie-gestion-stress-equilibre"}]} schema={schema}>
+
+<article class="blog-article">
+  <header class="article-header">
+    <div class="container">
+      <a href="/blog" class="back-link">← Retour au blog</a>
+      <div class="article-meta">
+        <span class="article-date">4 mars 2026</span>
+        <span class="article-read">6 min de lecture</span>
+      </div>
+      <h1>Kinésiologie et gestion du stress : retrouver l'équilibre</h1>
+      <p class="article-intro">Le stress est devenu le compagnon indésirable de notre quotidien. Il se loge dans notre corps, crée des tensions musculaires, perturbe notre sommeil et affecte notre humeur. La kinésiologie psycho-énergétique offre des réponses concrètes pour identifier les sources de stress et les désamorcer en profondeur.</p>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <div class="container">
+      <h2>Le stress vu par la kinésiologie</h2>
+<p>En kinésiologie, le stress n'est pas seulement une réaction psychologique : c'est un déséquilibre énergétique mesurable. Lorsqu'un stress n'est pas exprimé ou résolu, il se cristallise dans le corps et crée des blocages le long des méridiens. Ces blocages se manifestent par des tensions physiques, des douleurs chroniques, de l'anxiété ou des schémas comportementaux répétitifs.</p>
+
+<h2>Comment la KPE agit sur le stress</h2>
+<p>La méthode KPE intervient à trois niveaux simultanément :</p>
+<p><strong>Au niveau structurel</strong> — Le test musculaire identifie les muscles et méridiens affectés par le stress. Les corrections neuro-lymphatiques et neuro-vasculaires permettent de relâcher les tensions accumulées.</p>
+<p><strong>Au niveau émotionnel</strong> — Les protocoles KPE remontent aux chocs psycho-émotionnels à l'origine du stress, qu'ils soient conscients ou inconscients. Le Baromètre du Comportement guide la libération émotionnelle avec précision.</p>
+<p><strong>Au niveau énergétique</strong> — Le rééquilibrage des méridiens et des chakras restaure la circulation du Qi, l'énergie vitale. Le corps retrouve sa capacité d'autorégulation.</p>
+
+<h2>Des résultats concrets et durables</h2>
+<p>Ce qui distingue la KPE des approches purement symptomatiques, c'est qu'elle ne se contente pas de soulager : elle désamorce les causes profondes. Les résultats sont souvent perceptibles dès la première séance, et la durabilité des changements est l'une des forces les plus appréciées par les praticiens formés à la méthode.</p>
+
+<h2>Apprendre à accompagner le stress des autres</h2>
+<p>Si la gestion du stress vous parle — que ce soit pour vous-même ou pour accompagner les autres — la formation KPE vous donne tous les outils nécessaires. En 8 modules, vous apprenez à identifier, comprendre et désamorcer les mécanismes du stress avec une précision et une efficacité remarquables.</p>
+
+      <div class="article-cta">
+        <img src="/images/logo-teal.png" alt="KPE" width="40" height="40" style="margin-bottom:16px;">
+        <h3>Envie d'aller plus loin ?</h3>
+        <p>Découvrez la formation KPE par Joël Prieur — en ligne ou en présentiel.</p>
+        <a href="/formation-en-ligne" class="btn-primary" style="margin-top:16px;">Découvrir la formation →</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+</BaseLayout>
+
+<style>
+.blog-article { padding-top: 72px; }
+.article-header { background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); padding: clamp(40px,6vw,80px) 0; }
+.back-link { display: inline-block; color: var(--teal-500); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 24px; }
+.back-link:hover { text-decoration: underline; }
+.article-meta { display: flex; gap: 16px; margin-bottom: 16px; }
+.article-date, .article-read { font-size: 13px; color: var(--gray-400); font-family: var(--font-mono); letter-spacing: 0.02em; }
+.article-header h1 { font-family: var(--font-display); font-size: clamp(28px,3.5vw,44px); font-weight: 600; color: var(--gray-900); line-height: 1.2; margin-bottom: 20px; max-width: 800px; }
+.article-intro { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); line-height: 1.7; max-width: 700px; }
+.article-body { padding: clamp(40px,5vw,60px) 0; }
+.article-body h2 { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); font-weight: 600; color: var(--teal-900); margin-top: 40px; margin-bottom: 16px; }
+.article-body p { font-size: 16px; color: var(--gray-600); line-height: 1.8; margin-bottom: 16px; max-width: 750px; }
+.article-body p strong { color: var(--gray-800); }
+.article-cta { margin-top: 50px; padding: 40px; background: var(--gray-50); border-radius: 20px; text-align: center; border: 1px solid var(--gray-100); }
+.article-cta h3 { font-family: var(--font-display); font-size: 22px; color: var(--gray-900); margin-bottom: 8px; }
+.article-cta p { font-size: 15px; color: var(--gray-500); max-width: 400px; margin: 0 auto; }
+</style>

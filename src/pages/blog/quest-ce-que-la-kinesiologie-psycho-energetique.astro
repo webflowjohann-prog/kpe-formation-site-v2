@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qu'est-ce que la Kinésiologie Psycho-Énergétique ? Le guide complet",
+  "datePublished": "2026-03-01",
+  "author": { "@type": "Person", "name": "Joël Prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "url": "https://www.formation-kinesiologie.com" },
+  "description": "Découvrez la kinésiologie psycho-énergétique (KPE) : une méthode unique qui relie corps, énergie et psyché. Origines, principes, bienfaits et différences avec les autres approches."
+};
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qu'est-ce que la Kinésiologie Psycho-Énergétique ? Le guide complet | Blog KPE",
+  "description": "Découvrez la kinésiologie psycho-énergétique (KPE) : une méthode unique qui relie corps, énergie et psyché. Origines, principes, bienfaits et différences avec les autres approches.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/quest-ce-que-la-kinesiologie-psycho-energetique",
+  "image": "https://www.formation-kinesiologie.com/images/blog/seance-test-epaule.webp"
+};
+---
+
+<BaseLayout title="Qu'est-ce que la Kinésiologie Psycho-Énergétique ? Le guide complet | Blog KPE" description="Découvrez la kinésiologie psycho-énergétique (KPE) : une méthode unique qui relie corps, énergie et psyché. Origines, principes, bienfaits et différences avec les autres approches." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Qu'est-ce que la Kinésiologie Psycho-Éne...", url: "/blog/quest-ce-que-la-kinesiologie-psycho-energetique"}]} schema={schema}>
+
+<article class="blog-article">
+  <header class="article-header">
+    <div class="container">
+      <a href="/blog" class="back-link">← Retour au blog</a>
+      <div class="article-meta">
+        <span class="article-date">1 mars 2026</span>
+        <span class="article-read">8 min de lecture</span>
+      </div>
+      <h1>Qu'est-ce que la Kinésiologie Psycho-Énergétique ? Le guide complet</h1>
+      <p class="article-intro">La kinésiologie psycho-énergétique (KPE) est bien plus qu'une simple technique de bien-être. C'est une méthode complète, élaborée par Joël Prieur, qui synthétise l'ensemble des approches de la kinésiologie — Touch For Health, Brain Gym, kinésiologie avancée et spécialisée — avec la thérapie des corps subtils. Là où d'autres méthodes se concentrent sur un aspect isolé, la KPE intègre simultanément la structure physique, l'énergie des méridiens et la psyché.</p>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <div class="container">
+      <h2>Les origines de la KPE</h2>
+<p>La kinésiologie trouve ses racines dans les travaux du Dr George Goodheart, chiropracteur américain qui a découvert dans les années 1960 le lien entre la force musculaire et la santé des organes. John Thie a ensuite démocratisé cette approche avec le Touch For Health, souhaitant que chaque famille puisse bénéficier de cet outil.</p>
+<p>Joël Prieur, ancien professionnel de santé et ostéopathe, a constaté un fossé entre les symptômes de ses patients et les signes radiologiques. Cette observation l'a mené vers la kinésiologie, puis vers la création de la méthode KPE : la synthèse de toutes ces approches en un outil unique et performant.</p>
+
+<h2>Les 5 piliers de la KPE</h2>
+<p>Ce qui distingue fondamentalement la KPE des autres approches, c'est son intégration simultanée de cinq dimensions :</p>
+<p><strong>La Structure</strong> — L'anatomie, les muscles et leur relation avec les 14 méridiens de la médecine chinoise. Le test musculaire de précision est la base non négociable de la méthode.</p>
+<p><strong>L'Écologie</strong> — L'environnement du patient : stress, relations, cadre de vie. Tout ce qui influence l'équilibre global de la personne.</p>
+<p><strong>L'Émotionnel</strong> — Les chocs psycho-émotionnels conscients et inconscients. Le Baromètre du Comportement permet de naviguer avec précision dans le paysage émotionnel du consultant.</p>
+<p><strong>L'Électrique</strong> — L'énergie des méridiens, les chakras, les corps subtils. La dimension énergétique, souvent négligée par les approches purement structurelles.</p>
+<p><strong>Le Mental</strong> — Les croyances limitantes, les sabotages inconscients, les schémas répétitifs. La psyché comme levier de transformation profonde.</p>
+
+<h2>À qui s'adresse la KPE ?</h2>
+<p>La formation KPE est accessible à tous, sans aucun pré-requis. Elle convient aux personnes en reconversion professionnelle qui souhaitent s'orienter vers les métiers du bien-être, aux thérapeutes et professionnels de santé qui veulent enrichir leur pratique, et à toute personne motivée par la relation d'aide.</p>
+<p>Avec plus de 6 000 étudiants formés en ligne et 500 en présentiel, la méthode a fait ses preuves auprès de profils très variés.</p>
+
+<h2>La KPE ne guérit pas — elle libère</h2>
+<p>Point essentiel : la KPE ne se substitue jamais à un diagnostic médical ni à un traitement. En rétablissant un terrain défectueux, elle permet à l'intelligence du corps de retrouver ses grands équilibres (homéostasie) et ainsi de faire disparaître les symptômes. C'est cette approche respectueuse et puissante qui fait la force de la méthode.</p>
+
+      <div class="article-cta">
+        <img src="/images/logo-teal.png" alt="KPE" width="40" height="40" style="margin-bottom:16px;">
+        <h3>Envie d'aller plus loin ?</h3>
+        <p>Découvrez la formation KPE par Joël Prieur — en ligne ou en présentiel.</p>
+        <a href="/formation-en-ligne" class="btn-primary" style="margin-top:16px;">Découvrir la formation →</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+</BaseLayout>
+
+<style>
+.blog-article { padding-top: 72px; }
+.article-header { background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); padding: clamp(40px,6vw,80px) 0; }
+.back-link { display: inline-block; color: var(--teal-500); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 24px; }
+.back-link:hover { text-decoration: underline; }
+.article-meta { display: flex; gap: 16px; margin-bottom: 16px; }
+.article-date, .article-read { font-size: 13px; color: var(--gray-400); font-family: var(--font-mono); letter-spacing: 0.02em; }
+.article-header h1 { font-family: var(--font-display); font-size: clamp(28px,3.5vw,44px); font-weight: 600; color: var(--gray-900); line-height: 1.2; margin-bottom: 20px; max-width: 800px; }
+.article-intro { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); line-height: 1.7; max-width: 700px; }
+.article-body { padding: clamp(40px,5vw,60px) 0; }
+.article-body h2 { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); font-weight: 600; color: var(--teal-900); margin-top: 40px; margin-bottom: 16px; }
+.article-body p { font-size: 16px; color: var(--gray-600); line-height: 1.8; margin-bottom: 16px; max-width: 750px; }
+.article-body p strong { color: var(--gray-800); }
+.article-cta { margin-top: 50px; padding: 40px; background: var(--gray-50); border-radius: 20px; text-align: center; border: 1px solid var(--gray-100); }
+.article-cta h3 { font-family: var(--font-display); font-size: 22px; color: var(--gray-900); margin-bottom: 8px; }
+.article-cta p { font-size: 15px; color: var(--gray-500); max-width: 400px; margin: 0 auto; }
+</style>

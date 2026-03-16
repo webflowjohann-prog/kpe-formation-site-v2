@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Politique de Cookies | KPE — Formation Kinésiologie" description="Politique de cookies du site formation-kinesiologie.com — KPE Formation en Kinésiologie Psycho-Énergétique." breadcrumbs={[{name: "Politique cookies", url: "/politique-cookies"}]}>
+
+<section class="page-hero-small">
+  <div class="container">
+    <h1>Politique de cookies</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container legal-content">
+    <h2>Qu'est-ce qu'un cookie ?</h2>
+    <p>Un cookie est un petit fichier texte déposé sur votre appareil lors de votre visite sur notre site. Il permet de mémoriser vos préférences et d'améliorer votre expérience de navigation.</p>
+
+    <h2>Cookies utilisés sur ce site</h2>
+    <p>Le site formation-kinesiologie.com est un site statique qui utilise un minimum de cookies :</p>
+    <p><strong>Cookies techniques :</strong> nécessaires au bon fonctionnement du site (hébergement Netlify). Ces cookies sont essentiels et ne peuvent pas être désactivés.</p>
+    <p><strong>Cookies analytiques :</strong> si mis en place, ils permettent de mesurer l'audience du site de manière anonyme (Google Analytics). Vous pouvez les refuser sans impact sur votre navigation.</p>
+
+    <h2>Gestion des cookies</h2>
+    <p>Vous pouvez configurer votre navigateur pour accepter ou refuser les cookies. Voici les liens vers les guides des principaux navigateurs :</p>
+    <p>Chrome : chrome://settings/cookies</p>
+    <p>Firefox : about:preferences#privacy</p>
+    <p>Safari : Préférences > Confidentialité</p>
+
+    <h2>Contact</h2>
+    <p>Pour toute question relative à notre politique de cookies, contactez-nous à contact@formation-kinesiologie.com.</p>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero-small { padding: clamp(100px,10vw,140px) 0 40px; background: var(--gray-50); }
+.page-hero-small h1 { font-family: var(--font-display); font-size: clamp(28px,3vw,42px); color: var(--gray-900); }
+.legal-content h2 { font-family: var(--font-display); font-size: 20px; color: var(--teal-900); margin-top: 32px; margin-bottom: 12px; }
+.legal-content p { font-size: 15px; color: var(--gray-500); line-height: 1.7; margin-bottom: 8px; }
+</style>

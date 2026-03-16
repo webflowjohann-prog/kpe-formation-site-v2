@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Qu'est-ce que la kinésiologie psycho-énergétique ? Le guide complet",
+  "description": "Découvrez la kinésiologie psycho-énergétique (KPE) : méthode holistique unique reliant corps, énergie et psyché. Origines, principes, bienfaits.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/kinesiologie-psycho-energetique-guide-complet",
+  "image": "https://www.formation-kinesiologie.com/images/blog/seance-test-epaule.webp"
+};
+---
+<BaseLayout title="Qu'est-ce que la kinésiologie psycho-énergétique ? Le guide complet" description="Découvrez la kinésiologie psycho-énergétique (KPE) : méthode holistique unique reliant corps, énergie et psyché. Origines, principes, bienfaits." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Qu'est-ce que la kinésiologie psycho-éne...", url: "/blog/kinesiologie-psycho-energetique-guide-complet"}]}>
+<article class="blog-article"><div class="container">
+<div class="blog-meta"><a href="/blog" class="blog-back">&larr; Blog</a><span class="blog-date">Mars 2026</span></div>
+<h1>Qu'est-ce que la kinésiologie psycho-énergétique ? Le guide complet</h1>
+<div class="blog-thumb"><img src="/images/blog/seance-test-epaule.webp" alt="Séance de kinésiologie psycho-énergétique - test musculaire" loading="lazy"></div>
+<p class="blog-intro">La kinésiologie psycho-énergétique (KPE) est une méthode holistique qui va au-delà des approches classiques en reliant trois dimensions fondamentales de l'être humain : la structure physique, l'énergie vitale et la psyché.</p>
+<h2>Les origines : de Goodheart à la méthode KPE</h2>
+<p>La kinésiologie moderne est née dans les années 1960 grâce au Dr George Goodheart, chiropracteur américain qui a établi le lien entre la faiblesse musculaire et certaines pathologies. Son travail a été popularisé par John Thie avec le Touch For Health. La KPE, créée par <a href="/joel-prieur">Joël Prieur</a>, s'inscrit dans cette lignée en intégrant toutes ces approches avec la dimension psycho-émotionnelle profonde — les chocs inconscients, les croyances limitantes et les schémas répétitifs.</p>
+<div class="blog-img"><img src="/images/blog/test-musculaire-bras.webp" alt="Test musculaire de précision en kinésiologie KPE" loading="lazy"></div>
+<h2>Les 5 piliers de la méthode</h2>
+<p>Ce qui distingue la KPE, c'est son approche à travers 5 dimensions simultanées : la <strong>Structure</strong> (corps physique, muscles, articulations), l'<strong>Écologie</strong> (environnement, relations, stress externes), l'<strong>Émotionnel</strong> (chocs psycho-émotionnels, Baromètre du Comportement), l'<strong>Électrique</strong> (méridiens, chakras, corps subtils) et le <strong>Mental</strong> (croyances, sabotages, programmes inconscients). Découvrez en détail <a href="/methode-kpe">la méthode KPE et ses 5 piliers</a>.</p>
+<h2>Le test musculaire de précision</h2>
+<p>Le <a href="/blog/test-musculaire-kinesiologie-comment-ca-marche">test musculaire</a> est la pierre angulaire de la KPE. Contrairement au test classique, la KPE utilise un test de précision intégrant le Pitching et le Golgi, avec 4 phases (contraction, extension, gamma 1 et gamma 2) pour une lecture fine et fiable des déséquilibres.</p>
+<div class="blog-img"><img src="/images/blog/joel-expert-bibliotheque.webp" alt="Joël Prieur - expert en kinésiologie psycho-énergétique" loading="lazy"></div>
+<h2>À qui s'adresse la formation ?</h2>
+<p>La <a href="/formation-en-ligne">formation KPE</a> est accessible à tous, sans pré-requis. Elle attire les personnes en <a href="/blog/reconversion-professionnelle-kinesiologie">reconversion professionnelle</a>, les thérapeutes souhaitant enrichir leur pratique, et les passionnés de développement personnel. Avec plus de 6 000 étudiants formés, la méthode a démontré qu'elle est transmissible et efficace.</p>
+
+<div class="blog-cta"><p><strong>Envie d'aller plus loin ?</strong> Découvrez la <a href="/formation-en-ligne">formation KPE</a> — 8 modules, 20h+ de vidéo, accompagnement par <a href="/joel-prieur">Joël Prieur</a>.</p><a href="/formation-en-ligne" class="btn-primary">Découvrir la formation &rarr;</a></div>
+
+<div class="blog-related">
+<h3>Articles connexes</h3>
+<div class="blog-related-grid">
+<a href="/blog/test-musculaire-kinesiologie-comment-ca-marche" class="blog-related-card"><h4>Le test musculaire expliqué</h4><p>Comment fonctionne l'outil fondamental du kinésiologue.</p></a>
+<a href="/blog/14-meridiens-emotions-kinesiologie" class="blog-related-card"><h4>Les 14 méridiens et leurs émotions</h4><p>La cartographie énergie-émotions de la médecine chinoise.</p></a>
+<a href="/blog/devenir-kinesiologue-formation-salaire-debouches" class="blog-related-card"><h4>Devenir kinésiologue en 2026</h4><p>Formation, salaire, débouchés — le guide complet.</p></a>
+
+</div>
+</div>
+</div></article>
+</BaseLayout>
+<style>
+
+.blog-article{padding:clamp(100px,10vw,140px) 0 60px}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.blog-back{color:var(--teal-500);text-decoration:none;font-size:14px;font-weight:500}
+.blog-back:hover{text-decoration:underline}
+.blog-date{font-size:13px;color:var(--gray-400)}
+.blog-article h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;color:var(--gray-900);line-height:1.15;margin-bottom:24px}
+.blog-intro{font-size:18px;color:var(--gray-500);line-height:1.7;margin-bottom:40px;border-left:3px solid var(--teal-400);padding-left:20px}
+.blog-article h2{font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--teal-900);margin-top:40px;margin-bottom:16px}
+.blog-article p{font-size:16px;color:var(--gray-600);line-height:1.8;margin-bottom:16px;max-width:720px}
+.blog-article strong{color:var(--gray-800)}
+.blog-article a{color:var(--teal-500);text-decoration:underline}
+.blog-article a:hover{color:var(--teal-700)}
+.blog-cta{background:var(--teal-50);border-radius:16px;padding:32px;margin-top:50px}
+.blog-cta p{margin-bottom:16px}
+.blog-thumb{margin:-10px 0 40px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.blog-thumb img{width:100%;height:100%;object-fit:cover}
+.blog-img{margin:30px 0;border-radius:12px;overflow:hidden;max-width:720px}
+.blog-img img{width:100%;height:auto;display:block}
+.blog-related{margin-top:60px;padding-top:40px;border-top:1px solid var(--gray-100)}
+.blog-related h3{font-family:var(--font-display);font-size:20px;color:var(--gray-900);margin-bottom:20px}
+.blog-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.blog-related-card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:20px;text-decoration:none;color:var(--gray-800);transition:all .3s;display:block}
+.blog-related-card:hover{border-color:var(--teal-400);transform:translateY(-2px)}
+.blog-related-card h4{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gray-900)}
+.blog-related-card p{font-size:13px;color:var(--gray-400);margin:0;max-width:none}
+
+</style>

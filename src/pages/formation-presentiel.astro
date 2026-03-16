@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Formation KPE en présentiel — Aurillac",
+  "description": "Formation en kinésiologie psycho-énergétique en présentiel à Aurillac. 8 week-ends, 2 formateurs, pratique intensive. 3 999€.",
+  "provider": { "@type": "Organization", "name": "KPE" },
+  "offers": { "@type": "Offer", "price": "3999", "priceCurrency": "EUR" },
+  "hasCourseInstance": { "@type": "CourseInstance", "courseMode": "onsite", "startDate": "2026-09-19",
+    "location": { "@type": "Place", "name": "Hôtel Campanile Aurillac", "address": "ZAC de la Jordanne, 15000 Aurillac" }
+  }
+};
+
+const dates = [
+  { num: "01", date: "19 & 20 septembre 2026", desc: "Test musculaire, 14 muscles et méridiens associés, roue des méridiens, points d'alarme, métaphore des méridiens." },
+  { num: "02", date: "17 & 18 octobre 2026", desc: "Modes digitaux, 4 phases de test, procédure refoulement-accident, corrections émotionnelles, cadres de temps." },
+  { num: "03", date: "21 & 22 novembre 2026", desc: "Références primaires, fonctionnement du cerveau, 9 intelligences, remodelage de latéralité, le corps point par point." },
+  { num: "04", date: "23 & 24 janvier 2027", desc: "Points Neuro-Émotionnels, Neuro-Vasculaires, Neurolymphatiques. Protocole selon les points de sabotage." },
+  { num: "05", date: "20 & 21 février 2027", desc: "Les chakras, les corps subtils, procédure pour travailler en transfert." },
+  { num: "06", date: "20 & 21 mars 2027", desc: "8 catégories de sabotage, secrets familiaux, pouvoir personnel, thérapie florale, protocole à 15 portes d'entrée." },
+  { num: "07", date: "24 & 25 avril 2027", desc: "Peurs, habitudes et croyances. Neuro-transmetteurs, drainage lymphatique, traits inadaptés de la personnalité." },
+  { num: "08", date: "22 & 23 mai 2027", desc: "Les 8 phases de test, 7 références génétiques, récepteurs de tête et de main, création de clientèle. Protocole final." },
+];
+
+const docs = [
+  { name: "Bulletin d'inscription", url: "https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/666f2e2cb73813b5ee6d5694_BULLETIN%20D%27INSCRIPTION.pdf", note: "À remplir et renvoyer" },
+  { name: "Engagement financier", url: "https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/6253fae5cc9493507ec08aa0_engagement-financier.pdf", note: "À remplir et renvoyer" },
+  { name: "Charte KPE", url: "https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/65f890756b0943b943042527_2024-03-CHARTE%20KPE.pdf", note: "À signer" },
+  { name: "Contrat de formation", url: "https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/694877310861c14fef48dd18_contrat%20de%20formation%20-%20KPE.pdf", note: "À signer" },
+];
+---
+
+<BaseLayout title="Formation Kinésiologie Présentiel Aurillac | KPE — 8 week-ends, 3 999€" description="Formation en kinésiologie psycho-énergétique en présentiel à Aurillac. 8 week-ends avec Joël Prieur. 2 formateurs, pratique intensive sur cas réels. 3 999€." breadcrumbs={[{name: "Formation présentiel", url: "/formation-presentiel"}]} schema={schema}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">Formation en présentiel — Aurillac</div>
+    <h1>8 week-ends pour maîtriser la KPE</h1>
+    <p class="page-hero-sub">2 formateurs · Pratique intensive sur cas réels · Tout le contenu vidéo inclus · Certificat de praticien KPE</p>
+    <div class="page-hero-img"><img src="/images/blog/formation-groupe.webp" alt="Formation kinésiologie présentiel - Joël Prieur avec ses étudiants"></div>
+    <div class="page-hero-price">
+      <span class="price-big">3 999 €</span>
+      <span class="price-or">999 € à l'inscription + 3 × 1 000 €</span>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">Documents d'inscription</div>
+    <h2 class="section-title">Téléchargez, remplissez et renvoyez</h2>
+    <p class="section-desc">Pour vous inscrire à la formation en présentiel, ces 4 documents sont à compléter et à renvoyer signés.</p>
+    <div class="docs-grid">
+      {docs.map(doc => (
+        <a href={doc.url} target="_blank" rel="noopener" class="doc-card">
+          <div class="doc-icon">
+            <svg width="20" height="20" fill="none" stroke="#038C8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+          </div>
+          <div>
+            <div class="doc-name">{doc.name}</div>
+            <div class="doc-note">PDF — {doc.note}</div>
+          </div>
+        </a>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="section-label">Calendrier 2026-2027</div>
+    <h2 class="section-title">Les 8 week-ends à Aurillac</h2>
+    <p style="font-size:14px;color:var(--gray-400);margin-bottom:30px;">📍 Hôtel Campanile Aurillac — ZAC de la Jordanne, 15000 Aurillac — 04 71 64 64 84</p>
+    <div class="dates-grid">
+      {dates.map(d => (
+        <div class="date-card">
+          <div class="date-num">{d.num}</div>
+          <div>
+            <div class="date-label">{d.date}</div>
+            <div class="date-desc">{d.desc}</div>
+          </div>
+        </div>
+      ))}
+    </div>
+    <div style="text-align:center;margin-top:40px;">
+      <a href="/contact" class="btn-primary">Envoyer mes documents & m'inscrire →</a>
+      <p style="font-size:13px;color:var(--gray-400);margin-top:12px;">Éligible financement OPCO / France Travail · Partenaire : <a href="https://www.studio-evolution.fr/formations/kpe/" target="_blank" rel="noopener" style="color:var(--teal-500);text-decoration:underline;">Studio Évolution</a></p>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 600px; line-height: 1.7; margin-bottom: 30px; }
+.page-hero-price { margin-bottom: 20px; }
+.page-hero-img { margin: 30px 0; border-radius: 16px; overflow: hidden; max-width: 600px; }
+.page-hero-img img { width: 100%; height: auto; }
+.price-big { font-family: var(--font-display); font-size: 36px; font-weight: 700; color: var(--teal-900); }
+.price-or { font-size: 15px; color: var(--gray-400); margin-left: 8px; }
+.docs-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 16px; margin-top: 30px; }
+.doc-card { display: flex; align-items: center; gap: 14px; background: var(--gray-50); border: 1px solid var(--gray-200); border-radius: 14px; padding: 20px 24px; text-decoration: none; color: var(--gray-800); transition: all 0.25s; }
+.doc-card:hover { border-color: var(--teal-400); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(3,140,140,0.08); }
+.doc-icon { width: 44px; height: 44px; background: var(--teal-50); border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.doc-name { font-weight: 600; font-size: 14px; }
+.doc-note { font-size: 12px; color: var(--gray-400); margin-top: 2px; }
+.dates-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; }
+.date-card { background: white; border: 1px solid var(--gray-100); border-radius: 14px; padding: 20px 24px; display: flex; gap: 16px; align-items: flex-start; }
+.date-num { font-family: var(--font-display); font-size: 28px; font-weight: 700; color: var(--teal-400); opacity: 0.5; line-height: 1; flex-shrink: 0; }
+.date-label { font-weight: 600; font-size: 15px; color: var(--gray-800); }
+.date-desc { font-size: 13px; color: var(--gray-500); margin-top: 4px; line-height: 1.5; }
+</style>

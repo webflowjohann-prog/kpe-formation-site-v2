@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Kinésiologie et stress : comment libérer les tensions émotionnelles",
+  "description": "Comment la kinésiologie aide à gérer le stress et l'anxiété. Techniques de libération émotionnelle pour retrouver la sérénité.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/kinesiologie-stress-anxiete-liberation-emotionnelle",
+  "image": "https://www.formation-kinesiologie.com/images/blog/correction-meridien.webp"
+};
+---
+<BaseLayout title="Kinésiologie et stress : comment libérer les tensions émotionnelles" description="Comment la kinésiologie aide à gérer le stress et l'anxiété. Techniques de libération émotionnelle pour retrouver la sérénité." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "Kinésiologie et stress : comment libérer...", url: "/blog/kinesiologie-stress-anxiete-liberation-emotionnelle"}]}>
+<article class="blog-article"><div class="container">
+<div class="blog-meta"><a href="/blog" class="blog-back">&larr; Blog</a><span class="blog-date">Mars 2026</span></div>
+<h1>Kinésiologie et stress : comment libérer les tensions émotionnelles</h1>
+<div class="blog-thumb"><img src="/images/blog/correction-meridien.webp" alt="Libération émotionnelle par la kinésiologie" loading="lazy"></div>
+<p class="blog-intro">Le stress chronique affecte notre sommeil, notre digestion, nos relations. Les solutions classiques n'agissent souvent que sur les symptômes — la kinésiologie propose d'aller chercher les causes profondes.</p>
+<h2>Le stress se loge dans le corps</h2>
+<p>Quand nous vivons un stress, le corps réagit : muscles contractés, respiration accélérée, digestion bloquée. Si ce stress n'est pas libéré, il se cristallise sous forme de tensions chroniques. Le <a href="/blog/test-musculaire-kinesiologie-comment-ca-marche">test musculaire</a> identifie précisément où le stress se loge — quel <a href="/blog/14-meridiens-emotions-kinesiologie">méridien</a> est affecté, quelle émotion est bloquée.</p>
+<div class="blog-img"><img src="/images/blog/acupression-poignet.webp" alt="Points d'acupression pour la gestion du stress" loading="lazy"></div>
+<h2>Les sabotages inconscients</h2>
+<p>La <a href="/methode-kpe">méthode KPE</a> travaille sur les sabotages inconscients — ces programmes internes qui maintiennent le stress même quand la situation ne le justifie plus. Les protocoles de refoulement et d'accident libèrent des chocs émotionnels parfois enfouis depuis des années.</p>
+<h2>Le Baromètre du Comportement</h2>
+<p>Cet outil unique de la KPE permet de naviguer entre l'émotion bloquée et la ressource correspondante. Plutôt que supprimer le stress, on le transforme en force constructive — de la peur paralysante au courage d'agir, par exemple.</p>
+<div class="blog-img"><img src="/images/blog/test-musculaire-bras.webp" alt="Test musculaire révélant les tensions émotionnelles" loading="lazy"></div>
+<h2>Des résultats durables</h2>
+<p>En agissant sur la cause plutôt que le symptôme, les corrections KPE ont un effet profond et pérenne. Le consultant constate des changements concrets dans sa façon de réagir au stress. Envie de maîtriser ces techniques ? La <a href="/formation-en-ligne">formation KPE</a> est accessible à tous, ou en <a href="/formation-presentiel">présentiel à Aurillac</a>.</p>
+
+<div class="blog-cta"><p><strong>Envie d'aller plus loin ?</strong> Découvrez la <a href="/formation-en-ligne">formation KPE</a> — 8 modules, 20h+ de vidéo, accompagnement par <a href="/joel-prieur">Joël Prieur</a>.</p><a href="/formation-en-ligne" class="btn-primary">Découvrir la formation &rarr;</a></div>
+
+<div class="blog-related">
+<h3>Articles connexes</h3>
+<div class="blog-related-grid">
+<a href="/blog/meridien-foie-colere-lien-corps-emotion" class="blog-related-card"><h4>Méridien du Foie et colère</h4><p>Quand le stress devient colère.</p></a>
+<a href="/blog/14-meridiens-emotions-kinesiologie" class="blog-related-card"><h4>Les 14 méridiens</h4><p>La carte émotionnelle complète.</p></a>
+<a href="/blog/kinesiologie-enfants-apprentissage-brain-gym" class="blog-related-card"><h4>Kinésiologie et enfants</h4><p>Le stress scolaire aussi se traite.</p></a>
+
+</div>
+</div>
+</div></article>
+</BaseLayout>
+<style>
+
+.blog-article{padding:clamp(100px,10vw,140px) 0 60px}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.blog-back{color:var(--teal-500);text-decoration:none;font-size:14px;font-weight:500}
+.blog-back:hover{text-decoration:underline}
+.blog-date{font-size:13px;color:var(--gray-400)}
+.blog-article h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;color:var(--gray-900);line-height:1.15;margin-bottom:24px}
+.blog-intro{font-size:18px;color:var(--gray-500);line-height:1.7;margin-bottom:40px;border-left:3px solid var(--teal-400);padding-left:20px}
+.blog-article h2{font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--teal-900);margin-top:40px;margin-bottom:16px}
+.blog-article p{font-size:16px;color:var(--gray-600);line-height:1.8;margin-bottom:16px;max-width:720px}
+.blog-article strong{color:var(--gray-800)}
+.blog-article a{color:var(--teal-500);text-decoration:underline}
+.blog-article a:hover{color:var(--teal-700)}
+.blog-cta{background:var(--teal-50);border-radius:16px;padding:32px;margin-top:50px}
+.blog-cta p{margin-bottom:16px}
+.blog-thumb{margin:-10px 0 40px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.blog-thumb img{width:100%;height:100%;object-fit:cover}
+.blog-img{margin:30px 0;border-radius:12px;overflow:hidden;max-width:720px}
+.blog-img img{width:100%;height:auto;display:block}
+.blog-related{margin-top:60px;padding-top:40px;border-top:1px solid var(--gray-100)}
+.blog-related h3{font-family:var(--font-display);font-size:20px;color:var(--gray-900);margin-bottom:20px}
+.blog-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.blog-related-card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:20px;text-decoration:none;color:var(--gray-800);transition:all .3s;display:block}
+.blog-related-card:hover{border-color:var(--teal-400);transform:translateY(-2px)}
+.blog-related-card h4{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gray-900)}
+.blog-related-card p{font-size:13px;color:var(--gray-400);margin:0;max-width:none}
+
+</style>

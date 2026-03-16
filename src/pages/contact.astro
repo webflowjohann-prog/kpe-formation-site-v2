@@ -1,0 +1,65 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Contact | KPE — Formation Kinésiologie Psycho-Énergétique" description="Contactez Joël Prieur pour toute question sur la formation en kinésiologie psycho-énergétique KPE. Par email, téléphone ou réseaux sociaux." breadcrumbs={[{name: "Contact", url: "/contact"}]}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">Contact</div>
+    <h1>Parlons de votre projet</h1>
+    <p class="page-hero-sub">Une question sur la formation ? Un dossier de financement à monter ? Joël vous répond personnellement.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-icon">✉</div>
+        <h3>Email</h3>
+        <p>Pour toute question sur la formation, les financements ou l'inscription.</p>
+        <a href="mailto:contact@formation-kinesiologie.com" class="contact-link">contact@formation-kinesiologie.com</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">📞</div>
+        <h3>Téléphone</h3>
+        <p>Joël est disponible pour répondre à vos questions directement.</p>
+        <a href="tel:" class="contact-link">Numéro disponible après inscription</a>
+      </div>
+      <div class="contact-card">
+        <div class="contact-icon">💬</div>
+        <h3>Réseaux sociaux</h3>
+        <p>Suivez-nous pour des contenus sur la kinésiologie et la méthode KPE.</p>
+        <div style="display:flex;gap:16px;margin-top:8px;">
+          <a href="https://www.facebook.com/joelkpe/" target="_blank" rel="noopener" style="color:var(--teal-500);">Facebook</a>
+          <a href="https://www.instagram.com/formation_passion_kinesiologie/" target="_blank" rel="noopener" style="color:var(--teal-500);">Instagram</a>
+          <a href="https://www.linkedin.com/in/joel-prieur-b445087a/" target="_blank" rel="noopener" style="color:var(--teal-500);">LinkedIn</a>
+        </div>
+      </div>
+    </div>
+    <div class="contact-note">
+      <p><strong>Formation en présentiel ?</strong> Téléchargez les <a href="/formation-presentiel" style="color:var(--teal-500);text-decoration:underline;">documents d'inscription</a>, remplissez-les et renvoyez-les par email.</p>
+      <p><strong>Formation en ligne ?</strong> Inscrivez-vous directement sur <a href="https://kpeonline.podia.com/formation-kpe-peurs-croyances" target="_blank" rel="noopener" style="color:var(--teal-500);text-decoration:underline;">notre plateforme</a>.</p>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 600px; line-height: 1.7; }
+.contact-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+.contact-card { background: var(--gray-50); border: 1px solid var(--gray-100); border-radius: 16px; padding: 32px; }
+.contact-icon { font-size: 28px; margin-bottom: 12px; }
+.contact-card h3 { font-family: var(--font-display); font-size: 20px; color: var(--gray-900); margin-bottom: 8px; }
+.contact-card p { font-size: 14px; color: var(--gray-500); line-height: 1.6; margin-bottom: 12px; }
+.contact-link { color: var(--teal-500); text-decoration: none; font-size: 14px; font-weight: 500; }
+.contact-link:hover { text-decoration: underline; }
+.contact-note { margin-top: 40px; background: var(--teal-50); border-radius: 16px; padding: 24px 28px; }
+.contact-note p { font-size: 14px; color: var(--gray-600); line-height: 1.6; margin-bottom: 8px; }
+.contact-note p:last-child { margin-bottom: 0; }
+</style>

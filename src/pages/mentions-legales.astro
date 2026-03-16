@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Mentions Légales | KPE — Formation Kinésiologie" description="Mentions légales du site formation-kinesiologie.com — KPE Formation en Kinésiologie Psycho-Énergétique par Joël Prieur." breadcrumbs={[{name: "Mentions légales", url: "/mentions-legales"}]}>
+
+<section class="page-hero-small">
+  <div class="container">
+    <h1>Mentions légales</h1>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container legal-content">
+    <h2>Éditeur du site</h2>
+    <p>Le site formation-kinesiologie.com est édité par Joël Prieur, formateur en Kinésiologie Psycho-Énergétique (KPE).</p>
+    <p>Adresse : Aurillac, France</p>
+    <p>Email : contact@formation-kinesiologie.com</p>
+
+    <h2>Hébergement</h2>
+    <p>Ce site est hébergé par Netlify, Inc. — 44 Montgomery Street, Suite 300, San Francisco, California 94104, USA.</p>
+
+    <h2>Propriété intellectuelle</h2>
+    <p>L'ensemble des contenus (textes, images, vidéos, logos) présents sur ce site sont protégés par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation préalable de l'éditeur.</p>
+    <p>La marque KPE et le logo associé sont la propriété de Joël Prieur.</p>
+
+    <h2>Responsabilité</h2>
+    <p>Les informations présentes sur ce site sont fournies à titre indicatif. L'éditeur s'efforce de maintenir des informations exactes et à jour, mais ne saurait être tenu responsable d'éventuelles erreurs ou omissions.</p>
+    <p>La formation KPE ne se substitue en aucune manière à un diagnostic médical ni à un traitement médical.</p>
+
+    <h2>Données personnelles</h2>
+    <p>Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données personnelles. Pour exercer ce droit, contactez-nous à contact@formation-kinesiologie.com.</p>
+
+    <h2>Crédits</h2>
+    <p>Conception et développement du site : <a href="https://ikonik-ac.com" target="_blank" rel="noopener" style="color:var(--teal-500);">IKONIK Artisan Créatif</a>.</p>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.page-hero-small { padding: clamp(100px,10vw,140px) 0 40px; background: var(--gray-50); }
+.page-hero-small h1 { font-family: var(--font-display); font-size: clamp(28px,3vw,42px); color: var(--gray-900); }
+.legal-content h2 { font-family: var(--font-display); font-size: 20px; color: var(--teal-900); margin-top: 32px; margin-bottom: 12px; }
+.legal-content p { font-size: 15px; color: var(--gray-500); line-height: 1.7; margin-bottom: 8px; }
+</style>

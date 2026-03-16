@@ -1,0 +1,74 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "S'installer comme kinésiologue : le guide pratique 2026",
+  "description": "Guide complet pour s'installer en tant que kinésiologue. Statut juridique, assurance, cabinet, création de clientèle.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/sinstaller-kinesiologue-guide-pratique",
+  "image": "https://www.formation-kinesiologie.com/images/blog/joel-bureau-livres.webp"
+};
+---
+<BaseLayout title="S'installer comme kinésiologue : le guide pratique 2026" description="Guide complet pour s'installer en tant que kinésiologue. Statut juridique, assurance, cabinet, création de clientèle." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "S'installer comme kinésiologue : le guid...", url: "/blog/sinstaller-kinesiologue-guide-pratique"}]}>
+<article class="blog-article"><div class="container">
+<div class="blog-meta"><a href="/blog" class="blog-back">&larr; Blog</a><span class="blog-date">Mars 2026</span></div>
+<h1>S'installer comme kinésiologue : le guide pratique 2026</h1>
+<div class="blog-thumb"><img src="/images/blog/joel-bureau-livres.webp" alt="S'installer comme kinésiologue - cabinet professionnel" loading="lazy"></div>
+<p class="blog-intro">Vous avez terminé votre formation et vous êtes prêt à vous lancer. L'installation en tant que praticien est une aventure entrepreneuriale qui mérite d'être préparée. Voici les étapes concrètes.</p>
+<h2>Le statut juridique</h2>
+<p>La majorité des kinésiologues débutent en micro-entreprise sous le code APE 8690F. Simplicité maximale : déclaration en ligne, charges sur le CA réel uniquement. C'est idéal pour tester son activité sans risque. Voir aussi <a href="/blog/devenir-kinesiologue-formation-salaire-debouches">le guide complet du métier</a>.</p>
+<div class="blog-img"><img src="/images/blog/joel-expert-bibliotheque.webp" alt="Joël Prieur - expert et formateur en kinésiologie" loading="lazy"></div>
+<h2>Assurance et local</h2>
+<p>L'assurance RC Pro est indispensable (150-300€/an). Pour le local : cabinet dédié, sous-location en cabinet pluridisciplinaire (idéal pour démarrer), ou exercice à domicile. Chaque option a ses avantages selon votre budget et zone géographique.</p>
+<h2>Créer sa clientèle</h2>
+<p>Bouche-à-oreille (proposez des séances découverte), fiche Google Business Profile optimisée, partenariats locaux avec ostéopathes et naturopathes, contenu éducatif sur les réseaux sociaux. La régularité et l'authenticité sont vos meilleurs alliés. Consultez aussi notre page <a href="/contact">contact</a> pour des conseils personnalisés.</p>
+<div class="blog-img"><img src="/images/blog/formation-groupe.webp" alt="Formation KPE - les futurs praticiens en apprentissage" loading="lazy"></div>
+<h2>Le module création de clientèle KPE</h2>
+<p>La <a href="/formation-en-ligne">formation KPE</a> intègre dans son module 8 un volet dédié à la création de clientèle. <a href="/joel-prieur">Joël Prieur</a> reconnaît que la compétence technique seule ne suffit pas — il faut aussi savoir communiquer sa valeur et construire une relation de confiance avec ses premiers consultants.</p>
+
+<div class="blog-cta"><p><strong>Envie d'aller plus loin ?</strong> Découvrez la <a href="/formation-en-ligne">formation KPE</a> — 8 modules, 20h+ de vidéo, accompagnement par <a href="/joel-prieur">Joël Prieur</a>.</p><a href="/formation-en-ligne" class="btn-primary">Découvrir la formation &rarr;</a></div>
+
+<div class="blog-related">
+<h3>Articles connexes</h3>
+<div class="blog-related-grid">
+<a href="/blog/devenir-kinesiologue-formation-salaire-debouches" class="blog-related-card"><h4>Devenir kinésiologue</h4><p>Formation, salaire, débouchés.</p></a>
+<a href="/blog/reconversion-professionnelle-kinesiologie" class="blog-related-card"><h4>Reconversion professionnelle</h4><p>Pourquoi choisir la kinésiologie.</p></a>
+<a href="/blog/formation-kinesiologie-en-ligne-vs-presentiel" class="blog-related-card"><h4>En ligne ou présentiel ?</h4><p>Comparer les formats.</p></a>
+
+</div>
+</div>
+</div></article>
+</BaseLayout>
+<style>
+
+.blog-article{padding:clamp(100px,10vw,140px) 0 60px}
+.blog-meta{display:flex;justify-content:space-between;align-items:center;margin-bottom:30px}
+.blog-back{color:var(--teal-500);text-decoration:none;font-size:14px;font-weight:500}
+.blog-back:hover{text-decoration:underline}
+.blog-date{font-size:13px;color:var(--gray-400)}
+.blog-article h1{font-family:var(--font-display);font-size:clamp(28px,3.5vw,44px);font-weight:600;color:var(--gray-900);line-height:1.15;margin-bottom:24px}
+.blog-intro{font-size:18px;color:var(--gray-500);line-height:1.7;margin-bottom:40px;border-left:3px solid var(--teal-400);padding-left:20px}
+.blog-article h2{font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--teal-900);margin-top:40px;margin-bottom:16px}
+.blog-article p{font-size:16px;color:var(--gray-600);line-height:1.8;margin-bottom:16px;max-width:720px}
+.blog-article strong{color:var(--gray-800)}
+.blog-article a{color:var(--teal-500);text-decoration:underline}
+.blog-article a:hover{color:var(--teal-700)}
+.blog-cta{background:var(--teal-50);border-radius:16px;padding:32px;margin-top:50px}
+.blog-cta p{margin-bottom:16px}
+.blog-thumb{margin:-10px 0 40px;border-radius:16px;overflow:hidden;aspect-ratio:16/9}
+.blog-thumb img{width:100%;height:100%;object-fit:cover}
+.blog-img{margin:30px 0;border-radius:12px;overflow:hidden;max-width:720px}
+.blog-img img{width:100%;height:auto;display:block}
+.blog-related{margin-top:60px;padding-top:40px;border-top:1px solid var(--gray-100)}
+.blog-related h3{font-family:var(--font-display);font-size:20px;color:var(--gray-900);margin-bottom:20px}
+.blog-related-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px}
+.blog-related-card{background:var(--gray-50);border:1px solid var(--gray-100);border-radius:12px;padding:20px;text-decoration:none;color:var(--gray-800);transition:all .3s;display:block}
+.blog-related-card:hover{border-color:var(--teal-400);transform:translateY(-2px)}
+.blog-related-card h4{font-size:15px;font-weight:600;margin-bottom:6px;color:var(--gray-900)}
+.blog-related-card p{font-size:13px;color:var(--gray-400);margin:0;max-width:none}
+
+</style>

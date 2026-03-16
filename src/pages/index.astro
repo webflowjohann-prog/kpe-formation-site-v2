@@ -1,0 +1,1513 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const courseSchema = {
+  "@context": "https://schema.org",
+  "@type": "Course",
+  "name": "Formation en Kinésiologie Psycho-Énergétique",
+  "description": "Formation complète en kinésiologie psycho-énergétique par Joël Prieur. 8 modules, 20h+ de vidéo, accessible à tous. En ligne (1 580€) ou en présentiel à Aurillac (3 999€).",
+  "provider": {
+    "@type": "Organization",
+    "name": "KPE - Kinésiologie Psycho-Énergétique",
+    "url": "https://www.formation-kinesiologie.com"
+  },
+  "offers": [
+    {
+      "@type": "Offer",
+      "name": "Formation en ligne",
+      "price": "1580",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock",
+      "url": "https://kpeonline.podia.com/formation-kpe-peurs-croyances"
+    },
+    {
+      "@type": "Offer",
+      "name": "Formation en présentiel",
+      "price": "3999",
+      "priceCurrency": "EUR",
+      "availability": "https://schema.org/InStock"
+    }
+  ],
+  "hasCourseInstance": {
+    "@type": "CourseInstance",
+    "courseMode": "blended",
+    "location": {
+      "@type": "Place",
+      "name": "Hôtel Campanile Aurillac",
+      "address": "ZAC de la Jordanne, 15000 Aurillac"
+    },
+    "startDate": "2026-09-19"
+  },
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "4.8",
+    "reviewCount": "6500",
+    "bestRating": "5"
+  }
+};
+---
+
+<BaseLayout
+  title="Formation Kinésiologie Psycho-Énergétique | KPE par Joël Prieur — En ligne & Présentiel"
+  description="Devenez praticien en kinésiologie psycho-énergétique. Formation complète par Joël Prieur : 8 modules, 20h+ de vidéo, certificat. En ligne 1 580€ ou présentiel à Aurillac 3 999€. +6 000 étudiants formés."
+  schema={courseSchema}
+>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-text">
+      <div class="hero-badge">Rentrée Septembre 2026 — Aurillac</div>
+      <h1>Devenez praticien en Kinésiologie <em>Psycho-Énergétique</em></h1>
+      <p class="hero-sub">La méthode complète qui relie corps, énergie et psyché — pour transformer votre vie professionnelle et celle de vos futurs consultants. Accessible à tous, sans pré-requis.</p>
+      <div class="hero-actions">
+        <a href="#tarifs" class="btn-primary">
+          Découvrir la formation
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+        <a href="#programme" class="btn-secondary">
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/></svg>
+          Voir le programme
+        </a>
+      </div>
+      <div class="hero-price">
+        <span class="amount">1 580 €</span>
+        <span class="note">· ou 3× 527 € sans frais</span>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-card">
+        <img class="hero-card-img" src="/images/joel-hero.webp" alt="Joël Prieur - Fondateur KPE">
+        <div class="hero-card-overlay">
+          <h3>Joël Prieur</h3>
+          <p>Fondateur de la Méthode KPE</p>
+        </div>
+      </div>
+      <div class="hero-float-card card-1">
+        <div class="number">+6 000</div>
+        <div class="label">Étudiants formés</div>
+      </div>
+      <div class="hero-float-card card-2">
+        <div class="number">20h+</div>
+        <div class="label">De vidéo de formation</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ SOCIAL PROOF BAR ═══ -->
+<div class="proof-bar">
+  <div class="proof-bar-inner">
+    <div class="proof-item" style="display:flex;align-items:center;">
+      <img src="/images/logo-teal.png" alt="KPE" style="height:48px;width:auto;">
+    </div>
+    <div class="proof-item">
+      <div class="val">+6 000</div>
+      <div class="lbl">Étudiants en ligne</div>
+    </div>
+    <div class="proof-item">
+      <div class="val">+500</div>
+      <div class="lbl">En présentiel</div>
+    </div>
+    <div class="proof-item">
+      <div class="val">8</div>
+      <div class="lbl">Modules complets</div>
+    </div>
+    <div class="proof-item">
+      <div class="val">20h+</div>
+      <div class="lbl">De vidéo HD</div>
+    </div>
+    <div class="proof-item">
+      <div class="val">4.8/5</div>
+      <div class="lbl">Satisfaction</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ TRANSFORMATION ═══ -->
+<section class="section transformation" id="methode">
+  <div class="container">
+    <div class="section-label">La Transformation</div>
+    <h2 class="section-title">La KPE n'est pas une formation de plus. C'est un tournant.</h2>
+    <p class="section-desc">Contrairement aux cursus généralistes, la méthode KPE est une synthèse unique de toutes les kinésiologies — conçue pour des résultats rapides et profonds.</p>
+    
+    <div class="transfo-grid">
+      <div class="transfo-before">
+        <div class="transfo-tag">Avant la KPE</div>
+        <ul class="transfo-list">
+          <li>Vous sentez que quelque chose bloque dans votre vie mais impossible d'identifier quoi</li>
+          <li>Vous enchaînez les formations sans trouver d'outil vraiment complet</li>
+          <li>Vous n'osez pas vous lancer dans une reconversion par peur de l'échec</li>
+          <li>Vous êtes thérapeute mais il vous manque la dimension psycho-émotionnelle</li>
+          <li>Vous ne savez pas comment passer de la théorie à la pratique en cabinet</li>
+        </ul>
+      </div>
+      <div class="transfo-after">
+        <div class="transfo-tag">Après la KPE</div>
+        <ul class="transfo-list">
+          <li>Vous identifiez avec précision l'origine de tout symptôme et mal-être</li>
+          <li>Vous maîtrisez un outil "clés en main" reliant structure, énergie et psyché</li>
+          <li>Vous êtes capable de mener une séance complète avec des résultats concrets</li>
+          <li>Vous pouvez vous installer en tant que praticien certifié KPE</li>
+          <li>Vous accompagnez vos consultants vers des changements profonds et durables</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MODULES ═══ -->
+<section class="section modules-section" id="programme">
+  <div class="container">
+    <div class="section-label">Le Programme</div>
+    <h2 class="section-title">8 modules pour maîtriser la Kinésiologie Psycho-Énergétique</h2>
+    <p class="section-desc">Un parcours progressif — de la découverte du test musculaire à la maîtrise complète des protocoles avancés.</p>
+    
+    <div class="modules-grid">
+      <div class="module-card">
+        <div class="module-num">01</div>
+        <h3>Méridiens & Muscles</h3>
+        <p>Les 14 méridiens de la médecine chinoise associés aux 14 muscles. Protocole de base et mise en situation avec un cas réel.</p>
+        <span class="module-tag">80h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">02</div>
+        <h3>L'Appareil de Golgi</h3>
+        <p>Test de précision avancé. Comprendre les subtilités du tonus musculaire pour des résultats d'une fiabilité remarquable.</p>
+        <span class="module-tag">110h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">03</div>
+        <h3>Structure & Écologie</h3>
+        <p>Les points neuro-lymphatiques, neuro-vasculaires et la relation structure-énergie-psyché.</p>
+        <span class="module-tag">70h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">04</div>
+        <h3>Émotionnel & Psyché</h3>
+        <p>Remonter aux chocs psycho-émotionnels conscients et inconscients. Le Baromètre du Comportement.</p>
+        <span class="module-tag">50h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">05</div>
+        <h3>Corrections Profondes</h3>
+        <p>Protocoles de sabotage, refoulement, inversion psychologique. Activer le changement sans effort.</p>
+        <span class="module-tag">60h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">06</div>
+        <h3>Synthèse & Pratique</h3>
+        <p>Maîtrise complète des 15 portes d'entrée de la KPE. Séances intégrales supervisées.</p>
+        <span class="module-tag">60h d'intégration</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">07</div>
+        <h3>Peurs & Croyances</h3>
+        <p>Module avancé : libération des peurs profondes, déconstruction des croyances limitantes et habitudes destructrices.</p>
+        <span class="module-tag">Module avancé</span>
+      </div>
+      <div class="module-card">
+        <div class="module-num">08</div>
+        <h3>Les 8 Phases de Test</h3>
+        <p>Le protocole ultime de la méthode KPE. Systématisation complète pour une pratique d'excellence.</p>
+        <span class="module-tag">Module avancé</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FORMATEUR ═══ -->
+<section class="section formateur" id="formateur">
+  <div class="container">
+    <div style="margin-bottom:16px;"><img src="/images/logo-teal.png" alt="KPE" style="height:48px;width:auto;"></div>
+    <div class="section-label">Le Formateur</div>
+    <div class="formateur-grid">
+      <div class="formateur-photo">
+        <img style="width:100%;height:100%;object-fit:cover;" src="/images/joel-formateur.webp" alt="Joël Prieur">
+      </div>
+      <div class="formateur-content">
+        <h3>Joël Prieur — la synthèse de <em>toutes les kinésiologies</em></h3>
+        <p>Ancien professionnel de santé, Joël a consacré des années à comprendre pourquoi certaines douleurs ne correspondent pas aux signes radiologiques. De la kinésithérapie à l'ostéopathie, puis à la kinésiologie — il a construit la méthode KPE comme la synthèse de toutes ces approches.</p>
+        <p>La KPE n'est pas un cours de plus. C'est le fruit d'une vie de recherche sur le lien entre le corps, l'énergie et la psyché. Avec plus de 6 000 étudiants formés en ligne et 500 en présentiel, Joël transmet un outil d'une précision rare.</p>
+        <div class="formateur-credentials">
+          <div class="credential"><div class="icon">⚕</div> Ancien professionnel de santé</div>
+          <div class="credential"><div class="icon">🧠</div> Touch For Health, Brain Gym</div>
+          <div class="credential"><div class="icon">⚡</div> Kinésiologie avancée & spécialisée</div>
+          <div class="credential"><div class="icon">🤲</div> Ostéopathe D.O.</div>
+          <div class="credential"><div class="icon">✦</div> Thérapie des corps subtils</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ TESTIMONIALS ═══ -->
+<section class="section testimonials" id="temoignages">
+  <div class="container">
+    <div style="margin-bottom:24px;"><img src="/images/logo-teal.png" alt="KPE" style="height:64px;width:auto;"></div>
+    <div class="section-label">Témoignages</div>
+    <h2 class="section-title">Ils ont transformé leur vie grâce à la KPE</h2>
+    <p class="section-desc">Des parcours divers, un même constat : la KPE change la donne.</p>
+    
+    <div class="testi-grid">
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« J'ai pu m'installer rapidement, au bout de 5 mois. Joël saura vous transmettre avec une main de maître tous les secrets de la kinésiologie. »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">DC</div>
+          <div><div class="testi-name">Delphine C.</div><div class="testi-role">Reconversion professionnelle</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« Le contenu de la formation était très enrichissant et très bien guidé. Cela demande rigueur et motivation, mais le résultat est là ! »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">MG</div>
+          <div><div class="testi-name">Marion G.</div><div class="testi-role">Sophrologue en milieu hospitalier</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« Vos cours en ligne sont d'une grande qualité ! La KPE va encore plus loin que les autres formations. Je recommande chaudement. »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">KP</div>
+          <div><div class="testi-name">Karen P.</div><div class="testi-role">Relaxologue</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« À la suite de la formation, je me suis installée en auto-entrepreneur. Je pratique 2 jours par semaine avec de très bons retours. »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">IG</div>
+          <div><div class="testi-name">Isabelle G.</div><div class="testi-role">Praticienne KPE installée</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« Je n'en reviens pas d'être capable de conduire une séance de KPE moi-même ni de voir les résultats que j'obtiens sur mes patients. »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">PP</div>
+          <div><div class="testi-name">Patricia P.</div><div class="testi-role">Ancienne consultante KPE</div></div>
+        </div>
+      </div>
+      <div class="testi-card">
+        <div class="testi-stars">★★★★★</div>
+        <blockquote>« À recommander à tout thérapeute ou futur thérapeute. Super formation avec un super outil thérapeutique ! »</blockquote>
+        <div class="testi-author">
+          <div class="testi-avatar">CM</div>
+          <div><div class="testi-name">Christophe M.</div><div class="testi-role">Thérapeute</div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ PRICING ═══ -->
+<section class="section pricing" id="tarifs">
+  <div class="container">
+    <div style="text-align:center;">
+      <div style="margin-bottom:20px;"><img src="/images/logo-teal.png" alt="KPE" style="height:48px;width:auto;"></div>
+      <div class="section-label">Tarifs</div>
+      <h2 class="section-title">Investissez dans votre transformation</h2>
+      <p class="section-desc" style="margin-left:auto;margin-right:auto;">La formation la plus complète du marché, à une fraction du prix des écoles généralistes.</p>
+    </div>
+    
+    <div class="pricing-cards" style="margin-top:50px;">
+      <div class="price-card main">
+        <div class="popular-badge">Le + populaire</div>
+        <div class="type">Formation en ligne</div>
+        <h3>Formation Complète KPE</h3>
+        <div class="price-amount">
+          <span class="currency">€</span>
+          <span class="value">1 580</span>
+        </div>
+        <p class="price-sub">ou 3 × 527 € sans frais</p>
+        <ul class="price-features">
+          <li>8 modules vidéo HD (+20 heures)</li>
+          <li>Supports PDF téléchargeables par module</li>
+          <li>Assistance téléphonique directe avec Joël</li>
+          <li>Accès aux groupes Facebook & WhatsApp</li>
+          <li>Apprenez à votre rythme, sans date limite</li>
+          <li>Certificat de praticien KPE après validation</li>
+          <li>Éligible financement OPCO / France Travail</li>
+        </ul>
+        <a href="https://kpeonline.podia.com/formation-kpe-peurs-croyances" class="btn-primary">
+          S'inscrire maintenant
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+      <div class="price-card alt">
+        <div class="type">Formation présentielle</div>
+        <h3>8 Week-ends à Aurillac</h3>
+        <div class="price-amount">
+          <span class="currency" style="color:var(--teal-900);">€</span>
+          <span class="value" style="color:var(--teal-900);">3 999</span>
+        </div>
+        <p class="price-sub">999 € à l'inscription + 3 × 1 000 €</p>
+        <ul class="price-features">
+          <li>Tout le contenu de la formation en ligne</li>
+          <li>8 week-ends en présentiel (16 jours)</li>
+          <li>2 formateurs pour un encadrement optimal</li>
+          <li>Pratique intensive sur cas réels</li>
+          <li>Entretiens téléphoniques réguliers</li>
+          <li>Certificat de praticien KPE</li>
+          <li>Éligible financement OPCO / France Travail</li>
+        </ul>
+        <a href="#inscription-presentiel" class="btn-primary">
+          Voir les dates & s'inscrire
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </a>
+      </div>
+    </div>
+    
+    <div class="price-guarantee">
+      <p>🛡 <strong>Éligible aux financements OPCO, France Travail et aides régionales.</strong> Nous vous accompagnons dans le montage de votre dossier de financement. La formation est assurée par un organisme certifié. Partenaire : <a href="https://www.studio-evolution.fr/formations/kpe/" style="color:var(--teal-500);text-decoration:underline;" target="_blank">Studio Évolution</a>.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ INSCRIPTION PRÉSENTIEL ═══ -->
+<section class="section" id="inscription-presentiel" style="background:var(--white);">
+  <div class="container">
+    <div class="section-label">Formation présentielle</div>
+    <h2 class="section-title">Inscription & calendrier — Aurillac 2026/2027</h2>
+    <p class="section-desc">Pour vous inscrire à la formation en présentiel, téléchargez les documents ci-dessous, remplissez-les et renvoyez-les signés.</p>
+
+    <!-- Documents à télécharger -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-top:40px;">
+      <a href="https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/666f2e2cb73813b5ee6d5694_BULLETIN%20D%27INSCRIPTION.pdf" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:20px 24px;text-decoration:none;color:var(--gray-800);transition:all 0.25s;">
+        <div style="width:44px;height:44px;background:var(--teal-50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" fill="none" stroke="#038C8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:14px;">Bulletin d'inscription</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">PDF — à remplir et renvoyer</div>
+        </div>
+      </a>
+      <a href="https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/6253fae5cc9493507ec08aa0_engagement-financier.pdf" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:20px 24px;text-decoration:none;color:var(--gray-800);transition:all 0.25s;">
+        <div style="width:44px;height:44px;background:var(--teal-50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" fill="none" stroke="#038C8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:14px;">Engagement financier</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">PDF — à remplir et renvoyer</div>
+        </div>
+      </a>
+      <a href="https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/65f890756b0943b943042527_2024-03-CHARTE%20KPE.pdf" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:20px 24px;text-decoration:none;color:var(--gray-800);transition:all 0.25s;">
+        <div style="width:44px;height:44px;background:var(--teal-50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" fill="none" stroke="#038C8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:14px;">Charte KPE</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">PDF — à signer</div>
+        </div>
+      </a>
+      <a href="https://cdn.prod.website-files.com/61962706bc4d205a7f34adcb/694877310861c14fef48dd18_contrat%20de%20formation%20-%20KPE.pdf" target="_blank" style="display:flex;align-items:center;gap:14px;background:var(--gray-50);border:1px solid var(--gray-200);border-radius:14px;padding:20px 24px;text-decoration:none;color:var(--gray-800);transition:all 0.25s;">
+        <div style="width:44px;height:44px;background:var(--teal-50);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+          <svg width="20" height="20" fill="none" stroke="#038C8C" stroke-width="2" viewBox="0 0 24 24"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 17v2a2 2 0 002 2h12a2 2 0 002-2v-2"/></svg>
+        </div>
+        <div>
+          <div style="font-weight:600;font-size:14px;">Contrat de formation</div>
+          <div style="font-size:12px;color:var(--gray-400);margin-top:2px;">PDF — à signer</div>
+        </div>
+      </a>
+    </div>
+
+    <!-- Calendrier des dates -->
+    <h3 style="font-family:var(--font-display);font-size:24px;font-weight:600;color:var(--gray-900);margin-top:60px;margin-bottom:8px;">Calendrier des 8 week-ends — Aurillac</h3>
+    <p style="font-size:14px;color:var(--gray-400);margin-bottom:30px;">📍 Hôtel Campanile Aurillac — ZAC de la Jordanne, 15000 Aurillac — 04 71 64 64 84</p>
+
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px;">
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">01</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">19 & 20 septembre 2026</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Test musculaire, 14 muscles et méridiens associés, roue des méridiens, points d'alarme, métaphore des méridiens.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">02</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">17 & 18 octobre 2026</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Modes digitaux, 4 phases de test, procédure refoulement-accident, corrections émotionnelles, cadres de temps.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">03</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">21 & 22 novembre 2026</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Références primaires, fonctionnement du cerveau, 9 intelligences, remodelage de latéralité, le corps point par point.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">04</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">23 & 24 janvier 2027</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Points Neuro-Émotionnels, Neuro-Vasculaires, Neurolymphatiques. Protocole selon les points de sabotage.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">05</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">20 & 21 février 2027</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Les chakras, les corps subtils, procédure pour travailler en transfert.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">06</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">20 & 21 mars 2027</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">8 catégories de sabotage, secrets familiaux, pouvoir personnel, thérapie florale, protocole à 15 portes d'entrée.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">07</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">24 & 25 avril 2027</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Peurs, habitudes et croyances. Neuro-transmetteurs, drainage lymphatique, traits inadaptés de la personnalité.</div>
+        </div>
+      </div>
+      <div style="background:var(--gray-50);border:1px solid var(--gray-100);border-radius:14px;padding:20px 24px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="font-family:var(--font-display);font-size:28px;font-weight:700;color:var(--teal-400);opacity:0.5;line-height:1;">08</div>
+        <div>
+          <div style="font-weight:600;font-size:15px;color:var(--gray-800);">22 & 23 mai 2027</div>
+          <div style="font-size:13px;color:var(--gray-500);margin-top:4px;line-height:1.5;">Les 8 phases de test, 7 références génétiques, récepteurs de tête et de main, création de clientèle. Protocole final.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:40px;">
+      <a href="/contact-formation-kinesiologie" class="btn-primary" style="display:inline-flex;">
+        Envoyer mes documents & m'inscrire
+        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <p style="font-size:13px;color:var(--gray-400);margin-top:12px;">Documents à renvoyer par email ou courrier — Joël vous recontactera pour confirmer votre inscription.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FAQ ═══ -->
+<section class="section faq" id="faq">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label">Questions fréquentes</div>
+      <h2 class="section-title">Tout ce que vous devez savoir</h2>
+    </div>
+    
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-q">Faut-il des pré-requis pour suivre la formation ?</div>
+        <div class="faq-a"><p>Aucun pré-requis n'est demandé. La formation est conçue pour être assimilée par toute personne motivée et bienveillante, qu'elle soit professionnelle de santé ou en reconversion complète.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Comment se déroule la formation en ligne ?</div>
+        <div class="faq-a"><p>Dès votre inscription, vous accédez à l'ensemble des vidéos (+20h) et supports PDF. Vous travaillez à votre rythme, sans date limite. En cas de questions, vous contactez directement Joël par email ou téléphone. Vous bénéficiez également des groupes Facebook et WhatsApp pour échanger avec les autres étudiants.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Puis-je m'installer après la formation ?</div>
+        <div class="faq-a"><p>Oui. Une fois votre formation validée, vous obtenez le certificat de praticien en Kinésiologie Psycho-Énergétique et pouvez vous installer en tant que professionnel.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Combien de temps faut-il pour compléter la formation ?</div>
+        <div class="faq-a"><p>Le temps nécessaire est d'environ 600 heures au total pour intégrer parfaitement les 8 modules. La plupart des étudiants y consacrent entre 6 mois et 1 an selon leur rythme.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">Quelle est la différence entre la KPE et les autres formations ?</div>
+        <div class="faq-a"><p>La KPE est la seule méthode qui synthétise toutes les kinésiologies (Touch For Health, Brain Gym, kinésiologie avancée, spécialisée) avec la thérapie des corps subtils. Là où les écoles généralistes comme l'EKTC enseignent des modules séparés, la KPE offre une méthode unifiée dès le premier jour.</p></div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-q">La formation est-elle finançable ?</div>
+        <div class="faq-a"><p>La formation est éligible aux financements OPCO et France Travail. Nous vous accompagnons dans la constitution de votre dossier. Le paiement en 3× sans frais est disponible pour l'auto-financement.</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ FINAL CTA ═══ -->
+<section class="final-cta">
+  <div class="container">
+    <div style="margin-bottom:30px;"><img src="/images/logo-teal.png" alt="KPE" style="height:64px;width:auto;"></div>
+    <h2>Prêt à transformer votre <em>parcours</em> ?</h2>
+    <p>Rejoignez les 6 000+ étudiants qui ont déjà choisi la méthode KPE pour changer de vie.</p>
+    <a href="#tarifs" class="btn-primary">
+      Commencer la formation
+      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+  </div>
+</section>
+
+<style>
+
+/* ═══════════════════════════════════════════
+   KPE DESIGN SYSTEM — Teal/White Premium
+   Inspired by MasterClass UX patterns
+   ═══════════════════════════════════════════ */
+
+:root {
+  /* Core palette */
+  --teal-900: #025159;
+  --teal-700: #03706e;
+  --teal-500: #038C8C;
+  --teal-400: #04BFBF;
+  --teal-300: #06d6d6;
+  --teal-100: #e0f7f7;
+  --teal-50: #f0fbfb;
+  
+  /* Neutrals */
+  --white: #ffffff;
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-300: #d1d5db;
+  --gray-400: #9ca3af;
+  --gray-500: #6b7280;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  /* Accents */
+  --gold: #d4a853;
+  --gold-light: #f5e6c8;
+  --coral: #ef6461;
+  --success: #10b981;
+  
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'DM Sans', -apple-system, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  
+  /* Spacing */
+  --section-pad: clamp(60px, 8vw, 120px);
+  --container: min(1200px, 88vw);
+}
+
+/* ═══ HERO ═══ */
+.hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 100px clamp(24px, 5vw, 60px) 60px;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--teal-100) 0%, transparent 70%);
+  z-index: 0;
+  opacity: 0.7;
+}
+
+.hero::after {
+  content: '';
+  position: absolute;
+  bottom: -100px;
+  left: -100px;
+  width: 500px;
+  height: 500px;
+  background: radial-gradient(circle, var(--teal-50) 0%, transparent 70%);
+  z-index: 0;
+}
+
+.hero-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  position: relative;
+  z-index: 1;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-50);
+  border: 1px solid var(--teal-100);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--teal-700);
+  letter-spacing: 0.02em;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s ease both;
+}
+
+.hero-badge::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--teal-400);
+  border-radius: 50%;
+  animation: pulse-dot 2s infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 4.5vw, 62px);
+  font-weight: 600;
+  line-height: 1.1;
+  color: var(--gray-900);
+  letter-spacing: -0.02em;
+  margin-bottom: 24px;
+  animation: fadeInUp 0.6s 0.1s ease both;
+}
+
+.hero h1 em {
+  font-style: italic;
+  color: var(--teal-700);
+}
+
+.hero-sub {
+  font-size: clamp(16px, 1.3vw, 19px);
+  color: var(--gray-500);
+  line-height: 1.7;
+  max-width: 520px;
+  margin-bottom: 40px;
+  animation: fadeInUp 0.6s 0.2s ease both;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  flex-wrap: wrap;
+  animation: fadeInUp 0.6s 0.3s ease both;
+}
+
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--teal-900);
+  color: white;
+  padding: 16px 36px;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
+  border: none;
+  cursor: pointer;
+  letter-spacing: 0.01em;
+}
+
+.btn-primary:hover {
+  background: var(--teal-700);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(2,81,89,0.25);
+}
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: transparent;
+  color: var(--gray-700);
+  padding: 16px 28px;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid var(--gray-200);
+  transition: all 0.25s;
+}
+
+.btn-secondary:hover {
+  border-color: var(--teal-400);
+  color: var(--teal-700);
+}
+
+.hero-price {
+  margin-top: 20px;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  animation: fadeInUp 0.6s 0.35s ease both;
+}
+
+.hero-price .amount {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--teal-900);
+}
+
+.hero-price .note {
+  font-size: 14px;
+  color: var(--gray-400);
+}
+
+.hero-visual {
+  position: relative;
+  animation: fadeInUp 0.8s 0.2s ease both;
+}
+
+.hero-card {
+  background: var(--gray-900);
+  border-radius: 20px;
+  overflow: hidden;
+  aspect-ratio: 4/5;
+  position: relative;
+  box-shadow: 0 40px 80px rgba(0,0,0,0.15);
+}
+
+.hero-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(145deg, var(--teal-900) 0%, var(--gray-900) 50%, var(--teal-700) 100%);
+}
+
+.hero-card-overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 40px 30px 30px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+  color: white;
+}
+
+.hero-card-overlay h3 {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 500;
+  margin-bottom: 4px;
+}
+
+.hero-card-overlay p {
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.hero-float-card {
+  position: absolute;
+  background: white;
+  border-radius: 14px;
+  padding: 16px 20px;
+  box-shadow: 0 15px 50px rgba(0,0,0,0.12);
+  animation: float 6s ease-in-out infinite;
+}
+
+.hero-float-card.card-1 {
+  top: 10%;
+  right: -30px;
+  animation-delay: 0s;
+}
+
+.hero-float-card.card-2 {
+  bottom: 15%;
+  left: -40px;
+  animation-delay: -3s;
+}
+
+.hero-float-card .number {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--teal-900);
+}
+
+.hero-float-card .label {
+  font-size: 12px;
+  color: var(--gray-400);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 500;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ═══ SOCIAL PROOF BAR ═══ */
+.proof-bar {
+  background: var(--gray-50);
+  padding: 32px 0;
+  border-top: 1px solid var(--gray-100);
+  border-bottom: 1px solid var(--gray-100);
+}
+
+.proof-bar-inner {
+  max-width: 1140px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  gap: clamp(30px, 6vw, 80px);
+  flex-wrap: wrap;
+  padding: 0 clamp(24px, 5vw, 60px);
+}
+
+.proof-item {
+  text-align: center;
+}
+
+.proof-item .val {
+  font-family: var(--font-display);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  color: var(--teal-900);
+  line-height: 1;
+}
+
+.proof-item .lbl {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-top: 6px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+
+/* ═══ PROBLEM / TRANSFORMATION ═══ */
+.transformation {
+  background: var(--white);
+}
+
+.transfo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  margin-top: 60px;
+}
+
+.transfo-before, .transfo-after {
+  padding: 40px;
+  border-radius: 20px;
+}
+
+.transfo-before {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-100);
+}
+
+.transfo-after {
+  background: linear-gradient(135deg, var(--teal-900), var(--teal-700));
+  color: white;
+}
+
+.transfo-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.transfo-before .transfo-tag { color: var(--gray-400); }
+.transfo-after .transfo-tag { color: var(--teal-300); }
+
+.transfo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.transfo-list li {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.transfo-before .transfo-list li::before {
+  content: '×';
+  color: var(--coral);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1.2;
+  flex-shrink: 0;
+}
+
+.transfo-after .transfo-list li::before {
+  content: '✓';
+  color: var(--teal-300);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+  flex-shrink: 0;
+}
+
+/* ═══ MODULES ═══ */
+.modules-section {
+  background: var(--gray-50);
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+  margin-top: 50px;
+}
+
+.module-card {
+  background: white;
+  border-radius: 16px;
+  padding: 32px;
+  border: 1px solid var(--gray-100);
+  transition: all 0.3s;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+}
+
+.module-card:hover {
+  border-color: var(--teal-400);
+  box-shadow: 0 10px 40px rgba(3,140,140,0.08);
+  transform: translateY(-4px);
+}
+
+.module-num {
+  font-family: var(--font-display);
+  font-size: 48px;
+  font-weight: 700;
+  color: var(--teal-400);
+  opacity: 0.45;
+  line-height: 1;
+  margin-bottom: 12px;
+}
+
+.module-card h3 {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 10px;
+}
+
+.module-card p {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+}
+
+.module-tag {
+  display: inline-block;
+  margin-top: 16px;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--teal-500);
+  background: var(--teal-50);
+  padding: 4px 10px;
+  border-radius: 6px;
+}
+
+/* ═══ FORMATEUR ═══ */
+.formateur {
+  background: white;
+}
+
+.formateur-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 80px;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.formateur-photo {
+  background: linear-gradient(145deg, var(--teal-900), var(--teal-500));
+  border-radius: 24px;
+  aspect-ratio: 3/4;
+  position: relative;
+  overflow: hidden;
+}
+
+.formateur-photo-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255,255,255,0.3);
+  font-size: 14px;
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+}
+
+.formateur-content h3 {
+  font-family: var(--font-display);
+  font-size: clamp(24px, 2.5vw, 36px);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 20px;
+  line-height: 1.2;
+}
+
+.formateur-content h3 em {
+  color: var(--teal-700);
+  font-style: italic;
+}
+
+.formateur-content p {
+  font-size: 16px;
+  color: var(--gray-500);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.formateur-credentials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+.credential {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gray-50);
+  padding: 10px 16px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--gray-700);
+}
+
+.credential .icon {
+  width: 20px;
+  height: 20px;
+  background: var(--teal-100);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 11px;
+  color: var(--teal-700);
+}
+
+/* ═══ TESTIMONIALS ═══ */
+.testimonials {
+  background: var(--teal-900);
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.testimonials::before {
+  content: '';
+  position: absolute;
+  top: -200px;
+  right: -200px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, var(--teal-700) 0%, transparent 70%);
+  opacity: 0.5;
+}
+
+.testimonials .section-label { color: var(--teal-300); }
+.testimonials .section-title { color: white; }
+.testimonials .section-desc { color: rgba(255,255,255,0.6); }
+
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  margin-top: 50px;
+  position: relative;
+  z-index: 1;
+}
+
+.testi-card {
+  background: rgba(255,255,255,0.06);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  padding: 32px;
+  transition: all 0.3s;
+}
+
+.testi-card:hover {
+  background: rgba(255,255,255,0.1);
+  transform: translateY(-4px);
+}
+
+.testi-stars {
+  color: var(--gold);
+  font-size: 16px;
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.testi-card blockquote {
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255,255,255,0.85);
+  font-style: italic;
+  margin-bottom: 20px;
+}
+
+.testi-author {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.testi-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: var(--teal-500);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 14px;
+  color: white;
+}
+
+.testi-name {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.testi-role {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ═══ PRICING ═══ */
+.pricing {
+  background: var(--white);
+}
+
+.pricing-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-top: 50px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.price-card {
+  border-radius: 24px;
+  padding: 48px 40px;
+  position: relative;
+  transition: all 0.3s;
+}
+
+.price-card.main {
+  background: var(--teal-900);
+  color: white;
+  box-shadow: 0 30px 80px rgba(2,81,89,0.25);
+}
+
+.price-card.alt {
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+}
+
+.price-card .popular-badge {
+  position: absolute;
+  top: -12px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--teal-400);
+  color: var(--teal-900);
+  padding: 6px 20px;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.price-card .type {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.price-card.main .type { color: var(--teal-300); }
+.price-card.alt .type { color: var(--gray-400); }
+
+.price-card h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.price-amount {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.price-amount .currency {
+  font-size: 24px;
+  font-weight: 600;
+}
+
+.price-amount .value {
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.price-sub {
+  font-size: 14px;
+  margin-bottom: 32px;
+}
+
+.price-card.main .price-sub { color: rgba(255,255,255,0.5); }
+.price-card.alt .price-sub { color: var(--gray-400); }
+
+.price-features {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 36px;
+}
+
+.price-features li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.price-features li::before {
+  content: '✓';
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.price-card.main .price-features li::before { color: var(--teal-300); }
+.price-card.alt .price-features li::before { color: var(--teal-500); }
+
+.price-card .btn-primary {
+  width: 100%;
+  justify-content: center;
+}
+
+.price-card.main .btn-primary {
+  background: white;
+  color: var(--teal-900);
+}
+
+.price-card.main .btn-primary:hover {
+  background: var(--teal-50);
+  box-shadow: 0 8px 30px rgba(255,255,255,0.2);
+}
+
+.price-card.alt .btn-primary {
+  background: var(--teal-900);
+  color: white;
+}
+
+.price-guarantee {
+  text-align: center;
+  margin-top: 40px;
+  padding: 24px;
+  background: var(--teal-50);
+  border-radius: 16px;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.price-guarantee p {
+  font-size: 14px;
+  color: var(--gray-600);
+}
+
+.price-guarantee strong {
+  color: var(--teal-900);
+}
+
+/* ═══ FAQ ═══ */
+.faq {
+  background: var(--gray-50);
+}
+
+.faq-list {
+  max-width: 750px;
+  margin: 50px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.faq-item {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid var(--gray-100);
+  overflow: hidden;
+  transition: all 0.3s;
+}
+
+.faq-item:hover {
+  border-color: var(--teal-200);
+}
+
+.faq-q {
+  padding: 22px 28px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--gray-800);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  transition: color 0.2s;
+}
+
+.faq-q:hover { color: var(--teal-700); }
+
+.faq-q::after {
+  content: '+';
+  font-size: 24px;
+  color: var(--teal-400);
+  font-weight: 300;
+  transition: transform 0.3s;
+}
+
+.faq-item.open .faq-q::after {
+  transform: rotate(45deg);
+}
+
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.open .faq-a {
+  max-height: 400px;
+  padding: 0 28px 22px;
+}
+
+.faq-a p {
+  font-size: 15px;
+  color: var(--gray-500);
+  line-height: 1.7;
+}
+
+/* ═══ FINAL CTA ═══ */
+.final-cta {
+  background: linear-gradient(135deg, var(--teal-900) 0%, #014040 100%);
+  padding: var(--section-pad) 0;
+  text-align: center;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.final-cta::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 800px;
+  background: radial-gradient(circle, var(--teal-500) 0%, transparent 50%);
+  opacity: 0.1;
+}
+
+.final-cta .container { position: relative; z-index: 1; }
+
+.final-cta h2 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 600;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+.final-cta h2 em {
+  font-style: italic;
+  color: var(--teal-300);
+}
+
+.final-cta p {
+  font-size: 18px;
+  color: rgba(255,255,255,0.6);
+  margin-bottom: 40px;
+  max-width: 550px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.final-cta .btn-primary {
+  background: white;
+  color: var(--teal-900);
+  font-size: 17px;
+  padding: 18px 44px;
+}
+
+.final-cta .btn-primary:hover {
+  background: var(--teal-50);
+  box-shadow: 0 10px 40px rgba(255,255,255,0.2);
+}
+
+/* ═══ RESPONSIVE ═══ */
+@media (max-width: 900px) {
+  .hero-inner {
+    grid-template-columns: 1fr;
+    gap: 40px;
+  }
+  .hero-visual { order: -1; max-width: 400px; margin: 0 auto; }
+  .hero-card { aspect-ratio: 3/4; }
+  .transfo-grid { grid-template-columns: 1fr; }
+  .formateur-grid { grid-template-columns: 1fr; }
+  .formateur-photo { max-width: 350px; }
+  .pricing-cards { grid-template-columns: 1fr; max-width: 480px; }
+  
+  
+}
+
+@media (max-width: 500px) {
+  .hero-float-card { display: none; }
+  .proof-bar-inner { gap: 24px; }
+  .modules-grid { grid-template-columns: 1fr; }
+  .testi-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+
+</BaseLayout>

@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import EspaceEleve from '../components/EspaceEleve.jsx';
+---
+
+<BaseLayout title="Espace Élève | KPE — Ma Formation en Kinésiologie" description="Accédez à votre formation KPE en kinésiologie psycho-énergétique. Vidéos, supports PDF, suivi de progression." breadcrumbs={[{name: "Espace élève", url: "/espace-eleve"}]}>
+
+<section style="padding: clamp(100px,10vw,140px) 0 60px; min-height: 80vh;">
+  <EspaceEleve client:only="react" />
+</section>
+
+</BaseLayout>
+
+<style is:global>
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+  /* Responsive lesson grid */
+  @media (max-width: 768px) {
+    .lessons-grid-responsive {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>

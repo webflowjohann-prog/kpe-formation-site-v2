@@ -1,0 +1,87 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "5 raisons de se former à la KPE plutôt qu'à une autre méthode",
+  "datePublished": "2026-03-10",
+  "author": { "@type": "Person", "name": "Joël Prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "url": "https://www.formation-kinesiologie.com" },
+  "description": "Pourquoi choisir la formation KPE en kinésiologie ? Méthode complète, prix accessible, accompagnement personnalisé, résultats prouvés. Les 5 raisons qui font la différence."
+};
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "5 raisons de se former à la KPE plutôt qu'à une autre méthode | Blog KPE",
+  "description": "Pourquoi choisir la formation KPE en kinésiologie ? Méthode complète, prix accessible, accompagnement personnalisé, résultats prouvés. Les 5 raisons qui font la différence.",
+  "author": { "@type": "Person", "name": "Joël Prieur", "url": "https://www.formation-kinesiologie.com/joel-prieur" },
+  "publisher": { "@type": "Organization", "name": "KPE", "logo": { "@type": "ImageObject", "url": "https://www.formation-kinesiologie.com/images/logo-teal.png" } },
+  "datePublished": "2026-03-06",
+  "dateModified": "2026-03-06",
+  "mainEntityOfPage": "https://www.formation-kinesiologie.com/blog/5-raisons-se-former-kpe",
+  "image": "https://www.formation-kinesiologie.com/images/blog/5-*.webp"
+};
+---
+
+<BaseLayout title="5 raisons de se former à la KPE plutôt qu'à une autre méthode | Blog KPE" description="Pourquoi choisir la formation KPE en kinésiologie ? Méthode complète, prix accessible, accompagnement personnalisé, résultats prouvés. Les 5 raisons qui font la différence." ogType="article" schema={articleSchema} breadcrumbs={[{name: "Blog", url: "/blog"}, {name: "5 raisons de se former à la KPE plutôt q...", url: "/blog/5-raisons-se-former-kpe"}]} schema={schema}>
+
+<article class="blog-article">
+  <header class="article-header">
+    <div class="container">
+      <a href="/blog" class="back-link">← Retour au blog</a>
+      <div class="article-meta">
+        <span class="article-date">10 mars 2026</span>
+        <span class="article-read">5 min de lecture</span>
+      </div>
+      <h1>5 raisons de se former à la KPE plutôt qu'à une autre méthode</h1>
+      <p class="article-intro">Le marché de la formation en kinésiologie est vaste. Entre les grandes écoles à 10 000€, les formations en ligne à 87€ et les cursus hybrides, comment s'y retrouver ? Voici 5 raisons concrètes qui font de la KPE un choix à part.</p>
+    </div>
+  </header>
+
+  <div class="article-body">
+    <div class="container">
+      <h2>1. La méthode la plus complète du marché</h2>
+<p>Là où la plupart des formations enseignent une seule branche (Touch For Health OU Brain Gym OU kinésiologie spécialisée), la KPE est la synthèse de TOUTES ces approches. Vous n'apprenez pas un outil limité : vous maîtrisez une méthode à 15 portes d'entrée qui couvre la structure, l'énergie, la psyché et les corps subtils.</p>
+
+<h2>2. Le meilleur rapport qualité-prix</h2>
+<p>À 1 580€ en ligne (ou 3 999€ en présentiel), la KPE offre 600 heures d'intégration, 20h+ de vidéo HD et un accompagnement personnalisé. Les grandes écoles comme Ekivie ou l'EKTC demandent entre 4 470€ et 8 770€ pour des programmes qui ne couvrent pas toujours l'ensemble des dimensions de la kinésiologie.</p>
+
+<h2>3. Un formateur d'exception</h2>
+<p>Joël Prieur n'est pas un simple formateur : c'est l'auteur de la méthode. Ancien professionnel de santé et ostéopathe D.O., il a consacré sa carrière à la recherche et à la transmission. Avec plus de 6 000 étudiants formés, son expérience est inégalée.</p>
+
+<h2>4. Un accompagnement qui ne s'arrête pas à la fin de la formation</h2>
+<p>Chez KPE, vous n'êtes jamais lâché dans la nature. Joël est disponible par téléphone et email, et les groupes Facebook et WhatsApp fonctionnent comme un "cerveau collectif" où les étudiants — anciens et nouveaux — s'entraident au quotidien.</p>
+
+<h2>5. Des résultats concrets et rapides</h2>
+<p>La KPE est conçue pour être mise en pratique rapidement. Delphine s'est installée au bout de 5 mois. Isabelle pratique en parallèle de son activité 2 jours par semaine. Les témoignages sont unanimes : la méthode donne des résultats concrets, tant pour le praticien que pour ses consultants.</p>
+
+      <div class="article-cta">
+        <img src="/images/logo-teal.png" alt="KPE" width="40" height="40" style="margin-bottom:16px;">
+        <h3>Envie d'aller plus loin ?</h3>
+        <p>Découvrez la formation KPE par Joël Prieur — en ligne ou en présentiel.</p>
+        <a href="/formation-en-ligne" class="btn-primary" style="margin-top:16px;">Découvrir la formation →</a>
+      </div>
+    </div>
+  </div>
+</article>
+
+</BaseLayout>
+
+<style>
+.blog-article { padding-top: 72px; }
+.article-header { background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); padding: clamp(40px,6vw,80px) 0; }
+.back-link { display: inline-block; color: var(--teal-500); text-decoration: none; font-size: 14px; font-weight: 500; margin-bottom: 24px; }
+.back-link:hover { text-decoration: underline; }
+.article-meta { display: flex; gap: 16px; margin-bottom: 16px; }
+.article-date, .article-read { font-size: 13px; color: var(--gray-400); font-family: var(--font-mono); letter-spacing: 0.02em; }
+.article-header h1 { font-family: var(--font-display); font-size: clamp(28px,3.5vw,44px); font-weight: 600; color: var(--gray-900); line-height: 1.2; margin-bottom: 20px; max-width: 800px; }
+.article-intro { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); line-height: 1.7; max-width: 700px; }
+.article-body { padding: clamp(40px,5vw,60px) 0; }
+.article-body h2 { font-family: var(--font-display); font-size: clamp(20px,2vw,28px); font-weight: 600; color: var(--teal-900); margin-top: 40px; margin-bottom: 16px; }
+.article-body p { font-size: 16px; color: var(--gray-600); line-height: 1.8; margin-bottom: 16px; max-width: 750px; }
+.article-body p strong { color: var(--gray-800); }
+.article-cta { margin-top: 50px; padding: 40px; background: var(--gray-50); border-radius: 20px; text-align: center; border: 1px solid var(--gray-100); }
+.article-cta h3 { font-family: var(--font-display); font-size: 22px; color: var(--gray-900); margin-bottom: 8px; }
+.article-cta p { font-size: 15px; color: var(--gray-500); max-width: 400px; margin: 0 auto; }
+</style>
