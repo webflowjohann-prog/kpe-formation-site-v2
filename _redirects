@@ -1,0 +1,20 @@
+# KPE Site — Redirections 301 (migration Webflow → Astro)
+# Anciennes URLs Webflow → Nouvelles URLs
+
+/formations-kinesiologie-en-ligne          /formation-en-ligne          301
+/formations-kinesiologie-en-presentiel     /formation-presentiel        301
+/formation-en-ligne-detail                 /formation-en-ligne          301
+/formation-en-presentiel-detail            /formation-presentiel        301
+/joel-prieur-formateur-kinesiologue        /joel-prieur                 301
+/blog-joel-prieur                          /blog                        301
+/contact-formation-kinesiologie            /contact                     301
+/initiation                                /initiation-kinesiologie     301
+
+# Blog articles — garder les mêmes slugs
+/blog/kinesiologie-et-fatigue-depression-malaise-physique     /blog/kinesiologie-et-fatigue-depression-malaise-physique     200
+/blog/la-kinesiologie-est-letude-du-mouvement-et-de-sa-perception  /blog/la-kinesiologie-est-letude-du-mouvement-et-de-sa-perception  200
+/blog/limpact-de-la-kinesiologie-psycho-energetique-sur-le-stress  /blog/limpact-de-la-kinesiologie-psycho-energetique-sur-le-stress  200
+
+# Utility pages
+/utility-pages/mentions-legales            /mentions-legales            301
+/utility-pages/vie-privee-et-cookies       /politique-cookies           301
