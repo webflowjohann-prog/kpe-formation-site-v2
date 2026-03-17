@@ -275,6 +275,21 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                   <span style={styles.completedBadge}>✓ Terminé</span>
                 )}
               </div>
+              {/* Next lesson button */}
+              <div style={styles.nextLessonRow}>
+                {(() => {
+                  const currentIndex = moduleLessons.findIndex(l => l.id === activeLesson.id);
+                  const nextLesson = moduleLessons[currentIndex + 1];
+                  if (nextLesson) {
+                    return (
+                      <button onClick={() => setActiveLesson(nextLesson)} style={styles.nextLessonBtn}>
+                        Suivant : {nextLesson.title} →
+                      </button>
+                    );
+                  }
+                  return null;
+                })()}
+              </div>
             </div>
           ) : (
             <div style={styles.noVideo}>
@@ -485,4 +500,6 @@ const styles = {
   pdfLink: { display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#038C8C', fontSize: '14px', textDecoration: 'none' },
   completeBtn: { padding: '10px 20px', background: '#025159', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
   completedBadge: { display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#10b981', fontSize: '14px', fontWeight: '600' },
+  nextLessonRow: { display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', paddingBottom: '16px' },
+  nextLessonBtn: { padding: '14px 28px', background: '#025159', color: 'white', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', transition: 'background 0.2s' },
 };
