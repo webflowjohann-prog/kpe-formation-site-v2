@@ -220,7 +220,17 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                     __html: `<iframe src="${activeLesson.video_url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;" />`
                   }} />
                 </div>
-              ) : activeLesson.slug?.startsWith('pdf-') || activeLesson.slug === 'livre-corps-point-par-point' || activeLesson.slug === 'programme-de-formation' || activeLesson.slug === 'validation-formation' ? (
+              ) : activeLesson.slug === 'livre-corps-point-par-point' ? (
+                <div style={styles.pdfZone}>
+                  <img src="https://xiglhxtsukjgkgfkqlnp.supabase.co/storage/v1/object/public/kpe-pdfs/livre-athias-cover.webp" alt="Le corps point par point" style={{ width: '140px', borderRadius: '8px', boxShadow: '0 4px 12px rgba(0,0,0,0.15)', marginBottom: '16px' }} />
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937', marginBottom: '4px' }}>Le corps point par point</h3>
+                  <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '16px' }}>Gérard Athias</p>
+                  <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '16px', maxWidth: '400px', lineHeight: '1.5' }}>Livre recommandé pour accompagner la formation. Chaque point correspond à un besoin, un blocage ou une blessure.</p>
+                  <a href="https://www.amazon.fr/corps-point-par/dp/295184638X" target="_blank" rel="noopener" style={styles.pdfDownloadBtn}>
+                    Acheter sur Amazon
+                  </a>
+                </div>
+              ) : activeLesson.slug?.startsWith('pdf-') || activeLesson.slug === 'programme-de-formation' || activeLesson.slug === 'validation-formation' ? (
                 <div style={styles.pdfZone}>
                   <div style={styles.pdfIcon}>📄</div>
                   <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937', marginBottom: '8px' }}>{activeLesson.title}</h3>
