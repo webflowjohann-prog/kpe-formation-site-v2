@@ -1,0 +1,116 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="S'inscrire à la Formation KPE | Paiement sécurisé"
+  description="Choisissez votre mode de paiement pour la formation KPE en kinésiologie psycho-énergétique. Paiement unique 1 580€ ou 3x 526,67€ sans frais."
+  breadcrumbs={[{name: "Formation en ligne", url: "/formation-en-ligne"}, {name: "Inscription", url: "/achat"}]}
+>
+
+<section style="padding: 120px 0 80px; min-height: 80vh; background: var(--gray-50);">
+  <div style="max-width: 860px; margin: 0 auto; padding: 0 24px;">
+
+    <div style="text-align: center; margin-bottom: 48px;">
+      <img src="/images/logo-teal.png" alt="KPE" width="56" height="56" style="margin: 0 auto 16px; display: block;">
+      <h1 style="font-family: var(--font-display); font-size: clamp(28px, 4vw, 42px); color: var(--gray-900); margin-bottom: 12px;">Finalisez votre inscription</h1>
+      <p style="color: var(--gray-500); font-size: 16px; max-width: 480px; margin: 0 auto;">Formation KPE en Kinésiologie Psycho-Énergétique. 8 modules, 20h+ de vidéo, certificat de praticien.</p>
+    </div>
+
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 720px; margin: 0 auto;" id="payment-cards">
+
+      <!-- Paiement unique -->
+      <div style="background: white; border-radius: 20px; border: 2px solid var(--teal-200); padding: 36px 28px; text-align: center; position: relative; transition: all 0.3s; cursor: pointer;" class="payment-card" id="card-unique" onclick="startCheckout('one_time')">
+        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal-700); color: white; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;">RECOMMANDÉ</div>
+        <div style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500;">Paiement unique</div>
+        <div style="font-family: var(--font-display); font-size: 42px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px;">1 580 €</div>
+        <div style="font-size: 13px; color: var(--teal-600); margin-bottom: 24px;">Meilleur prix</div>
+        <ul style="list-style: none; text-align: left; font-size: 14px; color: var(--gray-600); line-height: 2;">
+          <li>✓ Accès immédiat aux 8 modules</li>
+          <li>✓ 20h+ de vidéo HD</li>
+          <li>✓ Supports PDF téléchargeables</li>
+          <li>✓ Assistance directe avec Joël</li>
+          <li>✓ Certificat de praticien KPE</li>
+          <li>✓ Accès à vie, sans limite</li>
+        </ul>
+        <div style="margin-top: 24px;">
+          <span style="display: inline-block; width: 100%; padding: 14px 24px; background: var(--teal-900); color: white; border-radius: 10px; font-size: 15px; font-weight: 600;" id="btn-unique">Payer 1 580 € →</span>
+        </div>
+      </div>
+
+      <!-- Paiement 3x -->
+      <div style="background: white; border-radius: 20px; border: 2px solid var(--gray-200); padding: 36px 28px; text-align: center; transition: all 0.3s; cursor: pointer;" class="payment-card" id="card-3x" onclick="startCheckout('installments')">
+        <div style="height: 12px;"></div>
+        <div style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500;">Paiement en 3 fois</div>
+        <div style="font-family: var(--font-display); font-size: 42px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px;">3 × 527 €</div>
+        <div style="font-size: 13px; color: var(--gray-400); margin-bottom: 24px;">Sans frais</div>
+        <ul style="list-style: none; text-align: left; font-size: 14px; color: var(--gray-600); line-height: 2;">
+          <li>✓ Accès immédiat aux 8 modules</li>
+          <li>✓ 20h+ de vidéo HD</li>
+          <li>✓ Supports PDF téléchargeables</li>
+          <li>✓ Assistance directe avec Joël</li>
+          <li>✓ Certificat de praticien KPE</li>
+          <li>✓ Accès à vie, sans limite</li>
+        </ul>
+        <div style="margin-top: 24px;">
+          <span style="display: inline-block; width: 100%; padding: 14px 24px; background: white; color: var(--teal-900); border: 2px solid var(--teal-200); border-radius: 10px; font-size: 15px; font-weight: 600;" id="btn-3x">Payer en 3 × 527 € →</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Secure payment badge -->
+    <div style="text-align: center; margin-top: 32px; display: flex; align-items: center; justify-content: center; gap: 8px; color: var(--gray-400); font-size: 13px;">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Paiement sécurisé par Stripe. Vos données bancaires ne sont jamais stockées sur notre site.
+    </div>
+
+    <!-- Garantie -->
+    <div style="text-align: center; margin-top: 16px; color: var(--gray-400); font-size: 13px;">
+      Des questions ? <a href="/contact" style="color: var(--teal-600); text-decoration: none;">Contactez-nous</a>
+    </div>
+
+  </div>
+</section>
+
+<script is:inline>
+function startCheckout(paymentMode) {
+  var btnId = paymentMode === 'one_time' ? 'btn-unique' : 'btn-3x';
+  var btn = document.getElementById(btnId);
+  btn.textContent = 'Redirection vers le paiement...';
+  btn.style.opacity = '0.7';
+
+  fetch('/api/create-checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ product_type: 'online', payment_mode: paymentMode })
+  })
+  .then(function(r) { return r.json(); })
+  .then(function(d) {
+    if (d.url) {
+      window.location.href = d.url;
+    } else {
+      btn.textContent = 'Erreur, réessayez';
+      btn.style.opacity = '1';
+    }
+  })
+  .catch(function() {
+    btn.textContent = 'Erreur, réessayez';
+    btn.style.opacity = '1';
+  });
+}
+</script>
+
+<style>
+  .payment-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.08);
+  }
+  @media (max-width: 640px) {
+    #payment-cards {
+      grid-template-columns: 1fr !important;
+    }
+  }
+</style>
+
+</BaseLayout>
