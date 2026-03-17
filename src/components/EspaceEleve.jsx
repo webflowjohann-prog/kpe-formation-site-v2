@@ -217,9 +217,7 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
               <div style={styles.videoPlaceholder}>
                 {activeLesson.video_url ? (
                   <div dangerouslySetInnerHTML={{
-                    __html: activeLesson.video_url.includes('wistia')
-                      ? `<iframe src="${activeLesson.video_url}" allowfullscreen style="width:100%;height:100%;border:none;" />`
-                      : `<video src="${activeLesson.video_url}" controls style="width:100%;height:100%;object-fit:contain;" />`
+                    __html: `<iframe src="${activeLesson.video_url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;" />`
                   }} />
                 ) : (
                   <div style={styles.noVideo}>
