@@ -162,10 +162,10 @@ export default async (req: Request, context: Context) => {
                     "Content-Type": "application/json",
                   },
                   body: JSON.stringify({
-                    from: "KPE Formation <onboarding@resend.dev>",
+                    from: "KPE Formation <noreply@ikonik-ac.com>",
                     to: [customerEmail],
                     subject:
-                      "Bienvenue sur KPE Formation - Activez votre compte",
+                      "Bienvenue sur KPE Formation \u2013 Activez votre compte",
                     html: `
                       <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
                         <div style="text-align: center; margin-bottom: 30px;">
@@ -175,10 +175,10 @@ export default async (req: Request, context: Context) => {
                           Bonjour${customerName ? ` ${customerName}` : ""},
                         </p>
                         <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                          Merci pour votre inscription ! Votre paiement de <strong>${amountTotal / 100} EUR</strong> a bien ete recu.
+                          Merci pour votre inscription ! Votre paiement de <strong>${amountTotal / 100} \u20ac</strong> a bien \u00e9t\u00e9 re\u00e7u.
                         </p>
                         <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                          Pour acceder a votre espace eleve, cliquez sur le bouton ci-dessous pour definir votre mot de passe :
+                          Pour acc\u00e9der \u00e0 votre espace \u00e9l\u00e8ve, cliquez sur le bouton ci-dessous pour d\u00e9finir votre mot de passe :
                         </p>
                         <div style="text-align: center; margin: 30px 0;">
                           <a href="${recoveryLink}"
@@ -187,11 +187,11 @@ export default async (req: Request, context: Context) => {
                           </a>
                         </div>
                         <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                          Ce lien est valable 24 heures. Si vous avez des questions, contactez-nous a l'adresse formation.kpe@gmail.com
+                          Ce lien est valable 24 heures. Si vous avez des questions, contactez-nous \u00e0 l'adresse formation.kpe@gmail.com
                         </p>
                         <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
                         <p style="color: #999; font-size: 12px; text-align: center;">
-                          KPE Formation - Kinesiologie Professionnelle et Energetique
+                          KPE Formation - Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique
                         </p>
                       </div>
                     `,
