@@ -27,12 +27,10 @@ export default async (req: Request, context: Context) => {
 
   let event: Stripe.Event;
 
-  // Verify webhook signature
   try {
     if (endpointSecret && signature) {
       event = stripe.webhooks.constructEvent(body, signature, endpointSecret);
     } else {
-      // In test mode without webhook secret, parse directly
       event = JSON.parse(body) as Stripe.Event;
     }
   } catch (err: any) {
@@ -40,34 +38,25 @@ export default async (req: Request, context: Context) => {
     return new Response(`Webhook Error: ${err.message}`, { status: 400 });
   }
 
-  // Handle checkout.session.completed
-  if (
-    event.type === "checkout.session.completed" ||
-    event.type === "invoice.payment_succeeded"
-  ) {
+  if (event.type === "checkout.session.completed") {
     try {
-      let customerEmail: string | null = null;
-      let customerName: string | null = null;
-      let productType = "online";
-      let paymentMode = "one_time";
-
-      if (event.type === "checkout.session.completed") {
-        const session = event.data.object as Stripe.Checkout.Session;
-        customerEmail = session.customer_details?.email || session.customer_email;
-        customerName = session.customer_details?.name || null;
-        productType = session.metadata?.product_type || "online";
-        paymentMode = session.metadata?.payment_mode || "one_time";
-      }
+      const session = event.data.object as Stripe.Checkout.Session;
+      const customerEmail =
+        session.customer_details?.email || session.customer_email;
+      const customerName = session.customer_details?.name || null;
+      const productType = session.metadata?.product_type || "online";
+      const amountTotal = session.amount_total || 0;
 
       if (!customerEmail) {
-        console.error("No customer email found in webhook event");
+        console.error("No customer email found");
         return new Response("No email", { status: 400 });
       }
 
-      console.log(`Processing payment for: ${customerEmail}`);
+      console.log(`Processing payment for: ${customerEmail} (${amountTotal / 100}€)`);
 
-      // Check if user already exists
-      const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
+      // Check if user already exists in Supabase Auth
+      const { data: existingUsers } =
+        await supabaseAdmin.auth.admin.listUsers();
       const existingUser = existingUsers?.users?.find(
         (u) => u.email === customerEmail
       );
@@ -75,11 +64,10 @@ export default async (req: Request, context: Context) => {
       let userId: string;
 
       if (existingUser) {
-        // User already exists, just update enrollment
         userId = existingUser.id;
         console.log(`User already exists: ${userId}`);
       } else {
-        // Create new user with Supabase Auth
+        // Create new user with temporary password
         const tempPassword =
           "KPE-" +
           Math.random().toString(36).substring(2, 8).toUpperCase() +
@@ -105,7 +93,7 @@ export default async (req: Request, context: Context) => {
         userId = newUser.user.id;
         console.log(`New user created: ${userId}`);
 
-        // Create profile
+        // Create profile in profiles table
         const { error: profileError } = await supabaseAdmin
           .from("profiles")
           .upsert({
@@ -120,43 +108,52 @@ export default async (req: Request, context: Context) => {
         }
       }
 
-      // Create or update enrollment
+      // Create enrollment with correct column names
       const { error: enrollError } = await supabaseAdmin
         .from("enrollments")
         .upsert(
           {
             user_id: userId,
             product_type: productType,
-            payment_mode: paymentMode,
             status: "active",
-            enrolled_at: new Date().toISOString(),
+            amount_paid: amountTotal,
+            stripe_session_id: session.id,
           },
           { onConflict: "user_id" }
         );
 
       if (enrollError) {
         console.error("Error creating enrollment:", enrollError);
+      } else {
+        console.log(`Enrollment created for ${customerEmail}`);
       }
 
-      // Send invite email so user can set their password
+      // Send password reset email so user can set their password
+      // This works even for newly created users with email_confirm: true
       if (!existingUser) {
-        const { data: linkData, error: inviteError } =
-          await supabaseAdmin.auth.admin.inviteUserByEmail(customerEmail, {
-            redirectTo: `${SITE_URL}/espace-eleve`,
-          });
+        const resetResponse = await fetch(
+          `${Netlify.env.get("SUPABASE_URL")}/auth/v1/recover`,
+          {
+            method: "POST",
+            headers: {
+              apikey: Netlify.env.get("SUPABASE_ANON_KEY") || "",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email: customerEmail }),
+          }
+        );
 
-        if (inviteError) {
-          console.error("Error sending invite:", inviteError);
+        if (resetResponse.ok) {
+          console.log(`Password reset email sent to ${customerEmail}`);
         } else {
-          console.log(`Invite email sent to ${customerEmail}`);
+          console.error(
+            "Error sending password reset:",
+            await resetResponse.text()
+          );
         }
       }
 
-      console.log(
-        `Enrollment created for ${customerEmail} (${productType}, ${paymentMode})`
-      );
-
-      return new Response(JSON.stringify({ received: true }), {
+      return new Response(JSON.stringify({ received: true, userId }), {
         status: 200,
         headers: { "Content-Type": "application/json" },
       });
@@ -166,7 +163,6 @@ export default async (req: Request, context: Context) => {
     }
   }
 
-  // Acknowledge other events
   return new Response(JSON.stringify({ received: true }), {
     status: 200,
     headers: { "Content-Type": "application/json" },
