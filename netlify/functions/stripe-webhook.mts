@@ -52,7 +52,9 @@ export default async (req: Request, context: Context) => {
         return new Response("No email", { status: 400 });
       }
 
-      console.log(`Processing payment for: ${customerEmail} (${amountTotal / 100}€)`);
+      console.log(
+        `Processing payment for: ${customerEmail} (${amountTotal / 100}EUR)`
+      );
 
       // Check if user already exists in Supabase Auth
       const { data: existingUsers } =
@@ -92,23 +94,23 @@ export default async (req: Request, context: Context) => {
 
         userId = newUser.user.id;
         console.log(`New user created: ${userId}`);
-
-        // Create profile in profiles table
-        const { error: profileError } = await supabaseAdmin
-          .from("profiles")
-          .upsert({
-            id: userId,
-            email: customerEmail,
-            full_name: customerName || "",
-            role: "student",
-          });
-
-        if (profileError) {
-          console.error("Error creating profile:", profileError);
-        }
       }
 
-      // Create enrollment with correct column names
+      // Create profile in profiles table
+      const { error: profileError } = await supabaseAdmin
+        .from("profiles")
+        .upsert({
+          id: userId,
+          email: customerEmail,
+          full_name: customerName || "",
+          role: "student",
+        });
+
+      if (profileError) {
+        console.error("Error creating profile:", profileError);
+      }
+
+      // Create enrollment
       const { error: enrollError } = await supabaseAdmin
         .from("enrollments")
         .upsert(
@@ -128,28 +130,87 @@ export default async (req: Request, context: Context) => {
         console.log(`Enrollment created for ${customerEmail}`);
       }
 
-      // Send password reset email so user can set their password
-      // This works even for newly created users with email_confirm: true
+      // Send welcome email directly via Resend API
       if (!existingUser) {
-        const resetResponse = await fetch(
-          `${Netlify.env.get("SUPABASE_URL")}/auth/v1/recover`,
-          {
-            method: "POST",
-            headers: {
-              apikey: Netlify.env.get("SUPABASE_ANON_KEY") || "",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email: customerEmail }),
-          }
-        );
+        try {
+          // Generate recovery link via Supabase Admin
+          const { data: linkData, error: linkError } =
+            await supabaseAdmin.auth.admin.generateLink({
+              type: "recovery",
+              email: customerEmail,
+              options: {
+                redirectTo: `${SITE_URL}/espace-eleve/`,
+              },
+            });
 
-        if (resetResponse.ok) {
-          console.log(`Password reset email sent to ${customerEmail}`);
-        } else {
-          console.error(
-            "Error sending password reset:",
-            await resetResponse.text()
-          );
+          if (linkError) {
+            console.error("Error generating recovery link:", linkError);
+          } else {
+            const recoveryLink = linkData?.properties?.action_link || "";
+            console.log(`Recovery link generated for ${customerEmail}`);
+
+            // Send email via Resend API directly
+            const resendApiKey = Netlify.env.get("RESEND_API_KEY") || "";
+
+            if (resendApiKey) {
+              const emailResponse = await fetch(
+                "https://api.resend.com/emails",
+                {
+                  method: "POST",
+                  headers: {
+                    Authorization: `Bearer ${resendApiKey}`,
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    from: "KPE Formation <onboarding@resend.dev>",
+                    to: [customerEmail],
+                    subject:
+                      "Bienvenue sur KPE Formation - Activez votre compte",
+                    html: `
+                      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                        <div style="text-align: center; margin-bottom: 30px;">
+                          <h1 style="color: #1a1a1a; font-size: 24px;">Bienvenue sur KPE Formation !</h1>
+                        </div>
+                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                          Bonjour${customerName ? ` ${customerName}` : ""},
+                        </p>
+                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                          Merci pour votre inscription ! Votre paiement de <strong>${amountTotal / 100} EUR</strong> a bien ete recu.
+                        </p>
+                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                          Pour acceder a votre espace eleve, cliquez sur le bouton ci-dessous pour definir votre mot de passe :
+                        </p>
+                        <div style="text-align: center; margin: 30px 0;">
+                          <a href="${recoveryLink}"
+                             style="background-color: #c8a44e; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-size: 16px; font-weight: bold; display: inline-block;">
+                            Activer mon compte
+                          </a>
+                        </div>
+                        <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                          Ce lien est valable 24 heures. Si vous avez des questions, contactez-nous a l'adresse formation.kpe@gmail.com
+                        </p>
+                        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+                        <p style="color: #999; font-size: 12px; text-align: center;">
+                          KPE Formation - Kinesiologie Professionnelle et Energetique
+                        </p>
+                      </div>
+                    `,
+                  }),
+                }
+              );
+
+              if (emailResponse.ok) {
+                console.log(`Welcome email sent to ${customerEmail}`);
+              } else {
+                const errText = await emailResponse.text();
+                console.error("Error sending email via Resend:", errText);
+              }
+            } else {
+              console.error("RESEND_API_KEY not configured");
+            }
+          }
+        } catch (emailErr) {
+          console.error("Error in email sending process:", emailErr);
         }
       }
 
