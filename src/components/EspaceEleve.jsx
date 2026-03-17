@@ -216,7 +216,7 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
             <div>
               <div style={styles.videoPlaceholder}>
                 {activeLesson.video_url ? (
-                  <div dangerouslySetInnerHTML={{
+                  <div style={{ width: '100%', height: '100%' }} dangerouslySetInnerHTML={{
                     __html: `<iframe src="${activeLesson.video_url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;" />`
                   }} />
                 ) : (
