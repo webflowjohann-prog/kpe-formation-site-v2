@@ -20,11 +20,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 720px; margin: 0 auto;" id="payment-cards">
 
       <!-- Paiement unique -->
-      <div style="background: white; border-radius: 20px; border: 2px solid var(--teal-200); padding: 36px 28px; text-align: center; position: relative; transition: all 0.3s; cursor: pointer;" class="payment-card" id="card-unique" onclick="startCheckout('one_time')">
-        <div style="position: absolute; top: -12px; left: 50%; transform: translateX(-50%); background: var(--teal-700); color: white; padding: 4px 16px; border-radius: 20px; font-size: 12px; font-weight: 600; letter-spacing: 0.5px;">RECOMMANDÉ</div>
+      <div style="background: white; border-radius: 20px; border: 2px solid var(--teal-200); padding: 36px 28px; text-align: center; transition: all 0.3s; cursor: pointer;" class="payment-card" onclick="startCheckout('one_time')">
         <div style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500;">Paiement unique</div>
         <div style="font-family: var(--font-display); font-size: 42px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px;">1 580 €</div>
-        <div style="font-size: 13px; color: var(--teal-600); margin-bottom: 24px;">Meilleur prix</div>
+        <div style="font-size: 13px; color: var(--gray-400); margin-bottom: 24px;">En une seule fois</div>
         <ul style="list-style: none; text-align: left; font-size: 14px; color: var(--gray-600); line-height: 2;">
           <li>✓ Accès immédiat aux 8 modules</li>
           <li>✓ 20h+ de vidéo HD</li>
@@ -39,8 +38,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
 
       <!-- Paiement 3x -->
-      <div style="background: white; border-radius: 20px; border: 2px solid var(--gray-200); padding: 36px 28px; text-align: center; transition: all 0.3s; cursor: pointer;" class="payment-card" id="card-3x" onclick="startCheckout('installments')">
-        <div style="height: 12px;"></div>
+      <div style="background: white; border-radius: 20px; border: 2px solid var(--teal-200); padding: 36px 28px; text-align: center; transition: all 0.3s; cursor: pointer;" class="payment-card" onclick="startCheckout('installments')">
         <div style="font-size: 13px; color: var(--gray-500); margin-bottom: 8px; font-weight: 500;">Paiement en 3 fois</div>
         <div style="font-family: var(--font-display); font-size: 42px; font-weight: 700; color: var(--gray-900); margin-bottom: 4px;">3 × 527 €</div>
         <div style="font-size: 13px; color: var(--gray-400); margin-bottom: 24px;">Sans frais</div>
@@ -53,7 +51,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <li>✓ Accès à vie, sans limite</li>
         </ul>
         <div style="margin-top: 24px;">
-          <span style="display: inline-block; width: 100%; padding: 14px 24px; background: white; color: var(--teal-900); border: 2px solid var(--teal-200); border-radius: 10px; font-size: 15px; font-weight: 600;" id="btn-3x">Payer en 3 × 527 € →</span>
+          <span style="display: inline-block; width: 100%; padding: 14px 24px; background: var(--teal-600); color: white; border-radius: 10px; font-size: 15px; font-weight: 600;" id="btn-3x">Payer en 3 × 527 € →</span>
         </div>
       </div>
 
