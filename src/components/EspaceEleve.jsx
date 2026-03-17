@@ -214,21 +214,35 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
         <div style={styles.videoArea}>
           {activeLesson ? (
             <div>
-              <div style={styles.videoPlaceholder}>
-                {activeLesson.video_url ? (
+              {activeLesson.video_url ? (
+                <div style={styles.videoPlaceholder}>
                   <div style={{ width: '100%', height: '100%' }} dangerouslySetInnerHTML={{
                     __html: `<iframe src="${activeLesson.video_url}" allow="autoplay; fullscreen; encrypted-media; picture-in-picture" allowfullscreen style="width:100%;height:100%;border:none;" />`
                   }} />
-                ) : (
+                </div>
+              ) : activeLesson.slug?.startsWith('pdf-') || activeLesson.slug === 'livre-corps-point-par-point' || activeLesson.slug === 'programme-de-formation' || activeLesson.slug === 'validation-formation' ? (
+                <div style={styles.pdfZone}>
+                  <div style={styles.pdfIcon}>📄</div>
+                  <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937', marginBottom: '8px' }}>{activeLesson.title}</h3>
+                  {activeLesson.pdf_url ? (
+                    <a href={activeLesson.pdf_url} target="_blank" rel="noopener" style={styles.pdfDownloadBtn}>
+                      Télécharger le document
+                    </a>
+                  ) : (
+                    <p style={{ fontSize: '14px', color: '#9ca3af' }}>Le document sera disponible prochainement.</p>
+                  )}
+                </div>
+              ) : (
+                <div style={styles.videoPlaceholder}>
                   <div style={styles.noVideo}>
                     <p>Vidéo bientôt disponible</p>
                     <p style={{ fontSize: '13px', color: '#9ca3af' }}>La vidéo de cette leçon sera ajoutée prochainement.</p>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
               <div style={styles.lessonActions}>
                 <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937' }}>{activeLesson.title}</h3>
-                {activeLesson.pdf_url && (
+                {activeLesson.pdf_url && !activeLesson.slug?.startsWith('pdf-') && (
                   <a href={activeLesson.pdf_url} target="_blank" rel="noopener" style={styles.pdfLink}>
                     📄 Télécharger le support PDF
                   </a>
@@ -444,6 +458,9 @@ const styles = {
   videoArea: { borderRadius: '16px', overflow: 'hidden' },
   videoPlaceholder: { background: '#111827', borderRadius: '16px', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   noVideo: { textAlign: 'center', color: '#6b7280', padding: '40px' },
+  pdfZone: { background: '#f9fafb', borderRadius: '16px', border: '2px dashed #e5e7eb', padding: '48px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px' },
+  pdfIcon: { fontSize: '48px', marginBottom: '16px' },
+  pdfDownloadBtn: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', background: '#025159', color: 'white', borderRadius: '10px', border: 'none', fontSize: '15px', fontWeight: '600', cursor: 'pointer', textDecoration: 'none', marginTop: '8px' },
   lessonActions: { padding: '20px 0', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' },
   pdfLink: { display: 'inline-flex', alignItems: 'center', gap: '6px', color: '#038C8C', fontSize: '14px', textDecoration: 'none' },
   completeBtn: { padding: '10px 20px', background: '#025159', color: 'white', border: 'none', borderRadius: '8px', fontSize: '14px', fontWeight: '600', cursor: 'pointer' },
