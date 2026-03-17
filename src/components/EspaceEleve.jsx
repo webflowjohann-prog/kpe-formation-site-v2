@@ -230,7 +230,16 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                     Acheter sur Amazon
                   </a>
                 </div>
-              ) : activeLesson.slug?.startsWith('pdf-') || activeLesson.slug === 'programme-de-formation' || activeLesson.slug === 'validation-formation' ? (
+              ) : activeLesson.slug === 'programme-de-formation' ? (
+                <div style={styles.textContentZone}>
+                  <h3 style={{ fontSize: '20px', fontWeight: '600', color: '#1f2937', marginBottom: '16px' }}>{activeLesson.title}</h3>
+                  {activeLesson.description && (
+                    <div style={{ fontSize: '14px', color: '#374151', lineHeight: '1.8', whiteSpace: 'pre-line' }}>
+                      {activeLesson.description}
+                    </div>
+                  )}
+                </div>
+              ) : activeLesson.slug?.startsWith('pdf-') || activeLesson.slug === 'validation-formation' ? (
                 <div style={styles.pdfZone}>
                   <div style={styles.pdfIcon}>📄</div>
                   <h3 style={{ fontSize: '18px', fontWeight: '600', color: '#1f2937', marginBottom: '8px' }}>{activeLesson.title}</h3>
@@ -469,6 +478,7 @@ const styles = {
   videoPlaceholder: { background: '#111827', borderRadius: '16px', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' },
   noVideo: { textAlign: 'center', color: '#6b7280', padding: '40px' },
   pdfZone: { background: '#f9fafb', borderRadius: '16px', border: '2px dashed #e5e7eb', padding: '48px 32px', textAlign: 'center', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '200px' },
+  textContentZone: { background: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb', padding: '32px', maxHeight: '500px', overflowY: 'auto' },
   pdfIcon: { fontSize: '48px', marginBottom: '16px' },
   pdfDownloadBtn: { display: 'inline-flex', alignItems: 'center', gap: '8px', padding: '12px 24px', background: '#025159', color: 'white', borderRadius: '10px', border: 'none', fontSize: '15px', fontWeight: '600', cursor: 'pointer', textDecoration: 'none', marginTop: '8px' },
   lessonActions: { padding: '20px 0', display: 'flex', alignItems: 'center', gap: '16px', flexWrap: 'wrap' },
