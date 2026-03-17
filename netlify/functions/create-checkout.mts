@@ -5,7 +5,8 @@ const stripe = new Stripe(Netlify.env.get("STRIPE_SECRET_KEY") || "", {
   apiVersion: "2024-12-18.acacia",
 });
 
-const SITE_URL = Netlify.env.get("SITE_URL") || "https://kpe-formation-site.netlify.app";
+const SITE_URL =
+  Netlify.env.get("SITE_URL") || "https://kpe-formation-site.netlify.app";
 
 // Price IDs from Stripe Dashboard
 const PRICES: Record<string, { one_time: string; installments?: string }> = {
@@ -35,10 +36,12 @@ export default async (req: Request, context: Context) => {
       );
     }
 
-    const priceId =
-      payment_mode === "installments" && priceConfig.installments
-        ? priceConfig.installments
-        : priceConfig.one_time;
+    const isInstallments =
+      payment_mode === "installments" && priceConfig.installments;
+
+    const priceId = isInstallments
+      ? priceConfig.installments!
+      : priceConfig.one_time;
 
     if (!priceId) {
       return new Response(
@@ -47,8 +50,8 @@ export default async (req: Request, context: Context) => {
       );
     }
 
-    const session = await stripe.checkout.sessions.create({
-      mode: "payment",
+    const sessionParams: Stripe.Checkout.SessionCreateParams = {
+      mode: isInstallments ? "subscription" : "payment",
       payment_method_types: ["card"],
       line_items: [{ price: priceId, quantity: 1 }],
       success_url: `${SITE_URL}/espace-eleve?inscription=success`,
@@ -58,18 +61,30 @@ export default async (req: Request, context: Context) => {
         payment_mode,
       },
       allow_promotion_codes: true,
-    });
+    };
 
-    return new Response(
-      JSON.stringify({ url: session.url }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
-    );
+    if (isInstallments) {
+      sessionParams.subscription_data = {
+        metadata: {
+          product_type,
+          payment_mode,
+          cancel_after_payments: "3",
+        },
+      };
+    }
+
+    const session = await stripe.checkout.sessions.create(sessionParams);
+
+    return new Response(JSON.stringify({ url: session.url }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
   } catch (err: any) {
     console.error("Checkout error:", err);
-    return new Response(
-      JSON.stringify({ error: err.message }),
-      { status: 500, headers: { "Content-Type": "application/json" } }
-    );
+    return new Response(JSON.stringify({ error: err.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
   }
 };
 
