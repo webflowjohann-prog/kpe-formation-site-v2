@@ -64,13 +64,14 @@ export default async (req: Request, context: Context) => {
       );
 
       let userId: string;
+      let userPassword = "";
 
       if (existingUser) {
         userId = existingUser.id;
         console.log(`User already exists: ${userId}`);
       } else {
-        // Create new user with temporary password
-        const tempPassword =
+        // Create new user with unique permanent password
+        userPassword =
           "KPE-" +
           Math.random().toString(36).substring(2, 8).toUpperCase() +
           "!" +
@@ -79,7 +80,7 @@ export default async (req: Request, context: Context) => {
         const { data: newUser, error: createError } =
           await supabaseAdmin.auth.admin.createUser({
             email: customerEmail,
-            password: tempPassword,
+            password: userPassword,
             email_confirm: true,
             user_metadata: {
               full_name: customerName || "",
@@ -130,84 +131,82 @@ export default async (req: Request, context: Context) => {
         console.log(`Enrollment created for ${customerEmail}`);
       }
 
-      // Send welcome email directly via Resend API
-      if (!existingUser) {
+      // Send welcome email with login credentials via Resend API
+      if (!existingUser && userPassword) {
         try {
-          // Generate recovery link via Supabase Admin
-          const { data: linkData, error: linkError } =
-            await supabaseAdmin.auth.admin.generateLink({
-              type: "recovery",
-              email: customerEmail,
-              options: {
-                redirectTo: `${SITE_URL}/espace-eleve/`,
-              },
-            });
+          const resendApiKey = Netlify.env.get("RESEND_API_KEY") || "";
 
-          if (linkError) {
-            console.error("Error generating recovery link:", linkError);
-          } else {
-            const recoveryLink = linkData?.properties?.action_link || "";
-            console.log(`Recovery link generated for ${customerEmail}`);
+          if (resendApiKey) {
+            const loginUrl = `${SITE_URL}/espace-eleve/`;
 
-            // Send email via Resend API directly
-            const resendApiKey = Netlify.env.get("RESEND_API_KEY") || "";
-
-            if (resendApiKey) {
-              const emailResponse = await fetch(
-                "https://api.resend.com/emails",
-                {
-                  method: "POST",
-                  headers: {
-                    Authorization: `Bearer ${resendApiKey}`,
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    from: "KPE Formation <noreply@ikonik-ac.com>",
-                    to: [customerEmail],
-                    subject:
-                      "Bienvenue sur KPE Formation \u2013 Activez votre compte",
-                    html: `
-                      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-                        <div style="text-align: center; margin-bottom: 30px;">
-                          <h1 style="color: #1a1a1a; font-size: 24px;">Bienvenue sur KPE Formation !</h1>
-                        </div>
-                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                          Bonjour${customerName ? ` ${customerName}` : ""},
+            const emailResponse = await fetch(
+              "https://api.resend.com/emails",
+              {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${resendApiKey}`,
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                  from: "KPE Formation <noreply@ikonik-ac.com>",
+                  to: [customerEmail],
+                  subject:
+                    "Bienvenue sur KPE Formation \u2013 Vos identifiants de connexion",
+                  html: `
+                    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+                      <div style="text-align: center; margin-bottom: 30px;">
+                        <h1 style="color: #1a1a1a; font-size: 24px;">Bienvenue sur KPE Formation !</h1>
+                      </div>
+                      <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                        Bonjour${customerName ? ` ${customerName}` : ""},
+                      </p>
+                      <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                        Merci pour votre inscription ! Votre paiement de <strong>${amountTotal / 100} \u20ac</strong> a bien \u00e9t\u00e9 re\u00e7u.
+                      </p>
+                      <p style="color: #333; font-size: 16px; line-height: 1.6;">
+                        Voici vos identifiants pour acc\u00e9der \u00e0 votre espace \u00e9l\u00e8ve :
+                      </p>
+                      <div style="background-color: #f8f6f1; border: 1px solid #e8e4db; border-radius: 8px; padding: 20px; margin: 20px 0;">
+                        <p style="color: #333; font-size: 15px; margin: 8px 0;">
+                          <strong>Email :</strong> ${customerEmail}
                         </p>
-                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                          Merci pour votre inscription ! Votre paiement de <strong>${amountTotal / 100} \u20ac</strong> a bien \u00e9t\u00e9 re\u00e7u.
-                        </p>
-                        <p style="color: #333; font-size: 16px; line-height: 1.6;">
-                          Pour acc\u00e9der \u00e0 votre espace \u00e9l\u00e8ve, cliquez sur le bouton ci-dessous pour d\u00e9finir votre mot de passe :
-                        </p>
-                        <div style="text-align: center; margin: 30px 0;">
-                          <a href="${recoveryLink}"
-                             style="background-color: #c8a44e; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-size: 16px; font-weight: bold; display: inline-block;">
-                            Activer mon compte
-                          </a>
-                        </div>
-                        <p style="color: #666; font-size: 14px; line-height: 1.6;">
-                          Ce lien est valable 24 heures. Si vous avez des questions, contactez-nous \u00e0 l'adresse formation.kpe@gmail.com
-                        </p>
-                        <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
-                        <p style="color: #999; font-size: 12px; text-align: center;">
-                          KPE Formation - Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique
+                        <p style="color: #333; font-size: 15px; margin: 8px 0;">
+                          <strong>Mot de passe :</strong>
+                          <span style="font-family: monospace; background-color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 16px; letter-spacing: 1px; border: 1px solid #ddd;">
+                            ${userPassword}
+                          </span>
                         </p>
                       </div>
-                    `,
-                  }),
-                }
-              );
-
-              if (emailResponse.ok) {
-                console.log(`Welcome email sent to ${customerEmail}`);
-              } else {
-                const errText = await emailResponse.text();
-                console.error("Error sending email via Resend:", errText);
+                      <p style="color: #333; font-size: 14px; line-height: 1.6;">
+                        Conservez bien cet email, il contient vos identifiants de connexion.
+                      </p>
+                      <div style="text-align: center; margin: 30px 0;">
+                        <a href="${loginUrl}"
+                           style="background-color: #c8a44e; color: white; padding: 14px 32px; text-decoration: none; border-radius: 6px; font-size: 16px; font-weight: bold; display: inline-block;">
+                          Acc\u00e9der \u00e0 mon espace
+                        </a>
+                      </div>
+                      <p style="color: #666; font-size: 14px; line-height: 1.6;">
+                        Si vous avez des questions, contactez-nous \u00e0 l'adresse formation.kpe@gmail.com
+                      </p>
+                      <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
+                      <p style="color: #999; font-size: 12px; text-align: center;">
+                        KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique
+                      </p>
+                    </div>
+                  `,
+                }),
               }
+            );
+
+            if (emailResponse.ok) {
+              console.log(`Welcome email with credentials sent to ${customerEmail}`);
             } else {
-              console.error("RESEND_API_KEY not configured");
+              const errText = await emailResponse.text();
+              console.error("Error sending email via Resend:", errText);
             }
+          } else {
+            console.error("RESEND_API_KEY not configured");
           }
         } catch (emailErr) {
           console.error("Error in email sending process:", emailErr);
