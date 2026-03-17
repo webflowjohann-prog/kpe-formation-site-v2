@@ -11,3 +11,5 @@
   included_files = ["node_modules/@supabase/**", "node_modules/stripe/**"]
 
   # Stripe env vars configured
+
+# Stripe test mode
