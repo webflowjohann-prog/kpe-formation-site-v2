@@ -153,7 +153,7 @@ function ModuleCard({ module, lessons, progress, isEnrolled, onSelectModule }) {
 // ============================================
 // MODULE VIEW (lessons list + video player)
 // ============================================
-function ModuleView({ module, lessons, progress, session, onBack }) {
+function ModuleView({ module, modules, lessons, progress, session, onBack, onNextModule }) {
   const [activeLesson, setActiveLesson] = useState(null);
   const moduleLessons = lessons
     .filter((l) => l.module_id === module.id)
@@ -198,7 +198,7 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                 borderColor: activeLesson?.id === lesson.id ? '#04BFBF' : '#e5e7eb',
               }}
             >
-              <div style={styles.lessonCheck}>
+              <div style={isCompleted(lesson.id) ? styles.lessonCheckDone : styles.lessonCheck}>
                 {isCompleted(lesson.id) ? '✓' : lesson.sort_order}
               </div>
               <div>
@@ -275,7 +275,7 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                   <span style={styles.completedBadge}>✓ Terminé</span>
                 )}
               </div>
-              {/* Next lesson button */}
+              {/* Next lesson / next module button */}
               <div style={styles.nextLessonRow}>
                 {(() => {
                   const currentIndex = moduleLessons.findIndex(l => l.id === activeLesson.id);
@@ -284,6 +284,17 @@ function ModuleView({ module, lessons, progress, session, onBack }) {
                     return (
                       <button onClick={() => setActiveLesson(nextLesson)} style={styles.nextLessonBtn}>
                         Suivant : {nextLesson.title} →
+                      </button>
+                    );
+                  }
+                  // Last lesson of module: show "Module suivant" button
+                  const sortedModules = modules.sort((a, b) => a.sort_order - b.sort_order);
+                  const currentModuleIndex = sortedModules.findIndex(m => m.id === module.id);
+                  const nextModule = sortedModules[currentModuleIndex + 1];
+                  if (nextModule) {
+                    return (
+                      <button onClick={() => onNextModule(nextModule)} style={styles.nextModuleBtn}>
+                        Module suivant : {nextModule.title} →
                       </button>
                     );
                   }
@@ -417,10 +428,12 @@ export default function EspaceEleve() {
       {activeModule ? (
         <ModuleView
           module={activeModule}
+          modules={modules}
           lessons={lessons}
           progress={progress}
           session={session}
           onBack={() => setActiveModule(null)}
+          onNextModule={(nextMod) => setActiveModule(nextMod)}
         />
       ) : (
         <div style={styles.modulesGrid}>
@@ -486,6 +499,7 @@ const styles = {
   lessonsList: { display: 'flex', flexDirection: 'column', gap: '8px' },
   lessonItem: { display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 16px', borderRadius: '10px', border: '1.5px solid #e5e7eb', cursor: 'pointer', transition: 'all 0.2s' },
   lessonCheck: { width: '32px', height: '32px', borderRadius: '50%', background: '#e0f7f7', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '600', color: '#025159', flexShrink: '0' },
+  lessonCheckDone: { width: '32px', height: '32px', borderRadius: '50%', background: '#10b981', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '13px', fontWeight: '600', color: 'white', flexShrink: '0' },
   lessonTitle: { fontSize: '14px', fontWeight: '500', color: '#1f2937' },
   lessonDuration: { fontSize: '12px', color: '#9ca3af' },
 
@@ -502,4 +516,5 @@ const styles = {
   completedBadge: { display: 'inline-flex', alignItems: 'center', gap: '4px', color: '#10b981', fontSize: '14px', fontWeight: '600' },
   nextLessonRow: { display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', paddingBottom: '16px' },
   nextLessonBtn: { padding: '14px 28px', background: '#025159', color: 'white', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', transition: 'background 0.2s' },
+  nextModuleBtn: { padding: '14px 28px', background: '#04BFBF', color: 'white', border: 'none', borderRadius: '10px', fontSize: '15px', fontWeight: '700', cursor: 'pointer', transition: 'background 0.2s' },
 };
