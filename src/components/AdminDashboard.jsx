@@ -787,13 +787,21 @@ function EmailMarketingTab({ session }) {
   };
 
 
+  // Helper: parse Podia spent values like "€140.00", "€1.54K", ""
+  const parseSpent = (val) => {
+    if (!val) return 0;
+    const clean = val.replace(/[€$\s]/g, '');
+    if (clean.endsWith('K')) return parseFloat(clean) * 1000;
+    return parseFloat(clean) || 0;
+  };
+
   // Recipients logic
   const filteredByType = (() => {
     if (filter === 'online') return students.filter(s => s.product_type === 'online');
     if (filter === 'presentiel') return students.filter(s => s.product_type === 'presentiel');
     if (filter === 'podia_all') return podiaContacts;
-    if (filter === 'podia_subscribed') return podiaContacts.filter(c => c.subscribed);
-    if (filter === 'podia_buyers') return podiaContacts.filter(c => parseFloat(c.spent) > 0);
+    if (filter === 'podia_subscribed') return podiaContacts.filter(c => c.subscribed === 'Subscribed');
+    if (filter === 'podia_buyers') return podiaContacts.filter(c => parseSpent(c.spent) > 0);
     return students;
   })();
 
@@ -1122,7 +1130,7 @@ function EmailMarketingTab({ session }) {
             <span style={{ width: '1px', background: '#e5e7eb', margin: '0 4px' }} />
             <button onClick={() => setFilter('podia_all')} style={{ ...styles.btn, ...(filter === 'podia_all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia tous ({podiaContacts.length})</button>
             <button onClick={() => setFilter('podia_subscribed')} style={{ ...styles.btn, ...(filter === 'podia_subscribed' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia abonnés ({podiaContacts.filter(c => c.subscribed).length})</button>
-            <button onClick={() => setFilter('podia_buyers')} style={{ ...styles.btn, ...(filter === 'podia_buyers' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia acheteurs ({podiaContacts.filter(c => parseFloat(c.spent) > 0).length})</button>
+            <button onClick={() => setFilter('podia_buyers')} style={{ ...styles.btn, ...(filter === 'podia_buyers' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia acheteurs ({podiaContacts.filter(c => parseSpent(c.spent) > 0).length})</button>
           </div>
         )}
 

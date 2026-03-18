@@ -51,12 +51,22 @@ export default async (req: Request, context: Context) => {
       return { ...s, product_type: enr?.product_type || "online" };
     });
 
-    const { data: podiaContacts } = await supabaseAdmin
-      .from("podia_contacts")
-      .select("id, name, email, subscribed, spent, source")
-      .range(0, 4999);
+    // Paginate podia_contacts (PostgREST limit = 1000 rows per request)
+    let allPodiaContacts: any[] = [];
+    let from = 0;
+    const pageSize = 1000;
+    while (true) {
+      const { data: page } = await supabaseAdmin
+        .from("podia_contacts")
+        .select("id, name, email, subscribed, spent, source")
+        .range(from, from + pageSize - 1);
+      if (!page || page.length === 0) break;
+      allPodiaContacts = allPodiaContacts.concat(page);
+      if (page.length < pageSize) break;
+      from += pageSize;
+    }
 
-    return new Response(JSON.stringify({ students: enriched, podiaContacts: podiaContacts || [] }), {
+    return new Response(JSON.stringify({ students: enriched, podiaContacts: allPodiaContacts }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
