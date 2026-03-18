@@ -254,22 +254,22 @@ const temoignages = [
   </div>
 </section>
 
-<script>
-function openVideoModal(videoId) {
-  const modal = document.getElementById('video-modal');
-  const iframe = document.getElementById('video-modal-iframe');
-  iframe.src = `https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/${videoId}/iframe?autoplay=true`;
+<script is:inline>
+window.openVideoModal = function(videoId) {
+  var modal = document.getElementById('video-modal');
+  var iframe = document.getElementById('video-modal-iframe');
+  iframe.src = 'https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/' + videoId + '/iframe?autoplay=true';
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
-}
-function closeVideoModal(e) {
-  const modal = document.getElementById('video-modal');
-  const iframe = document.getElementById('video-modal-iframe');
+};
+window.closeVideoModal = function() {
+  var modal = document.getElementById('video-modal');
+  var iframe = document.getElementById('video-modal-iframe');
   iframe.src = '';
   modal.classList.remove('active');
   document.body.style.overflow = '';
-}
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeVideoModal(); });
+};
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') window.closeVideoModal(); });
 </script>
 
 </BaseLayout>
