@@ -35,7 +35,7 @@ export default async (req: Request, context: Context) => {
 
   const { data: enrollment, error: enrollError } = await supabaseAdmin
     .from("enrollments")
-    .select("product_type, amount_paid, stripe_session_id, created_at")
+    .select("product_type, amount_paid, stripe_session_id, enrolled_at")
     .eq("user_id", user.id)
     .single();
 
@@ -47,7 +47,7 @@ export default async (req: Request, context: Context) => {
   const customerName = profile?.full_name || profile?.email || user.email || "";
   const customerEmail = profile?.email || user.email || "";
   const amount = (enrollment.amount_paid || 0) / 100;
-  const date = new Date(enrollment.created_at);
+  const date = new Date(enrollment.enrolled_at);
   const invoiceNumber = `KPE-${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}-${user.id.substring(0, 6).toUpperCase()}`;
   const productName = enrollment.product_type === "presentiel"
     ? "Formation KPE en presentiel (8 week-ends)"
