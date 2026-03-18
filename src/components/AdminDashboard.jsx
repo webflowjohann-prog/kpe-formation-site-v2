@@ -647,104 +647,101 @@ function EmailMarketingTab({ session }) {
   const [students, setStudents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
-  const [htmlContent, setHtmlContent] = useState('');
-  const [filter, setFilter] = useState('all'); // all, online, presentiel
+  const [filter, setFilter] = useState('all');
+  const [selectedStudentIds, setSelectedStudentIds] = useState(new Set());
+  const [selectionMode, setSelectionMode] = useState('filter'); // 'filter' or 'manual'
   const [sending, setSending] = useState(false);
   const [result, setResult] = useState(null);
-  const [selectedTemplate, setSelectedTemplate] = useState('');
-  const [showPreview, setShowPreview] = useState(false);
+  const [showStudentPicker, setShowStudentPicker] = useState(false);
+  const [studentSearch, setStudentSearch] = useState('');
+  const [draggedIndex, setDraggedIndex] = useState(null);
+  const [dragOverIndex, setDragOverIndex] = useState(null);
+  const [selectedBlock, setSelectedBlock] = useState(null);
+  const [uploadingImage, setUploadingImage] = useState(false);
+  const [storageImages, setStorageImages] = useState([]);
+  const [showImagePicker, setShowImagePicker] = useState(false);
+  const [imagePickerTarget, setImagePickerTarget] = useState(null);
 
+  // Email blocks state
+  const [blocks, setBlocks] = useState([
+    { id: 'header', type: 'header', locked: true },
+    { id: Date.now().toString(), type: 'text', content: 'Bonjour {{name}},' },
+    { id: (Date.now() + 1).toString(), type: 'text', content: 'Votre contenu ici...' },
+    { id: (Date.now() + 2).toString(), type: 'button', text: 'Accéder à mon espace', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+    { id: 'signature', type: 'signature', locked: true },
+  ]);
+
+  const SUPABASE_URL = 'https://xiglhxtsukjgkgfkqlnp.supabase.co';
+  const BUCKET = 'email-images';
+
+  // Templates
   const templates = [
     {
-      id: 'welcome_back',
-      name: 'Relance : Reprenez votre formation',
+      id: 'relance',
+      name: 'Relance',
       subject: 'Votre formation KPE vous attend !',
-      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Cela fait un moment que vous n'avez pas visité votre espace formation KPE. Vos modules vous attendent !</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Saviez-vous que les élèves qui pratiquent régulièrement obtiennent des résultats remarquables dès les premières séances avec leurs consultants ?</p>
-        <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Reprendre ma formation</a>
-        </div>
-        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
-      </div>`
+      blocks: [
+        { type: 'header', locked: true },
+        { type: 'text', content: 'Bonjour {{name}},' },
+        { type: 'text', content: 'Cela fait un moment que vous n\'avez pas visité votre espace formation KPE. Vos modules vous attendent !' },
+        { type: 'text', content: 'Saviez-vous que les élèves qui pratiquent régulièrement obtiennent des résultats remarquables dès les premières séances avec leurs consultants ?' },
+        { type: 'button', text: 'Reprendre ma formation', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'signature', locked: true },
+      ]
     },
     {
-      id: 'upsell_presentiel',
-      name: 'Upsell : Découvrez le présentiel',
+      id: 'upsell',
+      name: 'Upsell présentiel',
       subject: 'Passez au niveau supérieur : formation KPE en présentiel',
-      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Vous avez déjà franchi un cap important en suivant la formation KPE en ligne. Félicitations !</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Pour aller encore plus loin, la <strong>formation en présentiel à Aurillac</strong> vous permet de pratiquer directement sous la supervision de Joël Prieur. 8 week-ends, des cas réels, et l'énergie du groupe.</p>
-        <div style="background:#f8f6f1;border-radius:12px;padding:20px;margin:20px 0;">
-          <p style="margin:0;font-size:15px;color:#333;"><strong>Prochaine session :</strong> Septembre 2026 à Aurillac</p>
-          <p style="margin:8px 0 0;font-size:15px;color:#333;"><strong>Tarif :</strong> 3 999€</p>
-        </div>
-        <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/formation-presentiel/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Découvrir le présentiel</a>
-        </div>
-        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
-      </div>`
+      blocks: [
+        { type: 'header', locked: true },
+        { type: 'text', content: 'Bonjour {{name}},' },
+        { type: 'text', content: 'Vous avez déjà franchi un cap important en suivant la formation KPE en ligne. Félicitations !' },
+        { type: 'text', content: 'Pour aller encore plus loin, la formation en présentiel à Aurillac vous permet de pratiquer directement sous la supervision de Joël Prieur. 8 week-ends, des cas réels, et l\'énergie du groupe.' },
+        { type: 'button', text: 'Découvrir le présentiel', url: 'https://kpe-formation-site.netlify.app/formation-presentiel/' },
+        { type: 'signature', locked: true },
+      ]
     },
     {
-      id: 'new_content',
-      name: 'Nouveau contenu disponible',
+      id: 'nouveau',
+      name: 'Nouveau contenu',
       subject: 'Nouveau contenu disponible dans votre formation KPE',
-      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Bonne nouvelle ! De nouveaux contenus sont disponibles dans votre espace formation KPE.</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Connectez-vous dès maintenant pour découvrir les nouvelles leçons et continuer votre progression.</p>
-        <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Accéder aux nouveautés</a>
-        </div>
-        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
-      </div>`
+      blocks: [
+        { type: 'header', locked: true },
+        { type: 'text', content: 'Bonjour {{name}},' },
+        { type: 'text', content: 'Bonne nouvelle ! De nouveaux contenus sont disponibles dans votre espace formation KPE.' },
+        { type: 'text', content: 'Connectez-vous dès maintenant pour découvrir les nouvelles leçons et continuer votre progression.' },
+        { type: 'button', text: 'Accéder aux nouveautés', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'signature', locked: true },
+      ]
     },
     {
       id: 'promo',
-      name: 'Offre promotionnelle',
-      subject: 'Offre spéciale KPE : -50% cette semaine uniquement',
-      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Pour une durée limitée, profitez d'une <strong>réduction exceptionnelle</strong> sur la formation KPE en ligne.</p>
-        <div style="background:#0d4f4f;color:white;border-radius:12px;padding:24px;margin:20px 0;text-align:center;">
-          <p style="font-size:32px;font-weight:bold;margin:0;">-50%</p>
-          <p style="margin:8px 0 0;font-size:16px;opacity:0.8;">Avec le code promo fourni</p>
-        </div>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Cette offre est valable jusqu'à dimanche minuit. Ne laissez pas passer cette opportunité de vous former à la kinésiologie psycho-énergétique.</p>
-        <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/achat/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Profiter de l'offre</a>
-        </div>
-        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
-      </div>`
+      name: 'Offre promo',
+      subject: 'Offre spéciale KPE : réduction limitée',
+      blocks: [
+        { type: 'header', locked: true },
+        { type: 'text', content: 'Bonjour {{name}},' },
+        { type: 'text', content: 'Pour une durée limitée, profitez d\'une réduction exceptionnelle sur la formation KPE en ligne.' },
+        { type: 'button', text: 'Profiter de l\'offre', url: 'https://kpe-formation-site.netlify.app/achat/' },
+        { type: 'signature', locked: true },
+      ]
     },
     {
-      id: 'custom',
-      name: 'Email personnalisé (vide)',
+      id: 'vide',
+      name: 'Email vide',
       subject: '',
-      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
-        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Votre contenu ici...</p>
-        <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Accéder à mon espace</a>
-        </div>
-        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
-        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
-      </div>`
+      blocks: [
+        { type: 'header', locked: true },
+        { type: 'text', content: 'Bonjour {{name}},' },
+        { type: 'text', content: 'Votre contenu ici...' },
+        { type: 'button', text: 'Accéder à mon espace', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'signature', locked: true },
+      ]
     }
   ];
 
-  useEffect(() => { loadStudents(); }, []);
+  useEffect(() => { loadStudents(); loadStorageImages(); }, []);
 
   const loadStudents = async () => {
     setLoading(true);
@@ -758,34 +755,142 @@ function EmailMarketingTab({ session }) {
     setLoading(false);
   };
 
-  const filteredStudents = students.filter(s => {
+  const loadStorageImages = async () => {
+    try {
+      const supabase = getSupabase();
+      const { data } = await supabase.storage.from(BUCKET).list('', { limit: 100 });
+      if (data) setStorageImages(data.filter(f => f.name !== '.emptyFolderPlaceholder'));
+    } catch (e) { console.error(e); }
+  };
+
+  const uploadImage = async (file) => {
+    setUploadingImage(true);
+    try {
+      const supabase = getSupabase();
+      const ext = file.name.split('.').pop();
+      const fileName = `img_${Date.now()}.${ext}`;
+      const { error } = await supabase.storage.from(BUCKET).upload(fileName, file, { cacheControl: '31536000', upsert: false });
+      if (error) throw error;
+      await loadStorageImages();
+      return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
+    } catch (e) {
+      console.error('Upload error:', e);
+      return null;
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const getImageUrl = (fileName) => `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
+
+  // Recipients logic
+  const filteredByType = students.filter(s => {
     if (filter === 'online') return s.product_type === 'online';
     if (filter === 'presentiel') return s.product_type === 'presentiel';
     return true;
   });
 
+  const recipients = selectionMode === 'manual'
+    ? students.filter(s => selectedStudentIds.has(s.id))
+    : filteredByType;
+
+  const toggleStudent = (id) => {
+    const next = new Set(selectedStudentIds);
+    if (next.has(id)) next.delete(id); else next.add(id);
+    setSelectedStudentIds(next);
+  };
+
   const applyTemplate = (templateId) => {
     const t = templates.find(t => t.id === templateId);
-    if (t) {
-      setSubject(t.subject);
-      setHtmlContent(t.html);
-      setSelectedTemplate(templateId);
+    if (!t) return;
+    setSubject(t.subject);
+    setBlocks(t.blocks.map((b, i) => ({ ...b, id: b.type === 'header' ? 'header' : b.type === 'signature' ? 'signature' : `${Date.now()}_${i}` })));
+    setSelectedBlock(null);
+  };
+
+  // Block operations
+  const addBlock = (type) => {
+    const newBlock = { id: Date.now().toString(), type };
+    if (type === 'text') newBlock.content = 'Nouveau texte...';
+    if (type === 'button') { newBlock.text = 'Cliquez ici'; newBlock.url = 'https://kpe-formation-site.netlify.app/espace-eleve/'; }
+    if (type === 'image') { newBlock.src = ''; newBlock.alt = ''; }
+    if (type === 'divider') { /* nothing extra */ }
+
+    // Insert before signature
+    const sigIndex = blocks.findIndex(b => b.id === 'signature');
+    const newBlocks = [...blocks];
+    newBlocks.splice(sigIndex >= 0 ? sigIndex : blocks.length, 0, newBlock);
+    setBlocks(newBlocks);
+    setSelectedBlock(newBlock.id);
+  };
+
+  const updateBlock = (id, updates) => {
+    setBlocks(blocks.map(b => b.id === id ? { ...b, ...updates } : b));
+  };
+
+  const removeBlock = (id) => {
+    setBlocks(blocks.filter(b => b.id !== id));
+    if (selectedBlock === id) setSelectedBlock(null);
+  };
+
+  const moveBlock = (fromIndex, toIndex) => {
+    const b = blocks[fromIndex];
+    if (b.locked) return;
+    const target = blocks[toIndex];
+    if (target?.locked) return;
+    const newBlocks = [...blocks];
+    newBlocks.splice(fromIndex, 1);
+    newBlocks.splice(toIndex, 0, b);
+    setBlocks(newBlocks);
+  };
+
+  // Generate HTML from blocks
+  const generateHtml = () => {
+    let html = '<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">';
+    for (const block of blocks) {
+      switch (block.type) {
+        case 'header':
+          html += ''; // Header is implicit (just the container div)
+          break;
+        case 'text':
+          html += `<p style="font-size:16px;line-height:1.6;color:#333;">${(block.content || '').replace(/\n/g, '<br>')}</p>`;
+          break;
+        case 'image':
+          if (block.src) {
+            html += `<div style="text-align:center;margin:20px 0;"><img src="${block.src}" alt="${block.alt || ''}" style="max-width:100%;border-radius:8px;" /></div>`;
+          }
+          break;
+        case 'button':
+          html += `<div style="text-align:center;margin:30px 0;"><a href="${block.url || '#'}" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">${block.text || 'Cliquez ici'}</a></div>`;
+          break;
+        case 'divider':
+          html += '<hr style="border:none;border-top:1px solid #eee;margin:24px 0;">';
+          break;
+        case 'signature':
+          html += '<p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>';
+          html += '<hr style="border:none;border-top:1px solid #eee;margin:30px 0;">';
+          html += '<p style="color:#999;font-size:12px;text-align:center;">KPE Formation - Kinésiologie Professionnelle et Énergétique</p>';
+          break;
+      }
     }
+    html += '</div>';
+    return html;
   };
 
   const handleSend = async () => {
-    if (!subject || !htmlContent) return;
-    if (!confirm(`Envoyer cet email à ${filteredStudents.length} élève(s) ?`)) return;
+    if (!subject || blocks.length < 3 || recipients.length === 0) return;
+    if (!confirm(`Envoyer cet email à ${recipients.length} élève(s) ?`)) return;
     setSending(true);
     setResult(null);
     try {
+      const htmlContent = generateHtml();
       const res = await fetch('/api/newsletter', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
         body: JSON.stringify({
           subject,
           htmlContent,
-          recipients: filteredStudents.map(s => ({ email: s.email, name: s.full_name || '' }))
+          recipients: recipients.map(s => ({ email: s.email, name: s.full_name || '' }))
         })
       });
       const data = await res.json();
@@ -796,70 +901,322 @@ function EmailMarketingTab({ session }) {
     setSending(false);
   };
 
+  // Drag and drop handlers
+  const handleDragStart = (index) => {
+    if (blocks[index].locked) return;
+    setDraggedIndex(index);
+  };
+  const handleDragOver = (e, index) => {
+    e.preventDefault();
+    if (blocks[index].locked) return;
+    setDragOverIndex(index);
+  };
+  const handleDrop = (index) => {
+    if (draggedIndex !== null && draggedIndex !== index) {
+      moveBlock(draggedIndex, index);
+    }
+    setDraggedIndex(null);
+    setDragOverIndex(null);
+  };
+  const handleDragEnd = () => { setDraggedIndex(null); setDragOverIndex(null); };
+
+  // Block palette styles
+  const paletteBtn = { display: 'flex', alignItems: 'center', gap: '8px', padding: '10px 14px', background: 'white', border: '1.5px solid #e5e7eb', borderRadius: '10px', cursor: 'pointer', fontSize: '13px', fontWeight: '500', color: '#374151', width: '100%', transition: 'all 0.15s' };
+
+  // Render block in visual editor
+  const renderBlock = (block, index) => {
+    const isSelected = selectedBlock === block.id;
+    const isDragTarget = dragOverIndex === index && draggedIndex !== index;
+
+    return (
+      <div
+        key={block.id}
+        draggable={!block.locked}
+        onDragStart={() => handleDragStart(index)}
+        onDragOver={(e) => handleDragOver(e, index)}
+        onDrop={() => handleDrop(index)}
+        onDragEnd={handleDragEnd}
+        onClick={() => !block.locked && setSelectedBlock(block.id)}
+        style={{
+          position: 'relative',
+          padding: block.locked ? '0' : '2px',
+          borderRadius: '6px',
+          border: isSelected ? '2px solid #0d4f4f' : isDragTarget ? '2px dashed #14b8a6' : '2px solid transparent',
+          cursor: block.locked ? 'default' : 'grab',
+          transition: 'border 0.15s',
+          opacity: draggedIndex === index ? 0.4 : 1,
+        }}
+      >
+        {/* Block controls */}
+        {isSelected && !block.locked && (
+          <div style={{ position: 'absolute', top: '-12px', right: '8px', display: 'flex', gap: '4px', zIndex: 10 }}>
+            {index > 1 && (
+              <button onClick={(e) => { e.stopPropagation(); moveBlock(index, index - 1); }} style={{ width: '24px', height: '24px', borderRadius: '6px', border: '1px solid #e5e7eb', background: 'white', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↑</button>
+            )}
+            {index < blocks.length - 2 && (
+              <button onClick={(e) => { e.stopPropagation(); moveBlock(index, index + 1); }} style={{ width: '24px', height: '24px', borderRadius: '6px', border: '1px solid #e5e7eb', background: 'white', cursor: 'pointer', fontSize: '11px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>↓</button>
+            )}
+            <button onClick={(e) => { e.stopPropagation(); removeBlock(block.id); }} style={{ width: '24px', height: '24px', borderRadius: '6px', border: '1px solid #fca5a5', background: '#fef2f2', cursor: 'pointer', fontSize: '11px', color: '#dc2626', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>✕</button>
+          </div>
+        )}
+
+        {/* Block content */}
+        {block.type === 'header' && (
+          <div style={{ padding: '0', opacity: 0.5, fontSize: '12px', color: '#9ca3af', textAlign: 'center' }}>En-tête KPE (automatique)</div>
+        )}
+        {block.type === 'text' && (
+          <textarea
+            value={block.content || ''}
+            onChange={(e) => updateBlock(block.id, { content: e.target.value })}
+            onClick={(e) => { e.stopPropagation(); setSelectedBlock(block.id); }}
+            style={{
+              width: '100%', border: 'none', outline: 'none', resize: 'vertical',
+              fontSize: '15px', lineHeight: '1.6', color: '#333', padding: '8px',
+              background: 'transparent', fontFamily: 'Arial, sans-serif',
+              minHeight: '60px', boxSizing: 'border-box'
+            }}
+            placeholder="Tapez votre texte..."
+          />
+        )}
+        {block.type === 'image' && (
+          <div style={{ textAlign: 'center', padding: '12px' }}>
+            {block.src ? (
+              <div>
+                <img src={block.src} alt={block.alt || ''} style={{ maxWidth: '100%', maxHeight: '300px', borderRadius: '8px' }} />
+                <div style={{ marginTop: '8px', display: 'flex', gap: '8px', justifyContent: 'center' }}>
+                  <button onClick={(e) => { e.stopPropagation(); setImagePickerTarget(block.id); setShowImagePicker(true); }} style={{ fontSize: '12px', color: '#0d4f4f', background: 'none', border: 'none', cursor: 'pointer', textDecoration: 'underline' }}>Changer</button>
+                </div>
+              </div>
+            ) : (
+              <div
+                onClick={(e) => { e.stopPropagation(); setImagePickerTarget(block.id); setShowImagePicker(true); }}
+                style={{ padding: '32px', border: '2px dashed #d1d5db', borderRadius: '12px', cursor: 'pointer', color: '#9ca3af' }}
+              >
+                <div style={{ fontSize: '28px', marginBottom: '8px' }}>🖼️</div>
+                <div style={{ fontSize: '14px' }}>Cliquez pour ajouter une image</div>
+              </div>
+            )}
+          </div>
+        )}
+        {block.type === 'button' && (
+          <div style={{ textAlign: 'center', padding: '12px 0' }}>
+            <div style={{ display: 'inline-block', background: '#c8a44e', color: 'white', padding: '14px 32px', borderRadius: '6px', fontWeight: 'bold', fontSize: '16px' }}>
+              {block.text || 'Cliquez ici'}
+            </div>
+            {isSelected && (
+              <div style={{ marginTop: '10px', display: 'flex', gap: '8px', justifyContent: 'center', flexWrap: 'wrap' }}>
+                <input
+                  value={block.text || ''}
+                  onChange={(e) => updateBlock(block.id, { text: e.target.value })}
+                  onClick={(e) => e.stopPropagation()}
+                  placeholder="Texte du bouton"
+                  style={{ padding: '6px 10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '13px', width: '180px' }}
+                />
+                <input
+                  value={block.url || ''}
+                  onChange={(e) => updateBlock(block.id, { url: e.target.value })}
+                  onClick={(e) => e.stopPropagation()}
+                  placeholder="URL du lien"
+                  style={{ padding: '6px 10px', border: '1px solid #e5e7eb', borderRadius: '6px', fontSize: '13px', width: '280px' }}
+                />
+              </div>
+            )}
+          </div>
+        )}
+        {block.type === 'divider' && (
+          <hr style={{ border: 'none', borderTop: '1px solid #eee', margin: '16px 0' }} />
+        )}
+        {block.type === 'signature' && (
+          <div style={{ opacity: 0.5, fontSize: '12px', color: '#9ca3af', textAlign: 'center', padding: '4px 0' }}>Signature Joël Prieur (automatique)</div>
+        )}
+      </div>
+    );
+  };
+
+  if (loading) return <div style={{ textAlign: 'center', padding: '60px', color: '#9ca3af' }}>Chargement...</div>;
+
   return (
     <div>
+      {/* KPI row */}
       <div style={styles.kpiGrid}>
         <KpiCard label="Total élèves" value={students.length} />
         <KpiCard label="En ligne" value={students.filter(s => s.product_type === 'online').length} />
         <KpiCard label="Présentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
       </div>
 
-      <div style={{ background: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Choisir un template</h3>
-        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+      {/* Templates */}
+      <div style={{ background: 'white', borderRadius: '12px', padding: '20px', marginBottom: '16px', border: '1px solid #f3f4f6' }}>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: '#6b7280', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Templates</div>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
           {templates.map(t => (
-            <button key={t.id} onClick={() => applyTemplate(t.id)} style={{
-              ...styles.btn,
-              ...(selectedTemplate === t.id ? styles.btnPrimary : styles.btnSecondary),
-              fontSize: '13px', padding: '8px 16px'
-            }}>{t.name}</button>
+            <button key={t.id} onClick={() => applyTemplate(t.id)} style={{ ...styles.btn, ...styles.btnSecondary, fontSize: '13px', padding: '8px 16px' }}>{t.name}</button>
           ))}
         </div>
+      </div>
 
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Destinataires</label>
-          <div style={{ display: 'flex', gap: '8px' }}>
+      {/* Main layout: editor + preview */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px', marginBottom: '16px' }}>
+
+        {/* LEFT: Block editor */}
+        <div style={{ background: 'white', borderRadius: '12px', padding: '20px', border: '1px solid #f3f4f6' }}>
+          <div style={{ fontSize: '13px', fontWeight: '600', color: '#6b7280', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Editeur</div>
+
+          {/* Subject */}
+          <div style={{ marginBottom: '16px' }}>
+            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Objet de l'email</label>
+            <input style={{ ...styles.input, marginBottom: 0 }} value={subject} onChange={e => setSubject(e.target.value)} placeholder="Objet de votre email..." />
+          </div>
+
+          {/* Block palette */}
+          <div style={{ display: 'flex', gap: '6px', marginBottom: '16px', flexWrap: 'wrap' }}>
+            <button onClick={() => addBlock('text')} style={paletteBtn}>📝 Texte</button>
+            <button onClick={() => addBlock('image')} style={paletteBtn}>🖼️ Image</button>
+            <button onClick={() => addBlock('button')} style={paletteBtn}>🔘 Bouton</button>
+            <button onClick={() => addBlock('divider')} style={paletteBtn}>➖ Séparateur</button>
+          </div>
+
+          {/* Blocks list */}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', minHeight: '300px', background: '#fafafa', borderRadius: '10px', padding: '12px', border: '1px solid #f3f4f6' }}>
+            {blocks.map((block, index) => renderBlock(block, index))}
+          </div>
+        </div>
+
+        {/* RIGHT: Live preview */}
+        <div style={{ background: 'white', borderRadius: '12px', padding: '20px', border: '1px solid #f3f4f6' }}>
+          <div style={{ fontSize: '13px', fontWeight: '600', color: '#6b7280', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Aperçu email</div>
+          <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px', background: 'white', minHeight: '400px' }}
+            dangerouslySetInnerHTML={{ __html: generateHtml().replace(/\{\{name\}\}/g, 'Jean Dupont') }}
+          />
+        </div>
+      </div>
+
+      {/* Recipients section */}
+      <div style={{ background: 'white', borderRadius: '12px', padding: '20px', marginBottom: '16px', border: '1px solid #f3f4f6' }}>
+        <div style={{ fontSize: '13px', fontWeight: '600', color: '#6b7280', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Destinataires</div>
+
+        {/* Mode toggle */}
+        <div style={{ display: 'flex', gap: '8px', marginBottom: '12px' }}>
+          <button onClick={() => setSelectionMode('filter')} style={{ ...styles.btn, ...(selectionMode === 'filter' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '8px 16px' }}>Par groupe</button>
+          <button onClick={() => setSelectionMode('manual')} style={{ ...styles.btn, ...(selectionMode === 'manual' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '8px 16px' }}>Sélection manuelle</button>
+        </div>
+
+        {selectionMode === 'filter' && (
+          <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
             <button onClick={() => setFilter('all')} style={{ ...styles.btn, ...(filter === 'all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Tous ({students.length})</button>
             <button onClick={() => setFilter('online')} style={{ ...styles.btn, ...(filter === 'online' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>En ligne ({students.filter(s => s.product_type === 'online').length})</button>
             <button onClick={() => setFilter('presentiel')} style={{ ...styles.btn, ...(filter === 'presentiel' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Présentiel ({students.filter(s => s.product_type === 'presentiel').length})</button>
           </div>
-        </div>
-
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Objet de l'email</label>
-          <input style={{ ...styles.input, marginBottom: 0 }} value={subject} onChange={e => setSubject(e.target.value)} placeholder="Objet de votre email..." />
-        </div>
-
-        <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Contenu HTML (utilisez {"{{name}}"} pour le prénom)</label>
-          <textarea style={{ ...styles.input, marginBottom: 0, minHeight: '200px', fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', lineHeight: '1.5' }} value={htmlContent} onChange={e => setHtmlContent(e.target.value)} />
-        </div>
-
-        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-          <button onClick={() => setShowPreview(!showPreview)} style={{ ...styles.btn, ...styles.btnSecondary }}>
-            {showPreview ? 'Masquer l\'aperçu' : 'Voir l\'aperçu'}
-          </button>
-          <button onClick={handleSend} disabled={sending || !subject || !htmlContent || filteredStudents.length === 0} style={{ ...styles.btn, ...styles.btnPrimary, opacity: (sending || !subject || !htmlContent) ? 0.5 : 1 }}>
-            {sending ? 'Envoi en cours...' : `Envoyer à ${filteredStudents.length} élève(s)`}
-          </button>
-        </div>
-
-        {result && !result.error && (
-          <div style={{ marginTop: '16px', padding: '12px', background: '#ecfdf5', borderRadius: '8px', color: '#059669', fontSize: '14px' }}>
-            ✅ {result.sent} email(s) envoyé(s) avec succès.{result.failed > 0 && ` ${result.failed} échec(s).`}
-          </div>
         )}
-        {result?.error && (
-          <div style={{ marginTop: '16px', padding: '12px', background: '#fef2f2', borderRadius: '8px', color: '#dc2626', fontSize: '14px' }}>
-            ❌ {result.error}
+
+        {selectionMode === 'manual' && (
+          <div>
+            <input
+              style={{ ...styles.searchInput, maxWidth: '100%', marginBottom: '8px' }}
+              placeholder="Rechercher un élève..."
+              value={studentSearch}
+              onChange={e => setStudentSearch(e.target.value)}
+            />
+            <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #f3f4f6', borderRadius: '8px' }}>
+              {students
+                .filter(s => (s.full_name || '').toLowerCase().includes(studentSearch.toLowerCase()) || (s.email || '').toLowerCase().includes(studentSearch.toLowerCase()))
+                .map(s => (
+                  <label key={s.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid #f9fafb', fontSize: '14px' }}>
+                    <input type="checkbox" checked={selectedStudentIds.has(s.id)} onChange={() => toggleStudent(s.id)} />
+                    <span style={{ fontWeight: '500' }}>{s.full_name || 'Sans nom'}</span>
+                    <span style={{ color: '#9ca3af', fontSize: '12px' }}>{s.email}</span>
+                  </label>
+                ))}
+            </div>
+            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>{selectedStudentIds.size} élève(s) sélectionné(s)</div>
           </div>
         )}
       </div>
 
-      {showPreview && htmlContent && (
-        <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Aperçu de l'email</h3>
-          <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px' }} dangerouslySetInnerHTML={{ __html: htmlContent.replace(/\{\{name\}\}/g, 'Jean Dupont') }} />
+      {/* Send button */}
+      <div style={{ display: 'flex', gap: '12px', alignItems: 'center', flexWrap: 'wrap' }}>
+        <button
+          onClick={handleSend}
+          disabled={sending || !subject || recipients.length === 0}
+          style={{ ...styles.btn, ...styles.btnPrimary, padding: '14px 28px', fontSize: '15px', opacity: (sending || !subject || recipients.length === 0) ? 0.5 : 1 }}
+        >
+          {sending ? 'Envoi en cours...' : `Envoyer à ${recipients.length} élève(s)`}
+        </button>
+        <span style={{ fontSize: '13px', color: '#9ca3af' }}>
+          Utilisez {'{{name}}'} dans le texte pour personnaliser avec le prénom
+        </span>
+      </div>
+
+      {/* Result */}
+      {result && !result.error && (
+        <div style={{ marginTop: '16px', padding: '12px', background: '#ecfdf5', borderRadius: '8px', color: '#059669', fontSize: '14px' }}>
+          {result.sent} email(s) envoyé(s) avec succès.{result.failed > 0 && ` ${result.failed} échec(s).`}
+        </div>
+      )}
+      {result?.error && (
+        <div style={{ marginTop: '16px', padding: '12px', background: '#fef2f2', borderRadius: '8px', color: '#dc2626', fontSize: '14px' }}>
+          {result.error}
+        </div>
+      )}
+
+      {/* Image picker modal */}
+      {showImagePicker && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }} onClick={() => setShowImagePicker(false)}>
+          <div style={{ background: 'white', borderRadius: '16px', padding: '24px', maxWidth: '600px', width: '90%', maxHeight: '80vh', overflowY: 'auto' }} onClick={e => e.stopPropagation()}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ fontSize: '18px', fontWeight: '600' }}>Choisir une image</h3>
+              <button onClick={() => setShowImagePicker(false)} style={{ background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#6b7280' }}>✕</button>
+            </div>
+
+            {/* Upload new */}
+            <div style={{ marginBottom: '20px' }}>
+              <label style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px',
+                padding: '16px', border: '2px dashed #d1d5db', borderRadius: '12px', cursor: 'pointer',
+                color: '#6b7280', fontSize: '14px', transition: 'all 0.15s'
+              }}>
+                <input type="file" accept="image/*" style={{ display: 'none' }} onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  const url = await uploadImage(file);
+                  if (url && imagePickerTarget) {
+                    updateBlock(imagePickerTarget, { src: url });
+                    setShowImagePicker(false);
+                  }
+                }} />
+                {uploadingImage ? 'Upload en cours...' : '📤 Uploader une nouvelle image'}
+              </label>
+            </div>
+
+            {/* Existing images */}
+            {storageImages.length > 0 && (
+              <div>
+                <div style={{ fontSize: '13px', fontWeight: '600', color: '#6b7280', marginBottom: '10px' }}>Images disponibles</div>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '10px' }}>
+                  {storageImages.map(img => (
+                    <div
+                      key={img.name}
+                      onClick={() => {
+                        if (imagePickerTarget) {
+                          updateBlock(imagePickerTarget, { src: getImageUrl(img.name) });
+                        }
+                        setShowImagePicker(false);
+                      }}
+                      style={{
+                        cursor: 'pointer', borderRadius: '8px', overflow: 'hidden',
+                        border: '2px solid #e5e7eb', aspectRatio: '1', transition: 'border 0.15s'
+                      }}
+                    >
+                      <img src={getImageUrl(img.name)} alt={img.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {storageImages.length === 0 && !uploadingImage && (
+              <p style={{ textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>Aucune image. Uploadez-en une ci-dessus.</p>
+            )}
+          </div>
         </div>
       )}
     </div>
