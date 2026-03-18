@@ -645,6 +645,7 @@ function RevenueChart({ enrollments }) {
 // ============================================
 function EmailMarketingTab({ session }) {
   const [students, setStudents] = useState([]);
+  const [podiaContacts, setPodiaContacts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
   const [filter, setFilter] = useState('all');
@@ -747,6 +748,7 @@ function EmailMarketingTab({ session }) {
       });
       const data = await res.json();
       if (data.students) setStudents(data.students);
+      if (data.podiaContacts) setPodiaContacts(data.podiaContacts);
     } catch (err) { console.error(err); }
     setLoading(false);
   };
@@ -786,14 +788,23 @@ function EmailMarketingTab({ session }) {
 
 
   // Recipients logic
-  const filteredByType = students.filter(s => {
-    if (filter === 'online') return s.product_type === 'online';
-    if (filter === 'presentiel') return s.product_type === 'presentiel';
-    return true;
-  });
+  const filteredByType = (() => {
+    if (filter === 'online') return students.filter(s => s.product_type === 'online');
+    if (filter === 'presentiel') return students.filter(s => s.product_type === 'presentiel');
+    if (filter === 'podia_all') return podiaContacts;
+    if (filter === 'podia_subscribed') return podiaContacts.filter(c => c.subscribed);
+    if (filter === 'podia_buyers') return podiaContacts.filter(c => parseFloat(c.spent) > 0);
+    return students;
+  })();
+
+  // Combine students + podia for manual picker
+  const allPickerContacts = [
+    ...students.map(s => ({ ...s, _source: 'student' })),
+    ...podiaContacts.map(c => ({ id: `podia_${c.id}`, email: c.email, full_name: c.name, _source: 'podia' }))
+  ];
 
   const recipients = selectionMode === 'manual'
-    ? students.filter(s => selectedStudentIds.has(s.id))
+    ? allPickerContacts.filter(s => selectedStudentIds.has(s.id))
     : filteredByType;
 
   const toggleStudent = (id) => {
@@ -881,7 +892,7 @@ function EmailMarketingTab({ session }) {
 
   const handleSend = async () => {
     if (!subject || blocks.length < 3 || recipients.length === 0) return;
-    if (!confirm(`Envoyer cet email à ${recipients.length} élève(s) ?`)) return;
+    if (!confirm(`Envoyer cet email à ${recipients.length} contact(s) ?`)) return;
     setSending(true);
     setResult(null);
     try {
@@ -892,7 +903,7 @@ function EmailMarketingTab({ session }) {
         body: JSON.stringify({
           subject,
           htmlContent,
-          recipients: recipients.map(s => ({ email: s.email, name: s.full_name || '' }))
+          recipients: recipients.map(s => ({ email: s.email, name: s.full_name || s.name || '' }))
         })
       });
       const data = await res.json();
@@ -1044,6 +1055,7 @@ function EmailMarketingTab({ session }) {
         <KpiCard label="Total élèves" value={students.length} />
         <KpiCard label="En ligne" value={students.filter(s => s.product_type === 'online').length} />
         <KpiCard label="Présentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
+        <KpiCard label="Contacts Podia" value={podiaContacts.length} />
       </div>
 
       {/* Templates */}
@@ -1107,6 +1119,10 @@ function EmailMarketingTab({ session }) {
             <button onClick={() => setFilter('all')} style={{ ...styles.btn, ...(filter === 'all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Tous ({students.length})</button>
             <button onClick={() => setFilter('online')} style={{ ...styles.btn, ...(filter === 'online' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>En ligne ({students.filter(s => s.product_type === 'online').length})</button>
             <button onClick={() => setFilter('presentiel')} style={{ ...styles.btn, ...(filter === 'presentiel' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Présentiel ({students.filter(s => s.product_type === 'presentiel').length})</button>
+            <span style={{ width: '1px', background: '#e5e7eb', margin: '0 4px' }} />
+            <button onClick={() => setFilter('podia_all')} style={{ ...styles.btn, ...(filter === 'podia_all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia tous ({podiaContacts.length})</button>
+            <button onClick={() => setFilter('podia_subscribed')} style={{ ...styles.btn, ...(filter === 'podia_subscribed' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia abonnés ({podiaContacts.filter(c => c.subscribed).length})</button>
+            <button onClick={() => setFilter('podia_buyers')} style={{ ...styles.btn, ...(filter === 'podia_buyers' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia acheteurs ({podiaContacts.filter(c => parseFloat(c.spent) > 0).length})</button>
           </div>
         )}
 
@@ -1114,22 +1130,23 @@ function EmailMarketingTab({ session }) {
           <div>
             <input
               style={{ ...styles.searchInput, maxWidth: '100%', marginBottom: '8px' }}
-              placeholder="Rechercher un élève..."
+              placeholder="Rechercher un élève ou contact Podia..."
               value={studentSearch}
               onChange={e => setStudentSearch(e.target.value)}
             />
             <div style={{ maxHeight: '200px', overflowY: 'auto', border: '1px solid #f3f4f6', borderRadius: '8px' }}>
-              {students
+              {allPickerContacts
                 .filter(s => (s.full_name || '').toLowerCase().includes(studentSearch.toLowerCase()) || (s.email || '').toLowerCase().includes(studentSearch.toLowerCase()))
                 .map(s => (
                   <label key={s.id} style={{ display: 'flex', alignItems: 'center', gap: '10px', padding: '8px 12px', cursor: 'pointer', borderBottom: '1px solid #f9fafb', fontSize: '14px' }}>
                     <input type="checkbox" checked={selectedStudentIds.has(s.id)} onChange={() => toggleStudent(s.id)} />
                     <span style={{ fontWeight: '500' }}>{s.full_name || 'Sans nom'}</span>
                     <span style={{ color: '#9ca3af', fontSize: '12px' }}>{s.email}</span>
+                    {s._source === 'podia' && <span style={{ background: '#dbeafe', color: '#1d4ed8', fontSize: '10px', padding: '2px 6px', borderRadius: '4px', fontWeight: '600' }}>Podia</span>}
                   </label>
                 ))}
             </div>
-            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>{selectedStudentIds.size} élève(s) sélectionné(s)</div>
+            <div style={{ fontSize: '13px', color: '#6b7280', marginTop: '8px' }}>{selectedStudentIds.size} contact(s) sélectionné(s)</div>
           </div>
         )}
       </div>
@@ -1141,7 +1158,7 @@ function EmailMarketingTab({ session }) {
           disabled={sending || !subject || recipients.length === 0}
           style={{ ...styles.btn, ...styles.btnPrimary, padding: '14px 28px', fontSize: '15px', opacity: (sending || !subject || recipients.length === 0) ? 0.5 : 1 }}
         >
-          {sending ? 'Envoi en cours...' : `Envoyer à ${recipients.length} élève(s)`}
+          {sending ? 'Envoi en cours...' : `Envoyer à ${recipients.length} contact(s)`}
         </button>
         <span style={{ fontSize: '13px', color: '#9ca3af' }}>
           Utilisez {'{{name}}'} dans le texte pour personnaliser avec le prénom

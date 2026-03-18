@@ -34,7 +34,7 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  // GET: return list of students with their enrollment info
+  // GET: return list of students + podia contacts
   if (req.method === "GET") {
     const { data: students } = await supabaseAdmin
       .from("profiles")
@@ -51,7 +51,11 @@ export default async (req: Request, context: Context) => {
       return { ...s, product_type: enr?.product_type || "online" };
     });
 
-    return new Response(JSON.stringify({ students: enriched }), {
+    const { data: podiaContacts } = await supabaseAdmin
+      .from("podia_contacts")
+      .select("id, name, email, subscribed, spent, source");
+
+    return new Response(JSON.stringify({ students: enriched, podiaContacts: podiaContacts || [] }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
