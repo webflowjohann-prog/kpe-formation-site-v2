@@ -139,11 +139,14 @@ function OverviewTab({ students, enrollments, totalRevenue, recentActivity }) {
 // ============================================
 // STUDENTS TAB
 // ============================================
-function StudentsTab({ students, progress, totalLessons }) {
+function StudentsTab({ students, progress, totalLessons, session }) {
   const [search, setSearch] = useState('');
   const [selectedStudent, setSelectedStudent] = useState(null);
+  const [localStudents, setLocalStudents] = useState(students);
 
-  const filtered = students.filter(s =>
+  useEffect(() => { setLocalStudents(students); }, [students]);
+
+  const filtered = localStudents.filter(s =>
     (s.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
     (s.email || '').toLowerCase().includes(search.toLowerCase())
   );
@@ -218,9 +221,21 @@ function StudentsTab({ students, progress, totalLessons }) {
 
       {selectedStudent && (
         <div style={{ marginTop: '20px', background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #e5e7eb' }}>
-          <h4 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '12px' }}>Detail : {selectedStudent.full_name || selectedStudent.email}</h4>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
+            <h4 style={{ fontSize: '16px', fontWeight: '600' }}>Detail : {selectedStudent.full_name || selectedStudent.email}</h4>
+            <button onClick={async () => {
+              const supabase = getSupabase();
+              const newBlocked = !selectedStudent.is_blocked;
+              await supabase.from('profiles').update({ is_blocked: newBlocked }).eq('id', selectedStudent.id);
+              setLocalStudents(prev => prev.map(s => s.id === selectedStudent.id ? { ...s, is_blocked: newBlocked } : s));
+              setSelectedStudent({ ...selectedStudent, is_blocked: newBlocked });
+            }} style={{ ...styles.btn, ...(selectedStudent.is_blocked ? styles.btnPrimary : { background: '#fef2f2', color: '#dc2626', border: '1px solid #fecaca' }) }}>
+              {selectedStudent.is_blocked ? 'Debloquer' : 'Bloquer cet eleve'}
+            </button>
+          </div>
           <p style={{ fontSize: '14px', color: '#6b7280' }}>
-            Progression : {getProgress(selectedStudent.id)}% ({progress.filter(p => p.user_id === selectedStudent.id && p.completed).length} / {totalLessons} lecons)
+            Email : {selectedStudent.email} | Progression : {getProgress(selectedStudent.id)}% ({progress.filter(p => p.user_id === selectedStudent.id && p.completed).length} / {totalLessons} lecons)
+            {selectedStudent.is_blocked && <span style={{ ...styles.badge, ...styles.badgeRed, marginLeft: '8px' }}>Bloque</span>}
           </p>
         </div>
       )}
@@ -436,6 +451,194 @@ function PromoCodesTab({ session }) {
   );
 }
 // ============================================
+
+// ============================================
+// CHAT TAB
+// ============================================
+function ChatTab({ students, session, adminId }) {
+  const [selectedStudent, setSelectedStudent] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [search, setSearch] = useState('');
+
+  const filtered = students.filter(s =>
+    (s.full_name || '').toLowerCase().includes(search.toLowerCase()) ||
+    (s.email || '').toLowerCase().includes(search.toLowerCase())
+  );
+
+  useEffect(() => {
+    if (selectedStudent) loadMessages(selectedStudent.id);
+  }, [selectedStudent]);
+
+  const loadMessages = async (studentId) => {
+    const supabase = getSupabase();
+    const { data } = await supabase
+      .from('messages')
+      .select('*')
+      .or(`and(sender_id.eq.${adminId},recipient_id.eq.${studentId}),and(sender_id.eq.${studentId},recipient_id.eq.${adminId})`)
+      .order('created_at', { ascending: true });
+    setMessages(data || []);
+    // Mark unread messages as read
+    if (data) {
+      const unread = data.filter(m => m.recipient_id === adminId && !m.read).map(m => m.id);
+      if (unread.length > 0) {
+        await supabase.from('messages').update({ read: true }).in('id', unread);
+      }
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!newMessage.trim() || !selectedStudent) return;
+    setSending(true);
+    const supabase = getSupabase();
+    await supabase.from('messages').insert({
+      sender_id: adminId,
+      recipient_id: selectedStudent.id,
+      content: newMessage.trim()
+    });
+    setNewMessage('');
+    await loadMessages(selectedStudent.id);
+    // Send email notification to student
+    try {
+      await fetch('/api/notify-message', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({ studentEmail: selectedStudent.email, studentName: selectedStudent.full_name })
+      });
+    } catch (e) { console.error('Notification error:', e); }
+    setSending(false);
+  };
+
+  return (
+    <div style={{ display: 'flex', gap: '20px', minHeight: '500px' }}>
+      <div style={{ width: '280px', flexShrink: 0 }}>
+        <input style={{ ...styles.searchInput, maxWidth: '100%', marginBottom: '12px' }} placeholder="Rechercher..." value={search} onChange={e => setSearch(e.target.value)} />
+        <div style={{ background: 'white', borderRadius: '12px', border: '1px solid #f3f4f6', overflow: 'hidden' }}>
+          {filtered.map(s => (
+            <div key={s.id} onClick={() => setSelectedStudent(s)} style={{
+              padding: '12px 16px', cursor: 'pointer', borderBottom: '1px solid #f9fafb',
+              background: selectedStudent?.id === s.id ? '#f0fdfa' : 'white',
+              transition: 'background 0.2s'
+            }}>
+              <div style={{ fontWeight: '600', fontSize: '14px', color: '#111' }}>{s.full_name || 'Sans nom'}</div>
+              <div style={{ fontSize: '12px', color: '#9ca3af' }}>{s.email}</div>
+            </div>
+          ))}
+          {filtered.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>Aucun \u00e9l\u00e8ve</div>}
+        </div>
+      </div>
+
+      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white', borderRadius: '12px', border: '1px solid #f3f4f6' }}>
+        {!selectedStudent ? (
+          <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>
+            <p>S\u00e9lectionnez un \u00e9l\u00e8ve pour d\u00e9marrer une conversation.</p>
+          </div>
+        ) : (
+          <>
+            <div style={{ padding: '16px', borderBottom: '1px solid #f3f4f6', fontWeight: '600', color: '#111' }}>
+              {selectedStudent.full_name || selectedStudent.email}
+            </div>
+            <div style={{ flex: 1, padding: '16px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '8px', maxHeight: '350px' }}>
+              {messages.length === 0 && <p style={{ color: '#9ca3af', textAlign: 'center', fontSize: '14px' }}>Aucun message. Commencez la conversation.</p>}
+              {messages.map(m => (
+                <div key={m.id} style={{
+                  alignSelf: m.sender_id === adminId ? 'flex-end' : 'flex-start',
+                  background: m.sender_id === adminId ? '#0d4f4f' : '#f3f4f6',
+                  color: m.sender_id === adminId ? 'white' : '#111',
+                  padding: '10px 14px', borderRadius: '12px', maxWidth: '70%', fontSize: '14px', lineHeight: '1.5'
+                }}>
+                  {m.content}
+                  <div style={{ fontSize: '11px', opacity: 0.6, marginTop: '4px' }}>{new Date(m.created_at).toLocaleString('fr-FR')}</div>
+                </div>
+              ))}
+            </div>
+            <div style={{ padding: '12px', borderTop: '1px solid #f3f4f6', display: 'flex', gap: '8px' }}>
+              <input style={{ ...styles.input, marginBottom: 0, flex: 1 }} placeholder="Votre message..." value={newMessage} onChange={e => setNewMessage(e.target.value)} onKeyDown={e => e.key === 'Enter' && sendMessage()} />
+              <button onClick={sendMessage} disabled={sending} style={{ ...styles.btn, ...styles.btnPrimary, whiteSpace: 'nowrap' }}>
+                {sending ? '...' : 'Envoyer'}
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ============================================
+// REVENUE CHART TAB
+// ============================================
+function RevenueChart({ enrollments }) {
+  const months = [];
+  const now = new Date();
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}`;
+    const label = d.toLocaleDateString('fr-FR', { month: 'short', year: '2-digit' });
+    const monthEnrollments = enrollments.filter(e => {
+      const ed = new Date(e.enrolled_at);
+      return ed.getFullYear() === d.getFullYear() && ed.getMonth() === d.getMonth();
+    });
+    const revenue = monthEnrollments.reduce((sum, e) => sum + (e.amount_paid || 0), 0) / 100;
+    const count = monthEnrollments.length;
+    months.push({ key, label, revenue, count });
+  }
+
+  const maxRevenue = Math.max(...months.map(m => m.revenue), 1);
+
+  return (
+    <div>
+      <div style={styles.kpiGrid}>
+        <KpiCard label="Revenus 12 derniers mois" value={`${months.reduce((s, m) => s + m.revenue, 0).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Inscriptions 12 derniers mois" value={months.reduce((s, m) => s + m.count, 0)} />
+        <KpiCard label="Meilleur mois" value={`${Math.max(...months.map(m => m.revenue)).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Moyenne mensuelle" value={`${Math.round(months.reduce((s, m) => s + m.revenue, 0) / 12).toLocaleString('fr-FR')} \u20ac`} />
+      </div>
+
+      <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '24px' }}>Revenus par mois</h3>
+        <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '200px' }}>
+          {months.map(m => (
+            <div key={m.key} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
+              <div style={{ fontSize: '11px', color: '#6b7280', fontWeight: '500' }}>{m.revenue > 0 ? `${m.revenue}\u20ac` : ''}</div>
+              <div style={{
+                width: '100%', maxWidth: '40px',
+                height: `${Math.max((m.revenue / maxRevenue) * 160, m.revenue > 0 ? 8 : 2)}px`,
+                background: m.revenue > 0 ? 'linear-gradient(180deg, #14b8a6, #0d4f4f)' : '#f3f4f6',
+                borderRadius: '4px 4px 0 0', transition: 'height 0.3s'
+              }} title={`${m.label}: ${m.revenue}\u20ac (${m.count} inscriptions)`}></div>
+              <div style={{ fontSize: '10px', color: '#9ca3af', textAlign: 'center' }}>{m.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div style={{ marginTop: '24px', background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>D\u00e9tail par mois</h3>
+        <table style={styles.table}>
+          <thead>
+            <tr>
+              <th style={styles.th}>Mois</th>
+              <th style={styles.th}>Inscriptions</th>
+              <th style={styles.th}>Revenus</th>
+            </tr>
+          </thead>
+          <tbody>
+            {[...months].reverse().map(m => (
+              <tr key={m.key}>
+                <td style={styles.td}>{m.label}</td>
+                <td style={styles.td}>{m.count}</td>
+                <td style={styles.td}><strong>{m.revenue.toLocaleString('fr-FR')} \u20ac</strong></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  );
+}
+
 // MAIN ADMIN DASHBOARD
 // ============================================
 export default function AdminDashboard() {
@@ -531,6 +734,8 @@ export default function AdminDashboard() {
     { id: 'overview', label: 'Vue d\'ensemble' },
     { id: 'students', label: `Eleves (${students.length})` },
     { id: 'payments', label: 'Paiements' },
+    { id: 'revenue', label: 'Revenus' },
+    { id: 'chat', label: 'Chat' },
     { id: 'promo', label: 'Codes promo' },
   ];
 
@@ -553,8 +758,10 @@ export default function AdminDashboard() {
       </div>
 
       {activeTab === 'overview' && <OverviewTab students={students} enrollments={enrollments} totalRevenue={totalRevenue} recentActivity={recentActivity} />}
-      {activeTab === 'students' && <StudentsTab students={students} progress={progress} totalLessons={totalLessons} />}
+      {activeTab === 'students' && <StudentsTab students={students} progress={progress} totalLessons={totalLessons} session={session} />}
       {activeTab === 'payments' && <PaymentsTab enrollments={enrollments} />}
+      {activeTab === 'revenue' && <RevenueChart enrollments={enrollments} />}
+      {activeTab === 'chat' && <ChatTab students={students} session={session} adminId={user.id} />}
       {activeTab === 'promo' && <PromoCodesTab session={session} />}
     </div>
   );

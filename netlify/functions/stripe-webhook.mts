@@ -201,6 +201,35 @@ export default async (req: Request, context: Context) => {
 
             if (emailResponse.ok) {
               console.log(`Welcome email with credentials sent to ${customerEmail}`);
+
+                // Notify admin (Joël) of new enrollment
+                try {
+                  await fetch("https://api.resend.com/emails", {
+                    method: "POST",
+                    headers: {
+                      Authorization: `Bearer ${resendApiKey}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                      from: "KPE Formation <noreply@ikonik-ac.com>",
+                      to: ["joel.prieur@gmail.com"],
+                      subject: `Nouvelle inscription KPE : ${customerName || customerEmail}`,
+                      html: `
+                        <div style="font-family: Arial, sans-serif; padding: 20px;">
+                          <h2 style="color: #0d4f4f;">\ud83c\udf89 Nouvel \u00e9l\u00e8ve inscrit !</h2>
+                          <p><strong>Nom :</strong> ${customerName || "Non renseign\u00e9"}</p>
+                          <p><strong>Email :</strong> ${customerEmail}</p>
+                          <p><strong>Montant :</strong> ${amountTotal / 100} \u20ac</p>
+                          <p><strong>Date :</strong> ${new Date().toLocaleDateString("fr-FR")}</p>
+                          <p style="margin-top: 20px;"><a href="https://kpe-formation-site.netlify.app/admin" style="background: #0d4f4f; color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none;">Voir le dashboard</a></p>
+                        </div>
+                      `,
+                    }),
+                  });
+                  console.log("Admin notification sent to joel.prieur@gmail.com");
+                } catch (notifErr) {
+                  console.error("Admin notification error:", notifErr);
+                }
             } else {
               const errText = await emailResponse.text();
               console.error("Error sending email via Resend:", errText);
