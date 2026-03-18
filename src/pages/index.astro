@@ -57,6 +57,7 @@ const courseSchema = {
 <section class="hero">
   <div class="hero-inner">
     <div class="hero-text">
+      <img src="/images/logo-teal.png" alt="KPE - Kinésiologie Psycho-Énergétique" class="hero-logo">
       <div class="hero-badge">Rentrée Septembre 2026 — Aurillac</div>
       <h1>Devenez praticien en Kinésiologie <em>Psycho-Énergétique</em></h1>
       <p class="hero-sub">La méthode complète qui relie corps, énergie et psyché — pour transformer votre vie professionnelle et celle de vos futurs consultants. Accessible à tous, sans pré-requis.</p>
@@ -626,6 +627,12 @@ const courseSchema = {
   position: relative;
   z-index: 1;
   width: 100%;
+}
+
+.hero-logo {
+  height: 130px;
+  width: auto;
+  margin-bottom: 20px;
 }
 
 .hero-badge {
@@ -1493,6 +1500,7 @@ const courseSchema = {
   }
   .hero-visual { order: -1; max-width: 400px; margin: 0 auto; }
   .hero-card { aspect-ratio: 3/4; }
+  .hero-logo { height: 100px; margin-left: auto; margin-right: auto; display: block; }
   .transfo-grid { grid-template-columns: 1fr; }
   .formateur-grid { grid-template-columns: 1fr; }
   .formateur-photo { max-width: 350px; }
