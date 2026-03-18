@@ -639,6 +639,233 @@ function RevenueChart({ enrollments }) {
   );
 }
 
+
+// ============================================
+// EMAIL MARKETING TAB
+// ============================================
+function EmailMarketingTab({ session }) {
+  const [students, setStudents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [subject, setSubject] = useState('');
+  const [htmlContent, setHtmlContent] = useState('');
+  const [filter, setFilter] = useState('all'); // all, online, presentiel
+  const [sending, setSending] = useState(false);
+  const [result, setResult] = useState(null);
+  const [selectedTemplate, setSelectedTemplate] = useState('');
+  const [showPreview, setShowPreview] = useState(false);
+
+  const templates = [
+    {
+      id: 'welcome_back',
+      name: 'Relance : Reprenez votre formation',
+      subject: 'Votre formation KPE vous attend !',
+      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Cela fait un moment que vous n'avez pas visit\u00e9 votre espace formation KPE. Vos modules vous attendent !</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Saviez-vous que les \u00e9l\u00e8ves qui pratiquent r\u00e9guli\u00e8rement obtiennent des r\u00e9sultats remarquables d\u00e8s les premi\u00e8res s\u00e9ances avec leurs consultants ?</p>
+        <div style="text-align:center;margin:30px 0;">
+          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Reprendre ma formation</a>
+        </div>
+        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+      </div>`
+    },
+    {
+      id: 'upsell_presentiel',
+      name: 'Upsell : D\u00e9couvrez le pr\u00e9sentiel',
+      subject: 'Passez au niveau sup\u00e9rieur : formation KPE en pr\u00e9sentiel',
+      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Vous avez d\u00e9j\u00e0 franchi un cap important en suivant la formation KPE en ligne. F\u00e9licitations !</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Pour aller encore plus loin, la <strong>formation en pr\u00e9sentiel \u00e0 Aurillac</strong> vous permet de pratiquer directement sous la supervision de Jo\u00ebl Prieur. 8 week-ends, des cas r\u00e9els, et l'\u00e9nergie du groupe.</p>
+        <div style="background:#f8f6f1;border-radius:12px;padding:20px;margin:20px 0;">
+          <p style="margin:0;font-size:15px;color:#333;"><strong>Prochaine session :</strong> Septembre 2026 \u00e0 Aurillac</p>
+          <p style="margin:8px 0 0;font-size:15px;color:#333;"><strong>Tarif :</strong> 3 999\u20ac</p>
+        </div>
+        <div style="text-align:center;margin:30px 0;">
+          <a href="https://kpe-formation-site.netlify.app/formation-presentiel/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">D\u00e9couvrir le pr\u00e9sentiel</a>
+        </div>
+        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+      </div>`
+    },
+    {
+      id: 'new_content',
+      name: 'Nouveau contenu disponible',
+      subject: 'Nouveau contenu disponible dans votre formation KPE',
+      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Bonne nouvelle ! De nouveaux contenus sont disponibles dans votre espace formation KPE.</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Connectez-vous d\u00e8s maintenant pour d\u00e9couvrir les nouvelles le\u00e7ons et continuer votre progression.</p>
+        <div style="text-align:center;margin:30px 0;">
+          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Acc\u00e9der aux nouveaut\u00e9s</a>
+        </div>
+        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+      </div>`
+    },
+    {
+      id: 'promo',
+      name: 'Offre promotionnelle',
+      subject: 'Offre sp\u00e9ciale KPE : -50% cette semaine uniquement',
+      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Pour une dur\u00e9e limit\u00e9e, profitez d'une <strong>r\u00e9duction exceptionnelle</strong> sur la formation KPE en ligne.</p>
+        <div style="background:#0d4f4f;color:white;border-radius:12px;padding:24px;margin:20px 0;text-align:center;">
+          <p style="font-size:32px;font-weight:bold;margin:0;">-50%</p>
+          <p style="margin:8px 0 0;font-size:16px;opacity:0.8;">Avec le code promo fourni</p>
+        </div>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Cette offre est valable jusqu'\u00e0 dimanche minuit. Ne laissez pas passer cette opportunit\u00e9 de vous former \u00e0 la kin\u00e9siologie psycho-\u00e9nerg\u00e9tique.</p>
+        <div style="text-align:center;margin:30px 0;">
+          <a href="https://kpe-formation-site.netlify.app/achat/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Profiter de l'offre</a>
+        </div>
+        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+      </div>`
+    },
+    {
+      id: 'custom',
+      name: 'Email personnalis\u00e9 (vide)',
+      subject: '',
+      html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
+        <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Votre contenu ici...</p>
+        <div style="text-align:center;margin:30px 0;">
+          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Acc\u00e9der \u00e0 mon espace</a>
+        </div>
+        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+      </div>`
+    }
+  ];
+
+  useEffect(() => { loadStudents(); }, []);
+
+  const loadStudents = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/newsletter', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      });
+      const data = await res.json();
+      if (data.students) setStudents(data.students);
+    } catch (err) { console.error(err); }
+    setLoading(false);
+  };
+
+  const filteredStudents = students.filter(s => {
+    if (filter === 'online') return s.product_type === 'online';
+    if (filter === 'presentiel') return s.product_type === 'presentiel';
+    return true;
+  });
+
+  const applyTemplate = (templateId) => {
+    const t = templates.find(t => t.id === templateId);
+    if (t) {
+      setSubject(t.subject);
+      setHtmlContent(t.html);
+      setSelectedTemplate(templateId);
+    }
+  };
+
+  const handleSend = async () => {
+    if (!subject || !htmlContent) return;
+    if (!confirm(`Envoyer cet email \u00e0 ${filteredStudents.length} \u00e9l\u00e8ve(s) ?`)) return;
+    setSending(true);
+    setResult(null);
+    try {
+      const res = await fetch('/api/newsletter', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${session.access_token}` },
+        body: JSON.stringify({
+          subject,
+          htmlContent,
+          recipients: filteredStudents.map(s => ({ email: s.email, name: s.full_name || '' }))
+        })
+      });
+      const data = await res.json();
+      setResult(data);
+    } catch (err) {
+      setResult({ error: 'Erreur lors de l\'envoi.' });
+    }
+    setSending(false);
+  };
+
+  return (
+    <div>
+      <div style={styles.kpiGrid}>
+        <KpiCard label="Total \u00e9l\u00e8ves" value={students.length} />
+        <KpiCard label="En ligne" value={students.filter(s => s.product_type === 'online').length} />
+        <KpiCard label="Pr\u00e9sentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
+      </div>
+
+      <div style={{ background: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Choisir un template</h3>
+        <div style={{ display: 'flex', gap: '8px', flexWrap: 'wrap', marginBottom: '20px' }}>
+          {templates.map(t => (
+            <button key={t.id} onClick={() => applyTemplate(t.id)} style={{
+              ...styles.btn,
+              ...(selectedTemplate === t.id ? styles.btnPrimary : styles.btnSecondary),
+              fontSize: '13px', padding: '8px 16px'
+            }}>{t.name}</button>
+          ))}
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Destinataires</label>
+          <div style={{ display: 'flex', gap: '8px' }}>
+            <button onClick={() => setFilter('all')} style={{ ...styles.btn, ...(filter === 'all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Tous ({students.length})</button>
+            <button onClick={() => setFilter('online')} style={{ ...styles.btn, ...(filter === 'online' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>En ligne ({students.filter(s => s.product_type === 'online').length})</button>
+            <button onClick={() => setFilter('presentiel')} style={{ ...styles.btn, ...(filter === 'presentiel' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Pr\u00e9sentiel ({students.filter(s => s.product_type === 'presentiel').length})</button>
+          </div>
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Objet de l'email</label>
+          <input style={{ ...styles.input, marginBottom: 0 }} value={subject} onChange={e => setSubject(e.target.value)} placeholder="Objet de votre email..." />
+        </div>
+
+        <div style={{ marginBottom: '16px' }}>
+          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Contenu HTML (utilisez {"{{name}}"} pour le pr\u00e9nom)</label>
+          <textarea style={{ ...styles.input, marginBottom: 0, minHeight: '200px', fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', lineHeight: '1.5' }} value={htmlContent} onChange={e => setHtmlContent(e.target.value)} />
+        </div>
+
+        <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+          <button onClick={() => setShowPreview(!showPreview)} style={{ ...styles.btn, ...styles.btnSecondary }}>
+            {showPreview ? 'Masquer l\'aper\u00e7u' : 'Voir l\'aper\u00e7u'}
+          </button>
+          <button onClick={handleSend} disabled={sending || !subject || !htmlContent || filteredStudents.length === 0} style={{ ...styles.btn, ...styles.btnPrimary, opacity: (sending || !subject || !htmlContent) ? 0.5 : 1 }}>
+            {sending ? 'Envoi en cours...' : `Envoyer \u00e0 ${filteredStudents.length} \u00e9l\u00e8ve(s)`}
+          </button>
+        </div>
+
+        {result && !result.error && (
+          <div style={{ marginTop: '16px', padding: '12px', background: '#ecfdf5', borderRadius: '8px', color: '#059669', fontSize: '14px' }}>
+            \u2705 {result.sent} email(s) envoy\u00e9(s) avec succ\u00e8s.{result.failed > 0 && ` ${result.failed} \u00e9chec(s).`}
+          </div>
+        )}
+        {result?.error && (
+          <div style={{ marginTop: '16px', padding: '12px', background: '#fef2f2', borderRadius: '8px', color: '#dc2626', fontSize: '14px' }}>
+            \u274c {result.error}
+          </div>
+        )}
+      </div>
+
+      {showPreview && htmlContent && (
+        <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Aper\u00e7u de l'email</h3>
+          <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px' }} dangerouslySetInnerHTML={{ __html: htmlContent.replace(/\{\{name\}\}/g, 'Jean Dupont') }} />
+        </div>
+      )}
+    </div>
+  );
+}
+
 // MAIN ADMIN DASHBOARD
 // ============================================
 export default function AdminDashboard() {
@@ -737,6 +964,7 @@ export default function AdminDashboard() {
     { id: 'revenue', label: 'Revenus' },
     { id: 'chat', label: 'Chat' },
     { id: 'promo', label: 'Codes promo' },
+    { id: 'email', label: 'Email Marketing' },
   ];
 
   return (
@@ -763,6 +991,7 @@ export default function AdminDashboard() {
       {activeTab === 'revenue' && <RevenueChart enrollments={enrollments} />}
       {activeTab === 'chat' && <ChatTab students={students} session={session} adminId={user.id} />}
       {activeTab === 'promo' && <PromoCodesTab session={session} />}
+      {activeTab === 'email' && <EmailMarketingTab session={session} />}
     </div>
   );
 }
