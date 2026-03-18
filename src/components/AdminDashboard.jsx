@@ -113,9 +113,9 @@ function OverviewTab({ students, enrollments, totalRevenue, recentActivity }) {
     <div>
       <div style={styles.kpiGrid}>
         <KpiCard label="Total eleves" value={students.length} />
-        <KpiCard label="Revenus totaux" value={`${(totalRevenue / 100).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Revenus totaux" value={`${(totalRevenue / 100).toLocaleString('fr-FR')} €`} />
         <KpiCard label="Inscriptions ce mois" value={thisMonth} />
-        <KpiCard label="Note Google" value="5.0 \u2605" sub="59 avis" />
+        <KpiCard label="Note Google" value="5.0 ★" sub="59 avis" />
       </div>
 
       <h3 style={{ fontFamily: 'Playfair Display, serif', fontSize: '20px', marginBottom: '16px', color: '#111' }}>Activite recente</h3>
@@ -162,7 +162,7 @@ function StudentsTab({ students, progress, totalLessons, session }) {
       s.full_name || '',
       s.email,
       s.enrolled_at ? new Date(s.enrolled_at).toLocaleDateString('fr-FR') : '',
-      s.amount_paid ? `${s.amount_paid / 100}\u20ac` : '0\u20ac',
+      s.amount_paid ? `${s.amount_paid / 100}€` : '0€',
       `${getProgress(s.id)}%`
     ]);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
@@ -203,7 +203,7 @@ function StudentsTab({ students, progress, totalLessons, session }) {
                   </td>
                   <td style={styles.td}>{s.email}</td>
                   <td style={styles.td}>{s.enrolled_at ? new Date(s.enrolled_at).toLocaleDateString('fr-FR') : '-'}</td>
-                  <td style={styles.td}>{s.amount_paid ? `${(s.amount_paid / 100).toLocaleString('fr-FR')} \u20ac` : '-'}</td>
+                  <td style={styles.td}>{s.amount_paid ? `${(s.amount_paid / 100).toLocaleString('fr-FR')} €` : '-'}</td>
                   <td style={styles.td}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
                       <div style={{ ...styles.progressBar, width: '100px' }}>
@@ -254,7 +254,7 @@ function PaymentsTab({ enrollments }) {
   return (
     <div>
       <div style={styles.kpiGrid}>
-        <KpiCard label="Total encaisse" value={`${(totalRevenue / 100).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Total encaisse" value={`${(totalRevenue / 100).toLocaleString('fr-FR')} €`} />
         <KpiCard label="Paiements reussis" value={paid.length} />
         <KpiCard label="Remboursements" value={refunded.length} />
       </div>
@@ -279,7 +279,7 @@ function PaymentsTab({ enrollments }) {
                 <td style={styles.td}>{new Date(e.enrolled_at).toLocaleDateString('fr-FR')}</td>
                 <td style={styles.td}><span style={{ fontWeight: '500' }}>{e.profiles?.full_name || e.profiles?.email || '-'}</span></td>
                 <td style={styles.td}>{e.product_type === 'online' ? 'En ligne' : 'Presentiel'}</td>
-                <td style={styles.td}><strong>{e.amount_paid ? `${(e.amount_paid / 100).toLocaleString('fr-FR')} \u20ac` : '-'}</strong></td>
+                <td style={styles.td}><strong>{e.amount_paid ? `${(e.amount_paid / 100).toLocaleString('fr-FR')} €` : '-'}</strong></td>
                 <td style={styles.td}>
                   <span style={{
                     ...styles.badge,
@@ -345,18 +345,18 @@ function PromoCodesTab({ session }) {
       if (data.error) {
         setError(data.error);
       } else {
-        setMessage(`${data.quantity} code(s) Stripe cr\u00e9\u00e9(s) avec ${data.discount} de r\u00e9duction.`);
+        setMessage(`${data.quantity} code(s) Stripe créé(s) avec ${data.discount} de réduction.`);
         loadCodes(); // Refresh the list
       }
     } catch (err) {
-      setError('Erreur lors de la cr\u00e9ation des codes.');
+      setError('Erreur lors de la création des codes.');
     }
     setGenerating(false);
     setTimeout(() => { setMessage(''); setError(''); }, 5000);
   };
 
   const exportCodes = () => {
-    const headers = ['Code', 'R\u00e9duction', 'Cr\u00e9\u00e9 le', 'Utilis\u00e9', 'Max utilisations'];
+    const headers = ['Code', 'Réduction', 'Créé le', 'Utilisé', 'Max utilisations'];
     const rows = codes.map(c => [c.code, c.discount, new Date(c.created).toLocaleDateString('fr-FR'), c.times_redeemed, c.max_redemptions || '-']);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
@@ -368,11 +368,11 @@ function PromoCodesTab({ session }) {
   return (
     <div>
       <div style={{ background: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>G\u00e9n\u00e9rer des codes promo Stripe</h3>
-        <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '16px' }}>Les codes sont cr\u00e9\u00e9s directement dans Stripe et utilisables sur la page d'achat.</p>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>Générer des codes promo Stripe</h3>
+        <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '16px' }}>Les codes sont créés directement dans Stripe et utilisables sur la page d'achat.</p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>R\u00e9duction (%)</label>
+            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Réduction (%)</label>
             <select value={discount} onChange={e => setDiscount(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '140px' }}>
               <option value={10}>10%</option>
               <option value={20}>20%</option>
@@ -383,7 +383,7 @@ function PromoCodesTab({ session }) {
             </select>
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantit\u00e9</label>
+            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantité</label>
             <select value={quantity} onChange={e => setQuantity(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '120px' }}>
               <option value={1}>1</option>
               <option value={5}>5</option>
@@ -395,11 +395,11 @@ function PromoCodesTab({ session }) {
             </select>
           </div>
           <button onClick={handleGenerate} disabled={generating} style={{ ...styles.btn, ...styles.btnPrimary, opacity: generating ? 0.6 : 1 }}>
-            {generating ? 'Cr\u00e9ation en cours...' : `G\u00e9n\u00e9rer ${quantity} code(s)`}
+            {generating ? 'Création en cours...' : `Générer ${quantity} code(s)`}
           </button>
         </div>
-        {message && <p style={{ marginTop: '12px', color: '#059669', fontSize: '14px', fontWeight: '500' }}>\u2705 {message}</p>}
-        {error && <p style={{ marginTop: '12px', color: '#dc2626', fontSize: '14px', fontWeight: '500' }}>\u274c {error}</p>}
+        {message && <p style={{ marginTop: '12px', color: '#059669', fontSize: '14px', fontWeight: '500' }}>✅ {message}</p>}
+        {error && <p style={{ marginTop: '12px', color: '#dc2626', fontSize: '14px', fontWeight: '500' }}>❌ {error}</p>}
       </div>
 
       {loading && <p style={{ textAlign: 'center', color: '#9ca3af', padding: '40px' }}>Chargement des codes Stripe...</p>}
@@ -415,9 +415,9 @@ function PromoCodesTab({ session }) {
               <thead>
                 <tr>
                   <th style={styles.th}>Code</th>
-                  <th style={styles.th}>R\u00e9duction</th>
-                  <th style={styles.th}>Cr\u00e9\u00e9 le</th>
-                  <th style={styles.th}>Utilis\u00e9</th>
+                  <th style={styles.th}>Réduction</th>
+                  <th style={styles.th}>Créé le</th>
+                  <th style={styles.th}>Utilisé</th>
                   <th style={styles.th}>Statut</th>
                 </tr>
               </thead>
@@ -444,7 +444,7 @@ function PromoCodesTab({ session }) {
       {!loading && codes.length === 0 && (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
           <p style={{ fontSize: '16px' }}>Aucun code promo actif dans Stripe.</p>
-          <p style={{ fontSize: '14px' }}>Utilisez le formulaire ci-dessus pour cr\u00e9er vos codes de r\u00e9duction.</p>
+          <p style={{ fontSize: '14px' }}>Utilisez le formulaire ci-dessus pour créer vos codes de réduction.</p>
         </div>
       )}
     </div>
@@ -525,14 +525,14 @@ function ChatTab({ students, session, adminId }) {
               <div style={{ fontSize: '12px', color: '#9ca3af' }}>{s.email}</div>
             </div>
           ))}
-          {filtered.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>Aucun \u00e9l\u00e8ve</div>}
+          {filtered.length === 0 && <div style={{ padding: '20px', textAlign: 'center', color: '#9ca3af', fontSize: '14px' }}>Aucun élève</div>}
         </div>
       </div>
 
       <div style={{ flex: 1, display: 'flex', flexDirection: 'column', background: 'white', borderRadius: '12px', border: '1px solid #f3f4f6' }}>
         {!selectedStudent ? (
           <div style={{ flex: 1, display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#9ca3af' }}>
-            <p>S\u00e9lectionnez un \u00e9l\u00e8ve pour d\u00e9marrer une conversation.</p>
+            <p>Sélectionnez un élève pour démarrer une conversation.</p>
           </div>
         ) : (
           <>
@@ -590,10 +590,10 @@ function RevenueChart({ enrollments }) {
   return (
     <div>
       <div style={styles.kpiGrid}>
-        <KpiCard label="Revenus 12 derniers mois" value={`${months.reduce((s, m) => s + m.revenue, 0).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Revenus 12 derniers mois" value={`${months.reduce((s, m) => s + m.revenue, 0).toLocaleString('fr-FR')} €`} />
         <KpiCard label="Inscriptions 12 derniers mois" value={months.reduce((s, m) => s + m.count, 0)} />
-        <KpiCard label="Meilleur mois" value={`${Math.max(...months.map(m => m.revenue)).toLocaleString('fr-FR')} \u20ac`} />
-        <KpiCard label="Moyenne mensuelle" value={`${Math.round(months.reduce((s, m) => s + m.revenue, 0) / 12).toLocaleString('fr-FR')} \u20ac`} />
+        <KpiCard label="Meilleur mois" value={`${Math.max(...months.map(m => m.revenue)).toLocaleString('fr-FR')} €`} />
+        <KpiCard label="Moyenne mensuelle" value={`${Math.round(months.reduce((s, m) => s + m.revenue, 0) / 12).toLocaleString('fr-FR')} €`} />
       </div>
 
       <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
@@ -601,13 +601,13 @@ function RevenueChart({ enrollments }) {
         <div style={{ display: 'flex', alignItems: 'flex-end', gap: '4px', height: '200px' }}>
           {months.map(m => (
             <div key={m.key} style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '4px' }}>
-              <div style={{ fontSize: '11px', color: '#6b7280', fontWeight: '500' }}>{m.revenue > 0 ? `${m.revenue}\u20ac` : ''}</div>
+              <div style={{ fontSize: '11px', color: '#6b7280', fontWeight: '500' }}>{m.revenue > 0 ? `${m.revenue}€` : ''}</div>
               <div style={{
                 width: '100%', maxWidth: '40px',
                 height: `${Math.max((m.revenue / maxRevenue) * 160, m.revenue > 0 ? 8 : 2)}px`,
                 background: m.revenue > 0 ? 'linear-gradient(180deg, #14b8a6, #0d4f4f)' : '#f3f4f6',
                 borderRadius: '4px 4px 0 0', transition: 'height 0.3s'
-              }} title={`${m.label}: ${m.revenue}\u20ac (${m.count} inscriptions)`}></div>
+              }} title={`${m.label}: ${m.revenue}€ (${m.count} inscriptions)`}></div>
               <div style={{ fontSize: '10px', color: '#9ca3af', textAlign: 'center' }}>{m.label}</div>
             </div>
           ))}
@@ -615,7 +615,7 @@ function RevenueChart({ enrollments }) {
       </div>
 
       <div style={{ marginTop: '24px', background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>D\u00e9tail par mois</h3>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Détail par mois</h3>
         <table style={styles.table}>
           <thead>
             <tr>
@@ -629,7 +629,7 @@ function RevenueChart({ enrollments }) {
               <tr key={m.key}>
                 <td style={styles.td}>{m.label}</td>
                 <td style={styles.td}>{m.count}</td>
-                <td style={styles.td}><strong>{m.revenue.toLocaleString('fr-FR')} \u20ac</strong></td>
+                <td style={styles.td}><strong>{m.revenue.toLocaleString('fr-FR')} €</strong></td>
               </tr>
             ))}
           </tbody>
@@ -661,34 +661,34 @@ function EmailMarketingTab({ session }) {
       subject: 'Votre formation KPE vous attend !',
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
         <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Cela fait un moment que vous n'avez pas visit\u00e9 votre espace formation KPE. Vos modules vous attendent !</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Saviez-vous que les \u00e9l\u00e8ves qui pratiquent r\u00e9guli\u00e8rement obtiennent des r\u00e9sultats remarquables d\u00e8s les premi\u00e8res s\u00e9ances avec leurs consultants ?</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Cela fait un moment que vous n'avez pas visité votre espace formation KPE. Vos modules vous attendent !</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Saviez-vous que les élèves qui pratiquent régulièrement obtiennent des résultats remarquables dès les premières séances avec leurs consultants ?</p>
         <div style="text-align:center;margin:30px 0;">
           <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Reprendre ma formation</a>
         </div>
-        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
         <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
       </div>`
     },
     {
       id: 'upsell_presentiel',
-      name: 'Upsell : D\u00e9couvrez le pr\u00e9sentiel',
-      subject: 'Passez au niveau sup\u00e9rieur : formation KPE en pr\u00e9sentiel',
+      name: 'Upsell : Découvrez le présentiel',
+      subject: 'Passez au niveau supérieur : formation KPE en présentiel',
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
         <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Vous avez d\u00e9j\u00e0 franchi un cap important en suivant la formation KPE en ligne. F\u00e9licitations !</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Pour aller encore plus loin, la <strong>formation en pr\u00e9sentiel \u00e0 Aurillac</strong> vous permet de pratiquer directement sous la supervision de Jo\u00ebl Prieur. 8 week-ends, des cas r\u00e9els, et l'\u00e9nergie du groupe.</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Vous avez déjà franchi un cap important en suivant la formation KPE en ligne. Félicitations !</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Pour aller encore plus loin, la <strong>formation en présentiel à Aurillac</strong> vous permet de pratiquer directement sous la supervision de Joël Prieur. 8 week-ends, des cas réels, et l'énergie du groupe.</p>
         <div style="background:#f8f6f1;border-radius:12px;padding:20px;margin:20px 0;">
-          <p style="margin:0;font-size:15px;color:#333;"><strong>Prochaine session :</strong> Septembre 2026 \u00e0 Aurillac</p>
-          <p style="margin:8px 0 0;font-size:15px;color:#333;"><strong>Tarif :</strong> 3 999\u20ac</p>
+          <p style="margin:0;font-size:15px;color:#333;"><strong>Prochaine session :</strong> Septembre 2026 à Aurillac</p>
+          <p style="margin:8px 0 0;font-size:15px;color:#333;"><strong>Tarif :</strong> 3 999€</p>
         </div>
         <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/formation-presentiel/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">D\u00e9couvrir le pr\u00e9sentiel</a>
+          <a href="https://kpe-formation-site.netlify.app/formation-presentiel/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Découvrir le présentiel</a>
         </div>
-        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
         <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
       </div>`
     },
     {
@@ -698,48 +698,48 @@ function EmailMarketingTab({ session }) {
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
         <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
         <p style="font-size:16px;line-height:1.6;color:#333;">Bonne nouvelle ! De nouveaux contenus sont disponibles dans votre espace formation KPE.</p>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Connectez-vous d\u00e8s maintenant pour d\u00e9couvrir les nouvelles le\u00e7ons et continuer votre progression.</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Connectez-vous dès maintenant pour découvrir les nouvelles leçons et continuer votre progression.</p>
         <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Acc\u00e9der aux nouveaut\u00e9s</a>
+          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Accéder aux nouveautés</a>
         </div>
-        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
         <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
       </div>`
     },
     {
       id: 'promo',
       name: 'Offre promotionnelle',
-      subject: 'Offre sp\u00e9ciale KPE : -50% cette semaine uniquement',
+      subject: 'Offre spéciale KPE : -50% cette semaine uniquement',
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
         <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Pour une dur\u00e9e limit\u00e9e, profitez d'une <strong>r\u00e9duction exceptionnelle</strong> sur la formation KPE en ligne.</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Pour une durée limitée, profitez d'une <strong>réduction exceptionnelle</strong> sur la formation KPE en ligne.</p>
         <div style="background:#0d4f4f;color:white;border-radius:12px;padding:24px;margin:20px 0;text-align:center;">
           <p style="font-size:32px;font-weight:bold;margin:0;">-50%</p>
           <p style="margin:8px 0 0;font-size:16px;opacity:0.8;">Avec le code promo fourni</p>
         </div>
-        <p style="font-size:16px;line-height:1.6;color:#333;">Cette offre est valable jusqu'\u00e0 dimanche minuit. Ne laissez pas passer cette opportunit\u00e9 de vous former \u00e0 la kin\u00e9siologie psycho-\u00e9nerg\u00e9tique.</p>
+        <p style="font-size:16px;line-height:1.6;color:#333;">Cette offre est valable jusqu'à dimanche minuit. Ne laissez pas passer cette opportunité de vous former à la kinésiologie psycho-énergétique.</p>
         <div style="text-align:center;margin:30px 0;">
           <a href="https://kpe-formation-site.netlify.app/achat/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Profiter de l'offre</a>
         </div>
-        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
         <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
       </div>`
     },
     {
       id: 'custom',
-      name: 'Email personnalis\u00e9 (vide)',
+      name: 'Email personnalisé (vide)',
       subject: '',
       html: `<div style="font-family:Arial,sans-serif;max-width:600px;margin:0 auto;padding:20px;">
         <h1 style="color:#0d4f4f;font-size:24px;">Bonjour {{name}},</h1>
         <p style="font-size:16px;line-height:1.6;color:#333;">Votre contenu ici...</p>
         <div style="text-align:center;margin:30px 0;">
-          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Acc\u00e9der \u00e0 mon espace</a>
+          <a href="https://kpe-formation-site.netlify.app/espace-eleve/" style="background:#c8a44e;color:white;padding:14px 32px;text-decoration:none;border-radius:6px;font-size:16px;font-weight:bold;display:inline-block;">Accéder à mon espace</a>
         </div>
-        <p style="color:#666;font-size:14px;">Jo\u00ebl Prieur<br>Formateur KPE</p>
+        <p style="color:#666;font-size:14px;">Joël Prieur<br>Formateur KPE</p>
         <hr style="border:none;border-top:1px solid #eee;margin:30px 0;">
-        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique</p>
+        <p style="color:#999;font-size:12px;text-align:center;">KPE Formation – Kinésiologie Professionnelle et Énergétique</p>
       </div>`
     }
   ];
@@ -775,7 +775,7 @@ function EmailMarketingTab({ session }) {
 
   const handleSend = async () => {
     if (!subject || !htmlContent) return;
-    if (!confirm(`Envoyer cet email \u00e0 ${filteredStudents.length} \u00e9l\u00e8ve(s) ?`)) return;
+    if (!confirm(`Envoyer cet email à ${filteredStudents.length} élève(s) ?`)) return;
     setSending(true);
     setResult(null);
     try {
@@ -799,9 +799,9 @@ function EmailMarketingTab({ session }) {
   return (
     <div>
       <div style={styles.kpiGrid}>
-        <KpiCard label="Total \u00e9l\u00e8ves" value={students.length} />
+        <KpiCard label="Total élèves" value={students.length} />
         <KpiCard label="En ligne" value={students.filter(s => s.product_type === 'online').length} />
-        <KpiCard label="Pr\u00e9sentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
+        <KpiCard label="Présentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
       </div>
 
       <div style={{ background: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
@@ -821,7 +821,7 @@ function EmailMarketingTab({ session }) {
           <div style={{ display: 'flex', gap: '8px' }}>
             <button onClick={() => setFilter('all')} style={{ ...styles.btn, ...(filter === 'all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Tous ({students.length})</button>
             <button onClick={() => setFilter('online')} style={{ ...styles.btn, ...(filter === 'online' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>En ligne ({students.filter(s => s.product_type === 'online').length})</button>
-            <button onClick={() => setFilter('presentiel')} style={{ ...styles.btn, ...(filter === 'presentiel' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Pr\u00e9sentiel ({students.filter(s => s.product_type === 'presentiel').length})</button>
+            <button onClick={() => setFilter('presentiel')} style={{ ...styles.btn, ...(filter === 'presentiel' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Présentiel ({students.filter(s => s.product_type === 'presentiel').length})</button>
           </div>
         </div>
 
@@ -831,34 +831,34 @@ function EmailMarketingTab({ session }) {
         </div>
 
         <div style={{ marginBottom: '16px' }}>
-          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Contenu HTML (utilisez {"{{name}}"} pour le pr\u00e9nom)</label>
+          <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Contenu HTML (utilisez {"{{name}}"} pour le prénom)</label>
           <textarea style={{ ...styles.input, marginBottom: 0, minHeight: '200px', fontFamily: 'JetBrains Mono, monospace', fontSize: '12px', lineHeight: '1.5' }} value={htmlContent} onChange={e => setHtmlContent(e.target.value)} />
         </div>
 
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
           <button onClick={() => setShowPreview(!showPreview)} style={{ ...styles.btn, ...styles.btnSecondary }}>
-            {showPreview ? 'Masquer l\'aper\u00e7u' : 'Voir l\'aper\u00e7u'}
+            {showPreview ? 'Masquer l\'aperçu' : 'Voir l\'aperçu'}
           </button>
           <button onClick={handleSend} disabled={sending || !subject || !htmlContent || filteredStudents.length === 0} style={{ ...styles.btn, ...styles.btnPrimary, opacity: (sending || !subject || !htmlContent) ? 0.5 : 1 }}>
-            {sending ? 'Envoi en cours...' : `Envoyer \u00e0 ${filteredStudents.length} \u00e9l\u00e8ve(s)`}
+            {sending ? 'Envoi en cours...' : `Envoyer à ${filteredStudents.length} élève(s)`}
           </button>
         </div>
 
         {result && !result.error && (
           <div style={{ marginTop: '16px', padding: '12px', background: '#ecfdf5', borderRadius: '8px', color: '#059669', fontSize: '14px' }}>
-            \u2705 {result.sent} email(s) envoy\u00e9(s) avec succ\u00e8s.{result.failed > 0 && ` ${result.failed} \u00e9chec(s).`}
+            ✅ {result.sent} email(s) envoyé(s) avec succès.{result.failed > 0 && ` ${result.failed} échec(s).`}
           </div>
         )}
         {result?.error && (
           <div style={{ marginTop: '16px', padding: '12px', background: '#fef2f2', borderRadius: '8px', color: '#dc2626', fontSize: '14px' }}>
-            \u274c {result.error}
+            ❌ {result.error}
           </div>
         )}
       </div>
 
       {showPreview && htmlContent && (
         <div style={{ background: 'white', borderRadius: '12px', padding: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
-          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Aper\u00e7u de l'email</h3>
+          <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Aperçu de l'email</h3>
           <div style={{ border: '1px solid #e5e7eb', borderRadius: '8px', padding: '20px' }} dangerouslySetInnerHTML={{ __html: htmlContent.replace(/\{\{name\}\}/g, 'Jean Dupont') }} />
         </div>
       )}

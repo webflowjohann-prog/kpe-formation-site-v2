@@ -60,12 +60,12 @@ export default async (req: Request, context: Context) => {
         subject: "Nouveau message de votre formateur - KPE Formation",
         html: `
           <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-            <h2 style="color: #1a1a1a; font-size: 20px;">Nouveau message de Jo\u00ebl Prieur</h2>
+            <h2 style="color: #1a1a1a; font-size: 20px;">Nouveau message de Joël Prieur</h2>
             <p style="color: #333; font-size: 16px; line-height: 1.6;">
               Bonjour${studentName ? ` ${studentName}` : ""},
             </p>
             <p style="color: #333; font-size: 16px; line-height: 1.6;">
-              Vous avez re\u00e7u un nouveau message de votre formateur dans votre espace \u00e9l\u00e8ve KPE.
+              Vous avez reçu un nouveau message de votre formateur dans votre espace élève KPE.
             </p>
             <div style="text-align: center; margin: 30px 0;">
               <a href="${SITE_URL}/espace-eleve/"
@@ -75,7 +75,7 @@ export default async (req: Request, context: Context) => {
             </div>
             <hr style="border: none; border-top: 1px solid #eee; margin: 30px 0;" />
             <p style="color: #999; font-size: 12px; text-align: center;">
-              KPE Formation \u2013 Kin\u00e9siologie Professionnelle et \u00c9nerg\u00e9tique
+              KPE Formation – Kinésiologie Professionnelle et Énergétique
             </p>
           </div>
         `,
