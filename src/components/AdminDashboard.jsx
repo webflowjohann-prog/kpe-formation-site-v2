@@ -334,26 +334,11 @@ function PromoCodesTab() {
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
           <div>
             <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Reduction (%)</label>
-            <select value={discount} onChange={e => setDiscount(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '120px' }}>
-              <option value={10}>10%</option>
-              <option value={20}>20%</option>
-              <option value={30}>30%</option>
-              <option value={50}>50%</option>
-              <option value={75}>75%</option>
-              <option value={100}>100% (gratuit)</option>
-            </select>
+            <input type="number" min="1" max="100" value={discount} onChange={e => setDiscount(Math.min(100, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantite</label>
-            <select value={quantity} onChange={e => setQuantity(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '120px' }}>
-              <option value={1}>1</option>
-              <option value={5}>5</option>
-              <option value={10}>10</option>
-              <option value={25}>25</option>
-              <option value={50}>50</option>
-              <option value={100}>100</option>
-              <option value={500}>500</option>
-            </select>
+            <input type="number" min="1" max="1000" value={quantity} onChange={e => setQuantity(Math.min(1000, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
           </div>
           <button onClick={handleGenerate} disabled={generating} style={{ ...styles.btn, ...styles.btnPrimary }}>
             Generer {quantity} code(s)
