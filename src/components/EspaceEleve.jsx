@@ -315,6 +315,195 @@ function ModuleView({ module, modules, lessons, progress, session, onBack, onNex
 }
 
 // ============================================
+// CHAT ÉLÈVE COMPONENT
+// ============================================
+function ChatEleve({ user, session }) {
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [sending, setSending] = useState(false);
+  const [adminId, setAdminId] = useState(null);
+  const [loadingChat, setLoadingChat] = useState(true);
+  const messagesEndRef = { current: null };
+
+  // Find admin user
+  useEffect(() => {
+    const findAdmin = async () => {
+      const supabase = getSupabase();
+      const { data } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('role', 'admin')
+        .limit(1)
+        .single();
+      if (data) setAdminId(data.id);
+      setLoadingChat(false);
+    };
+    findAdmin();
+  }, []);
+
+  // Load messages + polling every 15s
+  useEffect(() => {
+    if (!adminId) return;
+    loadMessages();
+    const interval = setInterval(loadMessages, 15000);
+    return () => clearInterval(interval);
+  }, [adminId]);
+
+  // Auto-scroll on new messages
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+  }, [messages]);
+
+  const loadMessages = async () => {
+    const supabase = getSupabase();
+    const { data } = await supabase
+      .from('messages')
+      .select('*')
+      .or(`and(sender_id.eq.${user.id},recipient_id.eq.${adminId}),and(sender_id.eq.${adminId},recipient_id.eq.${user.id})`)
+      .order('created_at', { ascending: true });
+    setMessages(data || []);
+    // Mark unread messages from admin as read
+    if (data) {
+      const unread = data.filter(m => m.sender_id === adminId && m.recipient_id === user.id && !m.read).map(m => m.id);
+      if (unread.length > 0) {
+        await supabase.from('messages').update({ read: true }).in('id', unread);
+      }
+    }
+  };
+
+  const sendMessage = async () => {
+    if (!newMessage.trim() || !adminId) return;
+    setSending(true);
+    const supabase = getSupabase();
+    await supabase.from('messages').insert({
+      sender_id: user.id,
+      recipient_id: adminId,
+      content: newMessage.trim()
+    });
+    const sentContent = newMessage.trim();
+    setNewMessage('');
+    await loadMessages();
+    // Notify admin by email
+    try {
+      await fetch('/api/notify-admin-message', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({
+          studentName: user.user_metadata?.full_name || user.email,
+          messagePreview: sentContent
+        })
+      });
+    } catch (e) { console.error('Notification error:', e); }
+    setSending(false);
+  };
+
+  if (loadingChat) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', padding: '60px 0' }}>
+        <div style={styles.spinner} />
+      </div>
+    );
+  }
+
+  if (!adminId) {
+    return (
+      <div style={{ textAlign: 'center', padding: '60px 20px', color: '#6b7280' }}>
+        <p>La messagerie n'est pas encore disponible.</p>
+      </div>
+    );
+  }
+
+  return (
+    <div style={{
+      background: '#f9fafb', borderRadius: '16px', border: '1px solid #e5e7eb',
+      display: 'flex', flexDirection: 'column', height: '500px', overflow: 'hidden'
+    }}>
+      {/* Header */}
+      <div style={{
+        padding: '16px 20px', borderBottom: '1px solid #e5e7eb',
+        display: 'flex', alignItems: 'center', gap: '12px'
+      }}>
+        <div style={{
+          width: '36px', height: '36px', borderRadius: '50%', background: '#025159',
+          display: 'flex', alignItems: 'center', justifyContent: 'center',
+          color: 'white', fontSize: '14px', fontWeight: '700'
+        }}>JP</div>
+        <div>
+          <div style={{ fontWeight: '600', fontSize: '15px', color: '#1f2937' }}>Joel Prieur</div>
+          <div style={{ fontSize: '12px', color: '#9ca3af' }}>Votre formateur</div>
+        </div>
+      </div>
+
+      {/* Messages */}
+      <div style={{
+        flex: 1, padding: '16px 20px', overflowY: 'auto',
+        display: 'flex', flexDirection: 'column', gap: '10px'
+      }}>
+        {messages.length === 0 && (
+          <div style={{ textAlign: 'center', color: '#9ca3af', fontSize: '14px', padding: '40px 0' }}>
+            <p style={{ fontSize: '24px', marginBottom: '8px' }}>💬</p>
+            <p>Aucun message pour le moment.</p>
+            <p style={{ fontSize: '13px' }}>Posez une question a votre formateur.</p>
+          </div>
+        )}
+        {messages.map(m => (
+          <div key={m.id} style={{
+            alignSelf: m.sender_id === user.id ? 'flex-end' : 'flex-start',
+            background: m.sender_id === user.id ? '#025159' : 'white',
+            color: m.sender_id === user.id ? 'white' : '#1f2937',
+            padding: '10px 14px', borderRadius: '14px', maxWidth: '75%',
+            fontSize: '14px', lineHeight: '1.5',
+            border: m.sender_id === user.id ? 'none' : '1px solid #e5e7eb',
+            boxShadow: '0 1px 2px rgba(0,0,0,0.04)'
+          }}>
+            {m.content}
+            <div style={{ fontSize: '11px', opacity: 0.6, marginTop: '4px' }}>
+              {new Date(m.created_at).toLocaleString('fr-FR')}
+            </div>
+          </div>
+        ))}
+        <div ref={el => messagesEndRef.current = el} />
+      </div>
+
+      {/* Input */}
+      <div style={{
+        padding: '12px 16px', borderTop: '1px solid #e5e7eb',
+        display: 'flex', gap: '8px', background: 'white'
+      }}>
+        <input
+          style={{
+            flex: 1, padding: '12px 16px', borderRadius: '10px',
+            border: '1.5px solid #e5e7eb', fontSize: '14px', outline: 'none',
+            fontFamily: "'DM Sans', sans-serif"
+          }}
+          placeholder="Ecrivez votre message..."
+          value={newMessage}
+          onChange={e => setNewMessage(e.target.value)}
+          onKeyDown={e => e.key === 'Enter' && !e.shiftKey && sendMessage()}
+        />
+        <button
+          onClick={sendMessage}
+          disabled={sending || !newMessage.trim()}
+          style={{
+            padding: '12px 20px', background: '#025159', color: 'white',
+            border: 'none', borderRadius: '10px', fontSize: '14px',
+            fontWeight: '600', cursor: 'pointer', whiteSpace: 'nowrap',
+            opacity: sending || !newMessage.trim() ? 0.5 : 1
+          }}
+        >
+          {sending ? '...' : 'Envoyer'}
+        </button>
+      </div>
+    </div>
+  );
+}
+
+// ============================================
 // MAIN ESPACE ÉLÈVE COMPONENT
 // ============================================
 export default function EspaceEleve() {
@@ -326,10 +515,29 @@ export default function EspaceEleve() {
   const [progress, setProgress] = useState([]);
   const [enrollments, setEnrollments] = useState([]);
   const [activeModule, setActiveModule] = useState(null);
+  const [activeTab, setActiveTab] = useState('formation');
+  const [unreadMessages, setUnreadMessages] = useState(0);
 
   useEffect(() => {
     checkAuth();
   }, []);
+
+  // Poll unread messages count every 15s
+  useEffect(() => {
+    if (!user) return;
+    const checkUnread = async () => {
+      const supabase = getSupabase();
+      const { count } = await supabase
+        .from('messages')
+        .select('*', { count: 'exact', head: true })
+        .eq('recipient_id', user.id)
+        .eq('read', false);
+      setUnreadMessages(count || 0);
+    };
+    checkUnread();
+    const interval = setInterval(checkUnread, 15000);
+    return () => clearInterval(interval);
+  }, [user]);
 
   const checkAuth = async () => {
     const supabase = getSupabase();
@@ -404,50 +612,99 @@ export default function EspaceEleve() {
         <button onClick={handleLogout} style={styles.logoutBtn}>Déconnexion</button>
       </div>
 
-      {/* Global progress */}
+      {/* Tabs */}
       {isEnrolled && (
-        <div style={styles.globalProgress}>
-          <div style={styles.globalProgressBar}>
-            <div style={{ ...styles.globalProgressFill, width: `${globalPercent}%` }} />
-          </div>
-          <span style={styles.globalProgressText}>
-            {completedLessons}/{totalLessons} leçons terminées · {globalPercent}%
-          </span>
+        <div style={{ display: 'flex', gap: '4px', marginBottom: '24px', background: '#f3f4f6', borderRadius: '12px', padding: '4px' }}>
+          <button
+            onClick={() => setActiveTab('formation')}
+            style={{
+              flex: 1, padding: '10px 16px', borderRadius: '10px', border: 'none',
+              fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s',
+              background: activeTab === 'formation' ? 'white' : 'transparent',
+              color: activeTab === 'formation' ? '#025159' : '#6b7280',
+              boxShadow: activeTab === 'formation' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none'
+            }}
+          >
+            Ma formation
+          </button>
+          <button
+            onClick={() => { setActiveTab('messages'); setUnreadMessages(0); }}
+            style={{
+              flex: 1, padding: '10px 16px', borderRadius: '10px', border: 'none',
+              fontSize: '14px', fontWeight: '600', cursor: 'pointer', transition: 'all 0.2s',
+              background: activeTab === 'messages' ? 'white' : 'transparent',
+              color: activeTab === 'messages' ? '#025159' : '#6b7280',
+              boxShadow: activeTab === 'messages' ? '0 1px 3px rgba(0,0,0,0.08)' : 'none',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '8px'
+            }}
+          >
+            Messages
+            {unreadMessages > 0 && (
+              <span style={{
+                background: '#ef4444', color: 'white', fontSize: '11px', fontWeight: '700',
+                borderRadius: '10px', padding: '2px 7px', minWidth: '20px', textAlign: 'center'
+              }}>
+                {unreadMessages}
+              </span>
+            )}
+          </button>
         </div>
       )}
 
-      {!isEnrolled && (
-        <div style={styles.notEnrolled}>
-          <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#1f2937' }}>Vous n'êtes pas encore inscrit</h2>
-          <p style={{ color: '#6b7280', marginBottom: '20px' }}>Inscrivez-vous à la formation KPE pour accéder aux modules vidéo.</p>
-          <a href="/formation-en-ligne" style={styles.btnPrimary}>Découvrir la formation →</a>
-        </div>
-      )}
+      {/* Tab: Formation */}
+      {activeTab === 'formation' && (
+        <>
+          {/* Global progress */}
+          {isEnrolled && (
+            <div style={styles.globalProgress}>
+              <div style={styles.globalProgressBar}>
+                <div style={{ ...styles.globalProgressFill, width: `${globalPercent}%` }} />
+              </div>
+              <span style={styles.globalProgressText}>
+                {completedLessons}/{totalLessons} leçons terminées · {globalPercent}%
+              </span>
+            </div>
+          )}
 
-      {/* Module grid or module view */}
-      {activeModule ? (
-        <ModuleView
-          module={activeModule}
-          modules={modules}
-          lessons={lessons}
-          progress={progress}
-          session={session}
-          onBack={() => setActiveModule(null)}
-          onNextModule={(nextMod) => setActiveModule(nextMod)}
-        />
-      ) : (
-        <div style={styles.modulesGrid}>
-          {modules.map((mod) => (
-            <ModuleCard
-              key={mod.id}
-              module={mod}
+          {!isEnrolled && (
+            <div style={styles.notEnrolled}>
+              <h2 style={{ fontSize: '20px', marginBottom: '8px', color: '#1f2937' }}>Vous n'êtes pas encore inscrit</h2>
+              <p style={{ color: '#6b7280', marginBottom: '20px' }}>Inscrivez-vous à la formation KPE pour accéder aux modules vidéo.</p>
+              <a href="/formation-en-ligne" style={styles.btnPrimary}>Découvrir la formation</a>
+            </div>
+          )}
+
+          {/* Module grid or module view */}
+          {activeModule ? (
+            <ModuleView
+              module={activeModule}
+              modules={modules}
               lessons={lessons}
               progress={progress}
-              isEnrolled={isEnrolled}
-              onSelectModule={setActiveModule}
+              session={session}
+              onBack={() => setActiveModule(null)}
+              onNextModule={(nextMod) => setActiveModule(nextMod)}
             />
-          ))}
-        </div>
+          ) : (
+            <div style={styles.modulesGrid}>
+              {modules.map((mod) => (
+                <ModuleCard
+                  key={mod.id}
+                  module={mod}
+                  lessons={lessons}
+                  progress={progress}
+                  isEnrolled={isEnrolled}
+                  onSelectModule={setActiveModule}
+                />
+              ))}
+            </div>
+          )}
+        </>
+      )}
+
+      {/* Tab: Messages */}
+      {activeTab === 'messages' && isEnrolled && (
+        <ChatEleve user={user} session={session} />
       )}
     </div>
   );
