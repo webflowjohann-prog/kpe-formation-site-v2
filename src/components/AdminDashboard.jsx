@@ -285,72 +285,114 @@ function PaymentsTab({ enrollments }) {
 // ============================================
 // PROMO CODES TAB
 // ============================================
-function PromoCodesTab() {
+function PromoCodesTab({ session }) {
   const [codes, setCodes] = useState([]);
   const [discount, setDiscount] = useState(100);
   const [quantity, setQuantity] = useState(10);
   const [generating, setGenerating] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
 
-  const generateCode = () => {
-    const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-    let code = 'KPE-';
-    for (let i = 0; i < 6; i++) code += chars[Math.floor(Math.random() * chars.length)];
-    return code;
+  // Load existing codes from Stripe on mount
+  useEffect(() => {
+    loadCodes();
+  }, []);
+
+  const loadCodes = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch('/api/promo-codes', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      });
+      const data = await res.json();
+      if (data.codes) setCodes(data.codes);
+    } catch (err) {
+      console.error('Error loading codes:', err);
+    }
+    setLoading(false);
   };
 
-  const handleGenerate = () => {
+  const handleGenerate = async () => {
     setGenerating(true);
-    const newCodes = [];
-    for (let i = 0; i < quantity; i++) {
-      newCodes.push({
-        code: generateCode(),
-        discount: discount,
-        created: new Date().toISOString(),
-        used: false,
-        usedBy: null
+    setError('');
+    setMessage('');
+    try {
+      const res = await fetch('/api/promo-codes', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.access_token}`
+        },
+        body: JSON.stringify({ discount, quantity })
       });
+      const data = await res.json();
+      if (data.error) {
+        setError(data.error);
+      } else {
+        setMessage(`${data.quantity} code(s) Stripe cr\u00e9\u00e9(s) avec ${data.discount} de r\u00e9duction.`);
+        loadCodes(); // Refresh the list
+      }
+    } catch (err) {
+      setError('Erreur lors de la cr\u00e9ation des codes.');
     }
-    setCodes(prev => [...newCodes, ...prev]);
-    setMessage(`${quantity} code(s) genere(s) avec ${discount}% de reduction.`);
     setGenerating(false);
-    setTimeout(() => setMessage(''), 3000);
+    setTimeout(() => { setMessage(''); setError(''); }, 5000);
   };
 
   const exportCodes = () => {
-    const headers = ['Code', 'Reduction', 'Cree le', 'Utilise', 'Utilise par'];
-    const rows = codes.map(c => [c.code, `${c.discount}%`, new Date(c.created).toLocaleDateString('fr-FR'), c.used ? 'Oui' : 'Non', c.usedBy || '']);
+    const headers = ['Code', 'R\u00e9duction', 'Cr\u00e9\u00e9 le', 'Utilis\u00e9', 'Max utilisations'];
+    const rows = codes.map(c => [c.code, c.discount, new Date(c.created).toLocaleDateString('fr-FR'), c.times_redeemed, c.max_redemptions || '-']);
     const csv = [headers, ...rows].map(r => r.join(',')).join('\n');
     const blob = new Blob([csv], { type: 'text/csv' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
-    a.href = url; a.download = `kpe-codes-promo-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
+    a.href = url; a.download = `kpe-codes-stripe-${new Date().toISOString().slice(0, 10)}.csv`; a.click();
   };
 
   return (
     <div>
       <div style={{ background: 'white', borderRadius: '12px', padding: '24px', marginBottom: '24px', boxShadow: '0 1px 3px rgba(0,0,0,0.04)', border: '1px solid #f3f4f6' }}>
-        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '16px' }}>Generer des codes promo</h3>
+        <h3 style={{ fontSize: '16px', fontWeight: '600', marginBottom: '4px' }}>G\u00e9n\u00e9rer des codes promo Stripe</h3>
+        <p style={{ fontSize: '13px', color: '#9ca3af', marginBottom: '16px' }}>Les codes sont cr\u00e9\u00e9s directement dans Stripe et utilisables sur la page d'achat.</p>
         <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'flex-end' }}>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Reduction (%)</label>
-            <input type="number" min="1" max="100" value={discount} onChange={e => setDiscount(Math.min(100, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
+            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>R\u00e9duction (%)</label>
+            <select value={discount} onChange={e => setDiscount(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '140px' }}>
+              <option value={10}>10%</option>
+              <option value={20}>20%</option>
+              <option value={30}>30%</option>
+              <option value={50}>50%</option>
+              <option value={75}>75%</option>
+              <option value={100}>100% (gratuit)</option>
+            </select>
           </div>
           <div>
-            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantite</label>
-            <input type="number" min="1" max="10000" value={quantity} onChange={e => setQuantity(Math.min(10000, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
+            <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantit\u00e9</label>
+            <select value={quantity} onChange={e => setQuantity(Number(e.target.value))} style={{ ...styles.input, marginBottom: 0, width: '120px' }}>
+              <option value={1}>1</option>
+              <option value={5}>5</option>
+              <option value={10}>10</option>
+              <option value={25}>25</option>
+              <option value={50}>50</option>
+              <option value={100}>100</option>
+              <option value={500}>500</option>
+            </select>
           </div>
-          <button onClick={handleGenerate} disabled={generating} style={{ ...styles.btn, ...styles.btnPrimary }}>
-            Generer {quantity} code(s)
+          <button onClick={handleGenerate} disabled={generating} style={{ ...styles.btn, ...styles.btnPrimary, opacity: generating ? 0.6 : 1 }}>
+            {generating ? 'Cr\u00e9ation en cours...' : `G\u00e9n\u00e9rer ${quantity} code(s)`}
           </button>
         </div>
-        {message && <p style={{ marginTop: '12px', color: '#059669', fontSize: '14px', fontWeight: '500' }}>{message}</p>}
+        {message && <p style={{ marginTop: '12px', color: '#059669', fontSize: '14px', fontWeight: '500' }}>\u2705 {message}</p>}
+        {error && <p style={{ marginTop: '12px', color: '#dc2626', fontSize: '14px', fontWeight: '500' }}>\u274c {error}</p>}
       </div>
 
-      {codes.length > 0 && (
+      {loading && <p style={{ textAlign: 'center', color: '#9ca3af', padding: '40px' }}>Chargement des codes Stripe...</p>}
+
+      {!loading && codes.length > 0 && (
         <>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
-            <h3 style={{ fontSize: '16px', fontWeight: '600' }}>{codes.length} code(s) genere(s)</h3>
+            <h3 style={{ fontSize: '16px', fontWeight: '600' }}>{codes.length} code(s) actif(s) dans Stripe</h3>
             <button onClick={exportCodes} style={{ ...styles.btn, ...styles.btnSecondary }}>Exporter CSV</button>
           </div>
           <div style={{ overflowX: 'auto' }}>
@@ -358,8 +400,9 @@ function PromoCodesTab() {
               <thead>
                 <tr>
                   <th style={styles.th}>Code</th>
-                  <th style={styles.th}>Reduction</th>
-                  <th style={styles.th}>Cree le</th>
+                  <th style={styles.th}>R\u00e9duction</th>
+                  <th style={styles.th}>Cr\u00e9\u00e9 le</th>
+                  <th style={styles.th}>Utilis\u00e9</th>
                   <th style={styles.th}>Statut</th>
                 </tr>
               </thead>
@@ -367,11 +410,12 @@ function PromoCodesTab() {
                 {codes.map((c, i) => (
                   <tr key={i}>
                     <td style={styles.td}><code style={{ fontFamily: 'JetBrains Mono, monospace', fontWeight: '600', fontSize: '13px', background: '#f3f4f6', padding: '3px 8px', borderRadius: '4px' }}>{c.code}</code></td>
-                    <td style={styles.td}>{c.discount}%</td>
+                    <td style={styles.td}>{c.discount}</td>
                     <td style={styles.td}>{new Date(c.created).toLocaleDateString('fr-FR')}</td>
+                    <td style={styles.td}>{c.times_redeemed} fois</td>
                     <td style={styles.td}>
-                      <span style={{ ...styles.badge, ...(c.used ? styles.badgeYellow : styles.badgeGreen) }}>
-                        {c.used ? 'Utilise' : 'Disponible'}
+                      <span style={{ ...styles.badge, ...(c.active ? styles.badgeGreen : styles.badgeRed) }}>
+                        {c.active ? 'Actif' : 'Inactif'}
                       </span>
                     </td>
                   </tr>
@@ -382,16 +426,15 @@ function PromoCodesTab() {
         </>
       )}
 
-      {codes.length === 0 && (
+      {!loading && codes.length === 0 && (
         <div style={{ textAlign: 'center', padding: '60px 20px', color: '#9ca3af' }}>
-          <p style={{ fontSize: '16px' }}>Aucun code promo genere pour le moment.</p>
-          <p style={{ fontSize: '14px' }}>Utilisez le formulaire ci-dessus pour creer vos codes de reduction.</p>
+          <p style={{ fontSize: '16px' }}>Aucun code promo actif dans Stripe.</p>
+          <p style={{ fontSize: '14px' }}>Utilisez le formulaire ci-dessus pour cr\u00e9er vos codes de r\u00e9duction.</p>
         </div>
       )}
     </div>
   );
 }
-
 // ============================================
 // MAIN ADMIN DASHBOARD
 // ============================================
@@ -512,7 +555,7 @@ export default function AdminDashboard() {
       {activeTab === 'overview' && <OverviewTab students={students} enrollments={enrollments} totalRevenue={totalRevenue} recentActivity={recentActivity} />}
       {activeTab === 'students' && <StudentsTab students={students} progress={progress} totalLessons={totalLessons} />}
       {activeTab === 'payments' && <PaymentsTab enrollments={enrollments} />}
-      {activeTab === 'promo' && <PromoCodesTab />}
+      {activeTab === 'promo' && <PromoCodesTab session={session} />}
     </div>
   );
 }
