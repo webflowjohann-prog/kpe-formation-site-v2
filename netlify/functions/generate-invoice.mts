@@ -13,15 +13,17 @@ export default async (req: Request, context: Context) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
+  try {
   // Auth check
   const authHeader = req.headers.get("authorization");
   if (!authHeader) {
-    return new Response("Non autorise", { status: 401 });
+    return new Response(JSON.stringify({ error: "Non autorise - token manquant" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
   const token = authHeader.replace("Bearer ", "");
-  const { data: { user } } = await supabaseAdmin.auth.getUser(token);
-  if (!user) {
-    return new Response("Non autorise", { status: 401 });
+  const { data: { user }, error: authError } = await supabaseAdmin.auth.getUser(token);
+  if (!user || authError) {
+    console.error("Auth error:", authError);
+    return new Response(JSON.stringify({ error: "Non autorise - token invalide" }), { status: 401, headers: { "Content-Type": "application/json" } });
   }
 
   // Get enrollment data
@@ -31,14 +33,15 @@ export default async (req: Request, context: Context) => {
     .eq("id", user.id)
     .single();
 
-  const { data: enrollment } = await supabaseAdmin
+  const { data: enrollment, error: enrollError } = await supabaseAdmin
     .from("enrollments")
     .select("product_type, amount_paid, stripe_session_id, created_at")
     .eq("user_id", user.id)
     .single();
 
   if (!enrollment) {
-    return new Response("Aucune inscription trouvee", { status: 404 });
+    console.error("No enrollment for user:", user.id, enrollError);
+    return new Response(JSON.stringify({ error: "Aucune inscription trouvee pour ce compte" }), { status: 404, headers: { "Content-Type": "application/json" } });
   }
 
   const customerName = profile?.full_name || profile?.email || user.email || "";
@@ -151,6 +154,11 @@ export default async (req: Request, context: Context) => {
       "Cache-Control": "no-cache",
     },
   });
+
+  } catch (err: any) {
+    console.error("Invoice generation error:", err.message, err.stack);
+    return new Response(JSON.stringify({ error: "Erreur generation facture: " + err.message }), { status: 500, headers: { "Content-Type": "application/json" } });
+  }
 };
 
 export const config: Config = {

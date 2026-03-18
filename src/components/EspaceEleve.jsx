@@ -614,11 +614,15 @@ export default function EspaceEleve() {
             <button onClick={async () => {
               try {
                 const res = await fetch('/api/invoice', { headers: { 'Authorization': `Bearer ${session.access_token}` } });
-                if (!res.ok) throw new Error('Erreur');
+                if (!res.ok) {
+                  const err = await res.json().catch(() => ({ error: 'Erreur inconnue' }));
+                  alert(err.error || 'Erreur lors du téléchargement.');
+                  return;
+                }
                 const blob = await res.blob();
                 const url = URL.createObjectURL(blob);
-                const a = document.createElement('a'); a.href = url; a.download = `Facture-KPE.pdf`; a.click(); URL.revokeObjectURL(url);
-              } catch (e) { alert('Erreur lors du téléchargement de la facture.'); }
+                const a = document.createElement('a'); a.href = url; a.download = 'Facture-KPE.pdf'; a.click(); URL.revokeObjectURL(url);
+              } catch (e) { alert('Erreur réseau lors du téléchargement de la facture.'); }
             }} style={{ ...styles.logoutBtn, background: '#025159', color: 'white', border: 'none' }}>Télécharger ma facture</button>
           )}
           <button onClick={handleLogout} style={styles.logoutBtn}>Déconnexion</button>
