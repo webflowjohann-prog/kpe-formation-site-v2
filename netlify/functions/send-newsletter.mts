@@ -53,7 +53,8 @@ export default async (req: Request, context: Context) => {
 
     const { data: podiaContacts } = await supabaseAdmin
       .from("podia_contacts")
-      .select("id, name, email, subscribed, spent, source");
+      .select("id, name, email, subscribed, spent, source")
+      .range(0, 4999);
 
     return new Response(JSON.stringify({ students: enriched, podiaContacts: podiaContacts || [] }), {
       status: 200,
