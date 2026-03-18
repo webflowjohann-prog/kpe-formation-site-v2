@@ -338,7 +338,7 @@ function PromoCodesTab() {
           </div>
           <div>
             <label style={{ display: 'block', fontSize: '12px', color: '#6b7280', marginBottom: '4px', fontWeight: '500' }}>Quantite</label>
-            <input type="number" min="1" max="1000" value={quantity} onChange={e => setQuantity(Math.min(1000, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
+            <input type="number" min="1" max="10000" value={quantity} onChange={e => setQuantity(Math.min(10000, Math.max(1, Number(e.target.value))))} style={{ ...styles.input, marginBottom: 0, width: '120px' }} />
           </div>
           <button onClick={handleGenerate} disabled={generating} style={{ ...styles.btn, ...styles.btnPrimary }}>
             Generer {quantity} code(s)
