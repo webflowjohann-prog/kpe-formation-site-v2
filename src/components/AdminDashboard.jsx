@@ -671,10 +671,6 @@ function EmailMarketingTab({ session }) {
     { id: 'signature', type: 'signature', locked: true },
   ]);
 
-  const SUPABASE_URL = 'https://xiglhxtsukjgkgfkqlnp.supabase.co';
-  const BUCKET = 'email-images';
-
-  // Templates
   const templates = [
     {
       id: 'relance',
@@ -757,31 +753,37 @@ function EmailMarketingTab({ session }) {
 
   const loadStorageImages = async () => {
     try {
-      const supabase = getSupabase();
-      const { data } = await supabase.storage.from(BUCKET).list('', { limit: 100 });
-      if (data) setStorageImages(data.filter(f => f.name !== '.emptyFolderPlaceholder'));
+      const res = await fetch('/api/upload-image', {
+        headers: { 'Authorization': `Bearer ${session.access_token}` }
+      });
+      const data = await res.json();
+      if (data.images) setStorageImages(data.images);
     } catch (e) { console.error(e); }
   };
 
   const uploadImage = async (file) => {
     setUploadingImage(true);
     try {
-      const supabase = getSupabase();
-      const ext = file.name.split('.').pop();
-      const fileName = `img_${Date.now()}.${ext}`;
-      const { error } = await supabase.storage.from(BUCKET).upload(fileName, file, { cacheControl: '31536000', upsert: false });
-      if (error) throw error;
+      const formData = new FormData();
+      formData.append('file', file);
+      const res = await fetch('/api/upload-image', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${session.access_token}` },
+        body: formData
+      });
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
       await loadStorageImages();
-      return `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
+      return data.url;
     } catch (e) {
       console.error('Upload error:', e);
+      alert('Erreur upload : ' + e.message);
       return null;
     } finally {
       setUploadingImage(false);
     }
   };
 
-  const getImageUrl = (fileName) => `${SUPABASE_URL}/storage/v1/object/public/${BUCKET}/${fileName}`;
 
   // Recipients logic
   const filteredByType = students.filter(s => {
@@ -1197,7 +1199,7 @@ function EmailMarketingTab({ session }) {
                       key={img.name}
                       onClick={() => {
                         if (imagePickerTarget) {
-                          updateBlock(imagePickerTarget, { src: getImageUrl(img.name) });
+                          updateBlock(imagePickerTarget, { src: img.url });
                         }
                         setShowImagePicker(false);
                       }}
@@ -1206,7 +1208,7 @@ function EmailMarketingTab({ session }) {
                         border: '2px solid #e5e7eb', aspectRatio: '1', transition: 'border 0.15s'
                       }}
                     >
-                      <img src={getImageUrl(img.name)} alt={img.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                      <img src={img.url} alt={img.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
                     </div>
                   ))}
                 </div>
