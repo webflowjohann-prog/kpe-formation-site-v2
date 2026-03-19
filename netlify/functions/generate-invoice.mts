@@ -67,10 +67,10 @@ export default async (req: Request, context: Context) => {
   doc.fontSize(22).font("Helvetica-Bold").fillColor("#0d4f4f")
     .text("KPE FORMATION", 50, 50);
   doc.fontSize(10).font("Helvetica").fillColor("#666666")
-    .text("Kinesiologie Psycho-Energetique", 50, 78);
-  doc.text("Joel Prieur Formations KPE - SAS", 50, 92);
-  doc.text("2 Rue Lamartine, 15290 Parlan", 50, 106);
-  doc.text("SIREN : 911 746 147", 50, 120);
+    .text("Kin\u00e9siologie Psycho-Energ\u00e9tique", 50, 78);
+  doc.text("Jo\u00ebl Prieur Formation KPE", 50, 92);
+  doc.text("2 rue Lamartine, 15290 Parlan", 50, 106);
+  doc.text("SIREN : 314 607 839", 50, 120);
 
   // Invoice title
   doc.fontSize(28).font("Helvetica-Bold").fillColor("#1a1a1a")
@@ -139,9 +139,9 @@ export default async (req: Request, context: Context) => {
 
   // Footer
   doc.fontSize(8).font("Helvetica").fillColor("#999999")
-    .text("Joel Prieur Formations KPE - SAS au capital de 1 000 EUR", 50, 750, { align: "center" })
-    .text("SIREN 911 746 147 - RCS Aurillac", 50, 762, { align: "center" })
-    .text("2 Rue Lamartine, 15290 Parlan - formation.kpe@gmail.com", 50, 774, { align: "center" });
+    .text("Jo\u00ebl Prieur Formation KPE", 50, 750, { align: "center" })
+    .text("SIREN 314 607 839 - RCS Aurillac", 50, 762, { align: "center" })
+    .text("2 rue Lamartine, 15290 Parlan - formation.kpe@gmail.com", 50, 774, { align: "center" });
 
   doc.end();
   const pdfBuffer = await pdfReady;
