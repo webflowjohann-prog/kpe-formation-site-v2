@@ -529,12 +529,74 @@ const courseSchema = {
     <div style="margin-bottom:30px;"><img src="/images/logo-teal.png" alt="KPE" style="height:64px;width:auto;"></div>
     <h2>Prêt à transformer votre <em>parcours</em> ?</h2>
     <p>Rejoignez les 2 500+ étudiants qui ont déjà choisi la méthode KPE pour changer de vie.</p>
-    <a href="#tarifs" class="btn-primary">
-      Commencer la formation
-      <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-    </a>
+
+    <!-- Lead capture form -->
+    <div id="lead-form-wrapper" style="max-width:480px;margin:32px auto 0;">
+      <form id="lead-capture-form" style="display:flex;flex-direction:column;gap:12px;">
+        <input type="text" name="nom" placeholder="Votre nom" required
+          style="padding:14px 18px;border:2px solid rgba(255,255,255,0.3);border-radius:10px;background:rgba(255,255,255,0.1);color:#fff;font-size:15px;outline:none;backdrop-filter:blur(4px);transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(255,255,255,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.3)'" />
+        <input type="email" name="email" placeholder="Votre email" required
+          style="padding:14px 18px;border:2px solid rgba(255,255,255,0.3);border-radius:10px;background:rgba(255,255,255,0.1);color:#fff;font-size:15px;outline:none;backdrop-filter:blur(4px);transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(255,255,255,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.3)'" />
+        <input type="tel" name="telephone" placeholder="Votre téléphone (optionnel)"
+          style="padding:14px 18px;border:2px solid rgba(255,255,255,0.3);border-radius:10px;background:rgba(255,255,255,0.1);color:#fff;font-size:15px;outline:none;backdrop-filter:blur(4px);transition:border-color 0.2s;"
+          onfocus="this.style.borderColor='rgba(255,255,255,0.6)'" onblur="this.style.borderColor='rgba(255,255,255,0.3)'" />
+        <button type="submit" class="btn-primary" style="margin-top:4px;width:100%;justify-content:center;">
+          Recevoir les informations gratuitement
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </button>
+      </form>
+      <div id="lead-form-success" style="display:none;text-align:center;padding:24px 0;">
+        <div style="font-size:48px;margin-bottom:12px;">✓</div>
+        <p style="font-size:18px;font-weight:600;color:#fff;margin:0 0 8px;">Merci !</p>
+        <p style="color:rgba(255,255,255,0.8);margin:0;">Nous vous recontacterons très bientôt.</p>
+      </div>
+      <div id="lead-form-error" style="display:none;text-align:center;color:#fca5a5;font-size:14px;margin-top:8px;">
+        Une erreur est survenue. Veuillez réessayer.
+      </div>
+      <p style="color:rgba(255,255,255,0.5);font-size:12px;text-align:center;margin-top:12px;">Vos données sont protégées. Aucun spam.</p>
+    </div>
   </div>
 </section>
+
+<script>
+  document.getElementById('lead-capture-form')?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const form = e.target as HTMLFormElement;
+    const btn = form.querySelector('button') as HTMLButtonElement;
+    const originalText = btn.innerHTML;
+    btn.innerHTML = 'Envoi en cours...';
+    btn.disabled = true;
+
+    try {
+      const formData = new FormData(form);
+      const res = await fetch('/api/capture-lead', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nom: formData.get('nom'),
+          email: formData.get('email'),
+          telephone: formData.get('telephone'),
+          source: 'landing_page_cta',
+        }),
+      });
+
+      if (res.ok) {
+        (document.getElementById('lead-capture-form') as HTMLElement).style.display = 'none';
+        (document.getElementById('lead-form-success') as HTMLElement).style.display = 'block';
+      } else {
+        (document.getElementById('lead-form-error') as HTMLElement).style.display = 'block';
+        btn.innerHTML = originalText;
+        btn.disabled = false;
+      }
+    } catch {
+      (document.getElementById('lead-form-error') as HTMLElement).style.display = 'block';
+      btn.innerHTML = originalText;
+      btn.disabled = false;
+    }
+  });
+</script>
 
 <style>
 
