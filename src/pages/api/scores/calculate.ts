@@ -72,11 +72,11 @@ export const POST: APIRoute = async ({ request, cookies }) => {
           .neq('status', 'active')
           .order('created_at', { ascending: false })
           .limit(100),
-        // profil membre
+        // profil membre (santé dans member_health_profiles)
         supabase
-          .from('members')
+          .from('member_health_profiles')
           .select('sleep_hours, sleep_quality, training_frequency, resting_hr')
-          .eq('id', memberId)
+          .eq('member_id', memberId)
           .single(),
       ])
 

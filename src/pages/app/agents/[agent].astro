@@ -32,11 +32,11 @@ let sleepData = { sleep_hours: null, sleep_quality: null, morning_freshness: nul
 let morpheePrescriptions: Prescription[] = []
 
 // Données FORGE
-let trainingData = { training_frequency: null, training_types: null, training_goals: null, resting_hr: null, injuries: null }
+let trainingData = { training_frequency: null, sports: null, training_goal: null, resting_hr: null, injuries: null }
 let forgePrescriptions: Prescription[] = []
 
 // Données ZÉNITH
-let mentalData = { stress_level: null, meditation_practice: null, mood_stability: null, anxiety_level: null, focus_score: null }
+let mentalData = { stress_level: null, meditation_frequency: null, mood_general: null, concentration_quality: null, has_breathwork: null }
 let zenithPrescriptions: Prescription[] = []
 
 // Données ORACLE
@@ -76,9 +76,9 @@ if (agentId === 'fuel') {
 if (agentId === 'morphee') {
   const [memberRes, presRes] = await Promise.all([
     supabase
-      .from('members')
+      .from('member_health_profiles')
       .select('sleep_hours, sleep_quality, morning_freshness, bedtime, wake_time, sleep_issues')
-      .eq('id', user.id)
+      .eq('member_id', user.id)
       .single(),
     supabase
       .from('agent_prescriptions')
@@ -95,9 +95,9 @@ if (agentId === 'morphee') {
 if (agentId === 'forge') {
   const [memberRes, presRes] = await Promise.all([
     supabase
-      .from('members')
-      .select('training_frequency, training_types, training_goals, resting_hr, injuries')
-      .eq('id', user.id)
+      .from('member_health_profiles')
+      .select('training_frequency, sports, training_goal, resting_hr, injuries')
+      .eq('member_id', user.id)
       .single(),
     supabase
       .from('agent_prescriptions')
@@ -190,9 +190,9 @@ if (agentId === 'atlas') {
 if (agentId === 'zenith') {
   const [memberRes, presRes] = await Promise.all([
     supabase
-      .from('members')
-      .select('stress_level, meditation_practice, mood_stability, anxiety_level, focus_score')
-      .eq('id', user.id)
+      .from('member_health_profiles')
+      .select('stress_level, meditation_frequency, mood_general, concentration_quality, has_breathwork')
+      .eq('member_id', user.id)
       .single(),
     supabase
       .from('agent_prescriptions')

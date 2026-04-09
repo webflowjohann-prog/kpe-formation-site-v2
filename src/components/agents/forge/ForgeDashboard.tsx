@@ -6,10 +6,10 @@ const AGENT: AgentId = 'forge'
 
 interface TrainingData {
   training_frequency: number | null
-  training_types: string[] | null
-  training_goals: string[] | null
+  sports: string[] | null
+  training_goal: string | null
   resting_hr: number | null
-  injuries: string[] | null
+  injuries: string | null
 }
 
 interface Prescription {
@@ -66,7 +66,7 @@ const INTENSITY = [
 ]
 
 function PlanTab({ data, prescriptions }: { data: TrainingData; prescriptions: Prescription[] }) {
-  const { training_frequency, training_types, training_goals } = data
+  const { training_frequency, sports, training_goal } = data
 
   return (
     <div className="px-5 py-4 flex flex-col gap-4">
@@ -80,9 +80,9 @@ function PlanTab({ data, prescriptions }: { data: TrainingData; prescriptions: P
           </div>
           <div className="flex flex-col items-center glass p-3 col-span-2">
             <span className="label mb-2 self-start">Types déclarés</span>
-            {training_types && training_types.length > 0 ? (
+            {sports && sports.length > 0 ? (
               <div className="flex flex-wrap gap-1.5 w-full">
-                {training_types.map((t) => (
+                {sports.map((t) => (
                   <span key={t} className="px-2 py-0.5 rounded-full border border-white/[0.08] font-sans text-[9px] text-t3">{t}</span>
                 ))}
               </div>
@@ -91,13 +91,11 @@ function PlanTab({ data, prescriptions }: { data: TrainingData; prescriptions: P
             )}
           </div>
         </div>
-        {training_goals && training_goals.length > 0 && (
+        {training_goal && (
           <div>
-            <p className="label mb-2">Objectifs</p>
+            <p className="label mb-2">Objectif</p>
             <div className="flex flex-wrap gap-1.5">
-              {training_goals.map((g) => (
-                <span key={g} className="px-2 py-0.5 rounded-full bg-gold/10 border border-gold/20 font-sans text-[9px] text-gold">{g}</span>
-              ))}
+              <span className="px-2 py-0.5 rounded-full bg-gold/10 border border-gold/20 font-sans text-[9px] text-gold">{training_goal}</span>
             </div>
           </div>
         )}

@@ -31,12 +31,20 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   const agentId = agent as AgentId
 
-  // Récupérer profil membre
-  const { data: member } = await supabase
-    .from('members')
-    .select('full_name, age, gender, primary_goal, activity_level, health_conditions, medications, diet_type, supplements, stress_level, sleep_hours, sleep_quality, training_frequency, performance_level, sports, has_wearable, wearable_brand, cortex_score')
-    .eq('id', user.id)
-    .single()
+  // Récupérer profil membre (core + santé)
+  const [memberRes, healthRes] = await Promise.all([
+    supabase
+      .from('members')
+      .select('full_name, cortex_score')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('member_health_profiles')
+      .select('age, gender, primary_goal, activity_level, health_conditions, medications, diet_type, supplements, stress_level, sleep_hours, sleep_quality, training_frequency, performance_level, sports, has_wearable, wearable_brand')
+      .eq('member_id', user.id)
+      .single(),
+  ])
+  const member = { ...memberRes.data, ...healthRes.data }
 
   // Récupérer prescriptions actives
   const { data: prescriptions } = await supabase

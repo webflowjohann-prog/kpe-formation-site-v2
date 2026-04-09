@@ -6,10 +6,10 @@ const AGENT: AgentId = 'zenith'
 
 interface MentalData {
   stress_level: number | null
-  meditation_practice: string | null
-  mood_stability: number | null
-  anxiety_level: number | null
-  focus_score: number | null
+  meditation_frequency: string | null
+  mood_general: string | null
+  concentration_quality: number | null
+  has_breathwork: boolean | null
 }
 
 interface Prescription {
@@ -127,13 +127,11 @@ function SessionsTab() {
 }
 
 function ProtocolesTab({ data, prescriptions }: { data: MentalData; prescriptions: Prescription[] }) {
-  const { stress_level, mood_stability, anxiety_level, focus_score, meditation_practice } = data
+  const { stress_level, mood_general, concentration_quality, meditation_frequency, has_breathwork } = data
 
   const metrics = [
     { label: 'Stress', value: stress_level, colorFn: stressColor, suffix: '/10' },
-    { label: 'Humeur', value: mood_stability, colorFn: levelColor, suffix: '/10' },
-    { label: 'Anxiété', value: anxiety_level, colorFn: stressColor, suffix: '/10' },
-    { label: 'Focus', value: focus_score, colorFn: levelColor, suffix: '/10' },
+    { label: 'Concentration', value: concentration_quality, colorFn: levelColor, suffix: '/10' },
   ]
 
   return (
@@ -152,10 +150,26 @@ function ProtocolesTab({ data, prescriptions }: { data: MentalData; prescription
             </div>
           ))}
         </div>
-        {meditation_practice && (
-          <div className="pt-3 border-t border-white/[0.06]">
-            <p className="font-sans text-[10px] text-t4 mb-1">Pratique méditative</p>
-            <p className="font-sans text-xs text-t2">{meditation_practice}</p>
+        {(meditation_frequency || mood_general || has_breathwork !== null) && (
+          <div className="pt-3 border-t border-white/[0.06] flex flex-col gap-1.5">
+            {mood_general && (
+              <div className="flex justify-between">
+                <span className="font-sans text-[10px] text-t4">Humeur générale</span>
+                <span className="font-sans text-xs text-t2">{mood_general}</span>
+              </div>
+            )}
+            {meditation_frequency && (
+              <div className="flex justify-between">
+                <span className="font-sans text-[10px] text-t4">Méditation</span>
+                <span className="font-sans text-xs text-t2">{meditation_frequency}</span>
+              </div>
+            )}
+            {has_breathwork !== null && (
+              <div className="flex justify-between">
+                <span className="font-sans text-[10px] text-t4">Breathwork</span>
+                <span className="font-sans text-xs text-t2">{has_breathwork ? 'Oui' : 'Non'}</span>
+              </div>
+            )}
           </div>
         )}
       </div>
