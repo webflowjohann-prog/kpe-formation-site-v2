@@ -8,6 +8,7 @@ import MorpheeDashboard from '../../../components/agents/morphee/MorpheeDashboar
 import ForgeDashboard from '../../../components/agents/forge/ForgeDashboard'
 import ZenithDashboard from '../../../components/agents/zenith/ZenithDashboard'
 import AtlasDashboard from '../../../components/agents/atlas/AtlasDashboard'
+import OracleDashboard from '../../../components/agents/oracle/OracleDashboard'
 import { createServerSupabase } from '@/lib/supabase'
 
 const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
@@ -37,6 +38,19 @@ let forgePrescriptions: Prescription[] = []
 // Données ZÉNITH
 let mentalData = { stress_level: null, meditation_practice: null, mood_stability: null, anxiety_level: null, focus_score: null }
 let zenithPrescriptions: Prescription[] = []
+
+// Données ORACLE
+let oracleBiomarkers: Array<{
+  id: string; biomarker_id: string | null; value: number; unit: string | null; measured_at: string
+  name: string; category: string; normal_min: number | null; normal_max: number | null
+  optimal_min: number | null; optimal_max: number | null
+}> = []
+let oracleScoreHistory: Array<{
+  calculated_at: string; score: number; sleep_score: number | null; recovery_score: number | null
+  activity_score: number | null; biomarker_score: number | null; compliance_score: number | null
+}> = []
+let oracleDailyBrief: { id: string; content: string; created_at: string } | null = null
+let oracleCurrentScore = 0
 
 // Données ATLAS
 let atlasExperiences: Array<{
@@ -95,6 +109,59 @@ if (agentId === 'forge') {
   ])
   if (memberRes.data) trainingData = memberRes.data as typeof trainingData
   forgePrescriptions = presRes.data ?? []
+}
+
+if (agentId === 'oracle') {
+  const [bioRes, scoreRes, briefRes, memberRes] = await Promise.all([
+    // Biomarqueurs récents avec knowledge base
+    supabase.rpc('get_member_biomarkers', { p_member_id: user.id }).then(async (rpc) => {
+      // Fallback : join manuel si rpc indisponible
+      if (rpc.error) {
+        const [resultsRes, knowledgeRes] = await Promise.all([
+          supabase
+            .from('biomarker_results')
+            .select('id, biomarker_id, value, unit, measured_at')
+            .eq('member_id', user.id)
+            .order('measured_at', { ascending: false })
+            .limit(50),
+          supabase
+            .from('biomarker_knowledge')
+            .select('id, name, category, normal_min, normal_max, optimal_min, optimal_max'),
+        ])
+        const kbMap = new Map((knowledgeRes.data ?? []).map((k: {id: string; name: string; category: string; normal_min: number | null; normal_max: number | null; optimal_min: number | null; optimal_max: number | null}) => [k.id, k]))
+        return (resultsRes.data ?? []).map((r: {id: string; biomarker_id: string | null; value: number; unit: string | null; measured_at: string}) => {
+          const kb = r.biomarker_id ? kbMap.get(r.biomarker_id) : null
+          return { ...r, name: kb?.name ?? 'Inconnu', category: kb?.category ?? 'other', normal_min: kb?.normal_min ?? null, normal_max: kb?.normal_max ?? null, optimal_min: kb?.optimal_min ?? null, optimal_max: kb?.optimal_max ?? null }
+        })
+      }
+      return rpc.data ?? []
+    }),
+    // Historique scores 30 derniers jours
+    supabase
+      .from('cortex_scores')
+      .select('calculated_at, score, sleep_score, recovery_score, activity_score, biomarker_score, compliance_score')
+      .eq('member_id', user.id)
+      .order('calculated_at', { ascending: true })
+      .limit(30),
+    // Daily brief du jour
+    supabase
+      .from('daily_briefs')
+      .select('id, content, created_at')
+      .eq('member_id', user.id)
+      .order('created_at', { ascending: false })
+      .limit(1)
+      .maybeSingle(),
+    // Score courant
+    supabase
+      .from('members')
+      .select('cortex_score')
+      .eq('id', user.id)
+      .single(),
+  ])
+  oracleBiomarkers = Array.isArray(bioRes) ? bioRes : []
+  oracleScoreHistory = scoreRes.data ?? []
+  oracleDailyBrief = briefRes.data ?? null
+  oracleCurrentScore = memberRes.data?.cortex_score ?? 0
 }
 
 if (agentId === 'atlas') {
@@ -158,7 +225,10 @@ if (agentId === 'zenith') {
   {agentId === 'atlas' && (
     <AtlasDashboard memberId={user.id} cortexScore={atlasMemberScore} experiences={atlasExperiences} bookings={atlasBookings} client:load />
   )}
-  {agentId !== 'fuel' && agentId !== 'morphee' && agentId !== 'forge' && agentId !== 'zenith' && agentId !== 'atlas' && (
+  {agentId === 'oracle' && (
+    <OracleDashboard memberId={user.id} biomarkers={oracleBiomarkers} scoreHistory={oracleScoreHistory} dailyBrief={oracleDailyBrief} currentScore={oracleCurrentScore} client:load />
+  )}
+  {agentId !== 'fuel' && agentId !== 'morphee' && agentId !== 'forge' && agentId !== 'zenith' && agentId !== 'atlas' && agentId !== 'oracle' && (
     <AgentChat agent={agentId} memberId={user.id} client:load />
   )}
 </AppLayout>
