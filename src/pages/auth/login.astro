@@ -1,39 +1,62 @@
 ---
 import PublicLayout from '../../layouts/PublicLayout.astro'
+import { LoginForm } from '../../components/auth/LoginForm'
+
+// Rediriger si déjà connecté
+if (Astro.locals.user) {
+  return Astro.redirect('/app')
+}
+
+const redirectUrl = Astro.url.searchParams.get('redirect') ?? '/app'
+const errorParam = Astro.url.searchParams.get('error')
+
+const ERROR_MESSAGES: Record<string, string> = {
+  auth_failed: 'Authentification échouée. Veuillez réessayer.',
+  session_expired: 'Votre session a expiré. Reconnectez-vous.',
+}
 ---
 
 <PublicLayout title="Connexion">
-  <div class="min-h-screen flex items-center justify-center px-5 py-12">
-    <div class="w-full max-w-sm">
+  <div class="min-h-screen flex items-center justify-center px-5 py-16 bg-bg">
+
+    <!-- Halo -->
+    <div
+      class="fixed top-1/2 left-1/2 pointer-events-none -z-0"
+      style="transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.04) 0%,transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-10 w-full max-w-sm">
+
+      <!-- Logo -->
       <div class="text-center mb-10">
-        <a href="/" class="inline-block mb-8">
-          <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-8 w-auto mx-auto" />
+        <a href="/" class="inline-block mb-8" aria-label="NATICS Lab">
+          <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-7 w-auto mx-auto opacity-70" />
         </a>
-        <h1 class="font-serif text-2xl text-t1 italic">Connexion</h1>
-        <p class="font-sans text-sm text-t3 mt-2">Bon retour.</p>
+        <h1 class="font-serif text-2xl text-t1 italic">Bon retour.</h1>
+        <p class="font-sans text-sm text-t3 mt-2">Connectez-vous à votre espace NATICS Lab.</p>
       </div>
 
-      <!-- Formulaire — logique Auth Supabase en Sprint 1 -->
-      <div class="glass p-6 flex flex-col gap-4">
-        <div class="flex flex-col gap-1.5">
-          <label class="label">Email</label>
-          <input type="email" placeholder="vous@exemple.com" class="input-base" />
+      {/* Erreur serveur */}
+      {errorParam && ERROR_MESSAGES[errorParam] && (
+        <div class="glass border-red-500/20 p-4 mb-5 text-center">
+          <p class="font-sans text-xs text-red-400">{ERROR_MESSAGES[errorParam]}</p>
         </div>
-        <div class="flex flex-col gap-1.5">
-          <label class="label">Mot de passe</label>
-          <input type="password" placeholder="••••••••" class="input-base" />
-        </div>
-        <button class="btn-gold w-full mt-2">Se connecter</button>
-        <div class="divider my-1"></div>
-        <button class="btn-outline w-full text-[9px]">Lien magique par email</button>
+      )}
+
+      <!-- Formulaire (React island) -->
+      <div class="glass p-6">
+        <LoginForm client:load />
       </div>
 
+      <!-- Lien inscription -->
       <p class="text-center font-sans text-xs text-t4 mt-6">
         Pas encore de compte ?{' '}
         <a href="/auth/register" class="text-gold hover:text-gold-hover transition-colors">
-          S'inscrire
+          S'inscrire gratuitement
         </a>
       </p>
+
     </div>
   </div>
 </PublicLayout>

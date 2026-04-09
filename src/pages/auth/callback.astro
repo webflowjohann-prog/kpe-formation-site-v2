@@ -1,0 +1,65 @@
+---
+import { createServerSupabase } from '@/lib/supabase'
+
+const supabase = createServerSupabase(Astro.cookies)
+const url = Astro.url
+
+// Cas 1 : code OAuth (Google, Apple)
+const code = url.searchParams.get('code')
+// Cas 2 : token_hash (magic link email, email confirmation)
+const tokenHash = url.searchParams.get('token_hash')
+const type = url.searchParams.get('type') as 'email' | 'recovery' | 'magiclink' | 'invite' | null
+
+let authError: string | null = null
+
+if (code) {
+  const { error } = await supabase.auth.exchangeCodeForSession(code)
+  if (error) authError = error.message
+} else if (tokenHash && type) {
+  const { error } = await supabase.auth.verifyOtp({ token_hash: tokenHash, type })
+  if (error) authError = error.message
+}
+
+if (authError) {
+  return Astro.redirect(`/auth/login?error=auth_failed`)
+}
+
+// Récupérer l'utilisateur après échange
+const {
+  data: { user },
+} = await supabase.auth.getUser()
+
+if (!user) {
+  return Astro.redirect('/auth/login?error=auth_failed')
+}
+
+// Vérifier / créer le profil member
+const { data: member } = await supabase
+  .from('members')
+  .select('id, onboarding_completed')
+  .eq('id', user.id)
+  .maybeSingle()
+
+if (!member) {
+  // Nouveau membre — créer le profil
+  await supabase.from('members').insert({
+    id: user.id,
+    email: user.email,
+    full_name:
+      user.user_metadata?.full_name ??
+      user.user_metadata?.name ??
+      user.email?.split('@')[0] ??
+      '',
+    plan: (user.user_metadata?.plan as string) ?? 'free',
+    onboarding_completed: false,
+  })
+
+  return Astro.redirect('/onboarding')
+}
+
+if (!member.onboarding_completed) {
+  return Astro.redirect('/onboarding')
+}
+
+return Astro.redirect('/app')
+---

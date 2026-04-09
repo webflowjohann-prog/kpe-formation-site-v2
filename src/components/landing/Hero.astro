@@ -1,0 +1,92 @@
+---
+// Pas de dépendances serveur dans le Hero — section purement statique
+---
+
+<section class="relative min-h-screen flex flex-col items-center justify-center px-6 py-24 overflow-hidden">
+
+  <!-- Halo or subtil centré -->
+  <div
+    class="absolute top-1/2 left-1/2 pointer-events-none"
+    style="transform: translate(-50%, -55%); width: 700px; height: 700px; border-radius: 50%; background: radial-gradient(circle, rgba(201,169,110,0.06) 0%, transparent 70%);"
+    aria-hidden="true"
+  ></div>
+
+  <!-- Grain léger -->
+  <div
+    class="absolute inset-0 opacity-[0.015] pointer-events-none"
+    style="background-image: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" width=\"300\" height=\"300\"><filter id=\"n\"><feTurbulence type=\"fractalNoise\" baseFrequency=\"0.9\" numOctaves=\"4\" stitchTiles=\"stitch\"/></filter><rect width=\"300\" height=\"300\" filter=\"url(%23n)\" opacity=\"1\"/></svg>'); background-repeat: repeat;"
+    aria-hidden="true"
+  ></div>
+
+  <div class="relative z-10 flex flex-col items-center text-center w-full max-w-4xl mx-auto">
+
+    <!-- Logo -->
+    <a href="/" class="mb-14 block" aria-label="NATICS Lab">
+      <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-8 w-auto mx-auto opacity-70" />
+    </a>
+
+    <!-- Accroche -->
+    <span class="label text-gold mb-6 tracking-[0.2em]">Intelligence santé de précision</span>
+
+    <!-- Titre -->
+    <h1 class="font-serif font-normal text-t1 leading-[1.04] mb-8" style="font-size: clamp(2.8rem, 7vw, 5.5rem);">
+      Optimisez votre<br />
+      performance<br />
+      <em class="text-gold">par la donnée.</em>
+    </h1>
+
+    <!-- Sous-titre -->
+    <p class="font-sans text-t3 leading-relaxed max-w-xl mx-auto mb-12" style="font-size: clamp(0.95rem, 2vw, 1.1rem);">
+      6 agents IA personnels coordonnent biomarqueurs, wearables,
+      sommeil, nutrition et mental — pour une performance durable.
+    </p>
+
+    <!-- CTAs -->
+    <div class="flex flex-col sm:flex-row gap-3 mb-20">
+      <a href="/auth/register" class="btn-gold px-10 h-12 tracking-[0.18em] text-[9px]">
+        Commencer gratuitement
+      </a>
+      <a href="#agents" class="btn-outline px-10 h-12 tracking-[0.18em] text-[9px]">
+        Voir les agents
+      </a>
+    </div>
+
+    <!-- Score ORACLE — visualisation SVG statique -->
+    <div class="flex flex-col items-center gap-3 mb-16">
+      <div class="relative" style="width:152px;height:152px;">
+        <svg width="152" height="152" viewBox="0 0 152 152" style="transform:rotate(-90deg)" aria-hidden="true">
+          <!-- Track -->
+          <circle cx="76" cy="76" r="64" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="8" />
+          <!-- Progress 78/100 -->
+          <circle
+            cx="76" cy="76" r="64"
+            fill="none" stroke="#c9a96e" stroke-width="8"
+            stroke-dasharray="402.1" stroke-dashoffset="88.5"
+            stroke-linecap="round"
+          />
+        </svg>
+        <div class="absolute inset-0 flex flex-col items-center justify-center">
+          <span class="font-serif text-gold leading-none" style="font-size:2.25rem;font-weight:300;">78</span>
+          <span class="label text-t3 mt-1">Oracle</span>
+        </div>
+      </div>
+      <p class="font-sans text-[11px] text-t4">Score de performance biométrique global</p>
+    </div>
+
+    <!-- Agents badges -->
+    <div class="flex flex-wrap justify-center gap-2" aria-label="6 agents IA">
+      {['FORGE', 'MORPHÉE', 'FUEL', 'ZÉNITH', 'ATLAS', 'ORACLE'].map((a) => (
+        <span class="agent-badge">{a}</span>
+      ))}
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-25 pointer-events-none" aria-hidden="true">
+    <span class="label">Découvrir</span>
+    <svg width="14" height="18" viewBox="0 0 14 18" fill="none">
+      <path d="M7 1v12M1 11l6 6 6-6" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </div>
+
+</section>

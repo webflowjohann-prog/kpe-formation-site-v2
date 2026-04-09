@@ -1,0 +1,91 @@
+---
+const currentYear = new Date().getFullYear()
+---
+
+<footer class="border-t border-white/[0.06] py-16 px-6">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- Top row -->
+    <div class="flex flex-col md:flex-row justify-between gap-12 mb-16">
+
+      <!-- Brand -->
+      <div class="max-w-xs">
+        <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-7 w-auto mb-5 opacity-70" />
+        <p class="font-sans text-sm text-t4 leading-relaxed">
+          Plateforme SaaS d'intelligence santé de précision.
+          Basée à Bois-Guillaume, France.
+        </p>
+        <p class="font-sans text-xs text-t4 mt-4">
+          Johann Langenberg &amp; Dustin Arnold
+        </p>
+      </div>
+
+      <!-- Liens -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 gap-10">
+
+        <div>
+          <span class="label block mb-4">Produit</span>
+          <ul class="flex flex-col gap-2.5">
+            {[
+              ['Agents IA', '/#agents'],
+              ['Méthode', '/#methode'],
+              ['Tarifs', '/#prix'],
+              ['Expériences', '/#experiences'],
+            ].map(([label, href]) => (
+              <li>
+                <a href={href} class="font-sans text-sm text-t4 hover:text-t2 transition-colors">{label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <span class="label block mb-4">Données</span>
+          <ul class="flex flex-col gap-2.5">
+            {[
+              ['Terra API', '#'],
+              ['CIQUAL ANSES', '#'],
+              ['ANSM / BDPM', '#'],
+              ['PubMed', '#'],
+            ].map(([label, href]) => (
+              <li>
+                <a href={href} class="font-sans text-sm text-t4 hover:text-t2 transition-colors">{label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div>
+          <span class="label block mb-4">Légal</span>
+          <ul class="flex flex-col gap-2.5">
+            {[
+              ['Mentions légales', '/mentions-legales'],
+              ['Politique de confidentialité', '/politique-confidentialite'],
+              ['CGU', '/cgu'],
+              ['Cookies', '/cookies'],
+            ].map(([label, href]) => (
+              <li>
+                <a href={href} class="font-sans text-sm text-t4 hover:text-t2 transition-colors">{label}</a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Séparateur -->
+    <div class="divider mb-8" aria-hidden="true"></div>
+
+    <!-- Bottom row -->
+    <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+      <p class="font-sans text-[11px] text-t4">
+        &copy; {currentYear} NATICS Lab. Tous droits réservés.
+      </p>
+      <p class="font-sans text-[10px] text-t4 max-w-xs text-center sm:text-right leading-relaxed">
+        Outil de bien-être. Non dispositif médical (UE 2017/745).
+        Données hébergées en Europe.
+      </p>
+    </div>
+
+  </div>
+</footer>

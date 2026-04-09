@@ -1,0 +1,33 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro'
+---
+
+<AppLayout title="Scanner OCR">
+  <div class="px-5 py-6">
+    <div class="mb-6">
+      <span class="label text-gold block mb-1">Scanner</span>
+      <h1 class="font-serif text-2xl text-t1 italic">Biomarqueurs OCR</h1>
+    </div>
+
+    <!-- Placeholder Sprint 5 -->
+    <div class="glass p-8 flex flex-col items-center text-center gap-5">
+      <div class="w-20 h-20 rounded-full bg-gold/8 border border-gold/20 flex items-center justify-center">
+        <svg width="32" height="32" viewBox="0 0 32 32" fill="none" class="text-gold">
+          <rect x="3" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="21" y="3" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <rect x="3" y="21" width="8" height="8" rx="2" stroke="currentColor" stroke-width="1.5"/>
+          <path d="M21 21h3m3 0h3M21 25h3M24 21v3m0 3v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+          <path d="M16 3v6M3 16h6M26 16h3M16 26v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" opacity="0.4"/>
+        </svg>
+      </div>
+      <div>
+        <h2 class="font-serif text-xl text-t1 italic mb-2">Scanner vos résultats</h2>
+        <p class="font-sans text-sm text-t3 leading-relaxed max-w-xs">
+          Photographiez vos bilans de santé. Claude Vision extrait et match
+          137 biomarqueurs automatiquement.
+        </p>
+      </div>
+      <span class="label text-t4">Disponible Sprint 5</span>
+    </div>
+  </div>
+</AppLayout>

@@ -1,0 +1,104 @@
+---
+const AGENTS = [
+  {
+    id: 'forge',
+    name: 'FORGE',
+    subtitle: 'Entraînement & Récupération',
+    description:
+      'Adapte votre charge et intensité en temps réel selon HRV, cortisol et testostérone. Prescrit plans et protocoles de récupération personnalisés.',
+    metrics: ['HRV', 'VO2max', 'Charge', 'Cortisol'],
+  },
+  {
+    id: 'morphee',
+    name: 'MORPHÉE',
+    subtitle: 'Sommeil & Chronobiologie',
+    description:
+      'Analyse cycles, profondeur et qualité de sommeil. Prescrit routines du soir et ajuste chronotype selon SpO2, température et HRV nocturne.',
+    metrics: ['Deep Sleep', 'REM', 'Latence', 'SpO2'],
+  },
+  {
+    id: 'fuel',
+    name: 'FUEL',
+    subtitle: 'Nutrition & Suppléments',
+    description:
+      'Calibre plans nutritionnels sur vos biomarqueurs. Prescrit suppléments en vérifiant interactions ANSM. Boutique intégrée avec bundles personnalisés.',
+    metrics: ['Carences', 'ANC', 'Glycémie', 'Ferritine'],
+  },
+  {
+    id: 'zenith',
+    name: 'ZÉNITH',
+    subtitle: 'Mental & Stress',
+    description:
+      'Monitore stress via HRV et journal d\'humeur. Prescrit breathwork, méditation et cohérence cardiaque selon votre charge cognitive.',
+    metrics: ['Stress', 'HRV', 'Burnout', 'Humeur'],
+  },
+  {
+    id: 'atlas',
+    name: 'ATLAS',
+    subtitle: 'Expériences & Expéditions',
+    description:
+      'Valide votre éligibilité biométrique aux expériences. Prépare protocoles pré-expédition et suit progression vers vos objectifs d\'aventure.',
+    metrics: ['Score global', 'Endurance', 'Altitude', 'Froid'],
+  },
+  {
+    id: 'oracle',
+    name: 'ORACLE',
+    subtitle: 'Intelligence & Coordination',
+    description:
+      'Coordonne les 5 agents, calcule votre Score de Performance Global et génère rapports daily, weekly et monthly sur toutes vos données.',
+    metrics: ['Score 0-100', 'Daily Brief', 'Tendances', 'Rapports'],
+  },
+]
+---
+
+<section id="agents" class="py-28 px-6 bg-surface/30">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- En-tête -->
+    <div class="text-center mb-16">
+      <span class="label text-gold block mb-4">6 Agents IA</span>
+      <h2 class="font-serif text-4xl sm:text-5xl text-t1 italic mb-5">
+        Votre équipe de performance
+      </h2>
+      <p class="font-sans text-t3 text-base max-w-lg mx-auto leading-relaxed">
+        Chaque agent maîtrise son domaine. ORACLE les coordonne en temps réel
+        pour une vision complète de votre santé.
+      </p>
+    </div>
+
+    <!-- Grille agents -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {AGENTS.map((agent) => (
+        <article class="glass p-6 flex flex-col transition-all duration-200 hover:border-gold/25 hover:-translate-y-0.5 group">
+
+          <!-- Header agent -->
+          <div class="flex items-start justify-between mb-5">
+            <div>
+              <span class="label text-gold text-[10px]">{agent.name}</span>
+              <p class="font-sans text-[11px] text-t4 mt-1 leading-snug">{agent.subtitle}</p>
+            </div>
+            <div class="w-9 h-9 flex-shrink-0 rounded-full bg-gold/8 border border-gold/20 flex items-center justify-center">
+              <span class="font-sans font-medium text-[8px] uppercase tracking-wider text-gold">
+                {agent.id.slice(0, 2).toUpperCase()}
+              </span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <p class="font-sans text-sm text-t3 leading-relaxed mb-5 flex-1">
+            {agent.description}
+          </p>
+
+          <!-- Métriques clés -->
+          <div class="flex flex-wrap gap-1.5">
+            {agent.metrics.map((m) => (
+              <span class="px-2 py-1 bg-bg border border-white/[0.06] rounded-full font-sans font-medium text-[8px] uppercase tracking-[0.12em] text-t4">
+                {m}
+              </span>
+            ))}
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

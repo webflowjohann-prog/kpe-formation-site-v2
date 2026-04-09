@@ -1,0 +1,30 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro'
+import { AgentHeader } from '../../../components/ui/AgentHeader'
+import type { AgentId } from '../../../components/ui/AgentHeader'
+
+const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
+
+const { agent } = Astro.params
+
+if (!agent || !VALID_AGENTS.includes(agent as AgentId)) {
+  return Astro.redirect('/app/agents')
+}
+
+const agentId = agent as AgentId
+---
+
+<AppLayout title={agentId.toUpperCase()} agent={agentId}>
+  <!-- Header B&W avec photo agent -->
+  <AgentHeader agent={agentId} client:load />
+
+  <!-- Placeholder — Sprint 4-9 selon l'agent -->
+  <div class="px-5 py-6">
+    <div class="glass p-6 text-center">
+      <span class="label text-gold block mb-3">Sprint 4-9</span>
+      <p class="font-sans text-sm text-t3">
+        Dashboard et chat pour l'agent {agentId.toUpperCase()} arrivent prochainement.
+      </p>
+    </div>
+  </div>
+</AppLayout>

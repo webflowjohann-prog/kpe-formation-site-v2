@@ -1,0 +1,160 @@
+---
+const PLANS = [
+  {
+    id: 'free',
+    name: 'Free',
+    price: '0',
+    period: '',
+    tagline: 'Pour découvrir',
+    features: [
+      'Score ORACLE initial',
+      'Agent MORPHÉE (sommeil)',
+      'Dashboard basique',
+      '1 sync wearable',
+      'Questionnaire onboarding',
+    ],
+    cta: 'Commencer',
+    href: '/auth/register',
+    highlight: false,
+  },
+  {
+    id: 'starter',
+    name: 'Starter',
+    price: '29',
+    period: '/ mois',
+    tagline: 'Pour progresser',
+    features: [
+      'Tout Free inclus',
+      '3 agents IA (FORGE + MORPHÉE + FUEL)',
+      'Scanner OCR biomarqueurs',
+      '2 wearables synchronisés',
+      'Daily Brief personnalisé',
+      'Boutique suppléments',
+    ],
+    cta: 'Essayer 14 jours',
+    href: '/auth/register?plan=starter',
+    highlight: false,
+  },
+  {
+    id: 'pro',
+    name: 'Pro',
+    price: '79',
+    period: '/ mois',
+    tagline: 'Pour performer',
+    features: [
+      'Tout Starter inclus',
+      '6 agents IA complets',
+      'Rapports weekly & monthly',
+      '5 wearables synchronisés',
+      'Agent ATLAS (expériences)',
+      'Chat IA illimité par agent',
+      'Alertes biomarqueurs',
+    ],
+    cta: 'Essayer 14 jours',
+    href: '/auth/register?plan=pro',
+    highlight: true,
+  },
+  {
+    id: 'elite',
+    name: 'Elite',
+    price: '149',
+    period: '/ mois',
+    tagline: 'Pour les exigeants',
+    features: [
+      'Tout Pro inclus',
+      'Wearables illimités',
+      'Accès expériences ATLAS en avant-première',
+      'Suivi biomarqueurs avancé',
+      'Support prioritaire',
+      'Questionnaire mensuel adaptatif',
+    ],
+    cta: 'Contacter',
+    href: '/contact',
+    highlight: false,
+  },
+]
+---
+
+<section id="prix" class="py-28 px-6 bg-surface/30">
+  <div class="max-w-5xl mx-auto">
+
+    <!-- En-tête -->
+    <div class="text-center mb-16">
+      <span class="label text-gold block mb-4">Tarifs</span>
+      <h2 class="font-serif text-4xl sm:text-5xl text-t1 italic mb-5">
+        Investissez dans votre performance
+      </h2>
+      <p class="font-sans text-t3 text-base max-w-md mx-auto leading-relaxed">
+        Sans engagement. Résiliable à tout moment.
+        14 jours d'essai gratuit sur Starter et Pro.
+      </p>
+    </div>
+
+    <!-- Plans -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {PLANS.map((plan) => (
+        <div
+          class:list={[
+            'flex flex-col rounded-[20px] p-6 transition-all',
+            plan.highlight
+              ? 'bg-gold/8 border border-gold/40 relative'
+              : 'bg-card border border-white/[0.06]',
+          ]}
+        >
+          {plan.highlight && (
+            <span class="absolute -top-3 left-1/2 -translate-x-1/2 label text-bg bg-gold px-4 py-1 rounded-full whitespace-nowrap">
+              Recommandé
+            </span>
+          )}
+
+          <!-- Plan header -->
+          <div class="mb-6">
+            <span class="label text-t3 block mb-2">{plan.tagline}</span>
+            <h3 class={`font-serif text-xl italic mb-4 ${plan.highlight ? 'text-gold' : 'text-t1'}`}>
+              {plan.name}
+            </h3>
+            <div class="flex items-end gap-1">
+              <span class={`font-serif font-light leading-none ${plan.highlight ? 'text-gold' : 'text-t1'}`} style="font-size:2.5rem;">
+                {plan.price === '0' ? 'Gratuit' : `${plan.price}€`}
+              </span>
+              {plan.period && (
+                <span class="font-sans text-xs text-t4 mb-1">{plan.period}</span>
+              )}
+            </div>
+          </div>
+
+          <!-- Features -->
+          <ul class="flex flex-col gap-2.5 mb-8 flex-1">
+            {plan.features.map((f) => (
+              <li class="flex items-start gap-2.5">
+                <svg class={`w-3.5 h-3.5 mt-0.5 flex-shrink-0 ${plan.highlight ? 'text-gold' : 'text-t3'}`} viewBox="0 0 14 14" fill="none">
+                  <path d="M2 7l3.5 3.5L12 3.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <span class="font-sans text-xs text-t3 leading-snug">{f}</span>
+              </li>
+            ))}
+          </ul>
+
+          <!-- CTA -->
+          <a
+            href={plan.href}
+            class:list={[
+              'text-center rounded-[12px] h-11 flex items-center justify-center font-sans font-medium uppercase tracking-[0.15em] text-[9px] transition-all',
+              plan.highlight
+                ? 'bg-gold text-bg hover:bg-gold-hover'
+                : 'bg-transparent border border-white/[0.12] text-t2 hover:border-gold/30 hover:text-gold',
+            ]}
+          >
+            {plan.cta}
+          </a>
+        </div>
+      ))}
+    </div>
+
+    <!-- Disclaimer -->
+    <p class="text-center font-sans text-[10px] text-t4 mt-8 max-w-sm mx-auto leading-relaxed">
+      Outil de bien-être uniquement. Ne remplace pas un avis médical professionnel.
+      Données hébergées en Europe (RGPD — hébergement HDS Phase 2).
+    </p>
+  </div>
+</section>

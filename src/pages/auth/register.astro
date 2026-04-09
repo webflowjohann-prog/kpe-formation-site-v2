@@ -1,45 +1,59 @@
 ---
 import PublicLayout from '../../layouts/PublicLayout.astro'
+import { RegisterForm } from '../../components/auth/RegisterForm'
+
+// Rediriger si déjà connecté
+if (Astro.locals.user) {
+  return Astro.redirect('/app')
+}
+
+const plan = Astro.url.searchParams.get('plan') ?? 'free'
+
+const PLAN_LABELS: Record<string, string> = {
+  free: 'Compte gratuit',
+  starter: 'Plan Starter',
+  pro: 'Plan Pro',
+  elite: 'Plan Elite',
+}
 ---
 
 <PublicLayout title="Inscription">
-  <div class="min-h-screen flex items-center justify-center px-5 py-12">
-    <div class="w-full max-w-sm">
+  <div class="min-h-screen flex items-center justify-center px-5 py-16 bg-bg">
+
+    <!-- Halo -->
+    <div
+      class="fixed top-1/2 left-1/2 pointer-events-none -z-0"
+      style="transform:translate(-50%,-50%);width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(201,169,110,0.04) 0%,transparent 70%);"
+      aria-hidden="true"
+    ></div>
+
+    <div class="relative z-10 w-full max-w-sm">
+
+      <!-- Logo -->
       <div class="text-center mb-10">
-        <a href="/" class="inline-block mb-8">
-          <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-8 w-auto mx-auto" />
+        <a href="/" class="inline-block mb-8" aria-label="NATICS Lab">
+          <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-7 w-auto mx-auto opacity-70" />
         </a>
-        <h1 class="font-serif text-2xl text-t1 italic">Créer un compte</h1>
-        <p class="font-sans text-sm text-t3 mt-2">Commencez votre parcours.</p>
+        <h1 class="font-serif text-2xl text-t1 italic">Commencer.</h1>
+        <p class="font-sans text-sm text-t3 mt-2">
+          {PLAN_LABELS[plan] ?? 'Compte gratuit'}
+          {' '}— rejoignez NATICS Lab.
+        </p>
       </div>
 
-      <!-- Formulaire — logique Auth Supabase en Sprint 1 -->
-      <div class="glass p-6 flex flex-col gap-4">
-        <div class="flex flex-col gap-1.5">
-          <label class="label">Nom complet</label>
-          <input type="text" placeholder="Prénom Nom" class="input-base" />
-        </div>
-        <div class="flex flex-col gap-1.5">
-          <label class="label">Email</label>
-          <input type="email" placeholder="vous@exemple.com" class="input-base" />
-        </div>
-        <div class="flex flex-col gap-1.5">
-          <label class="label">Mot de passe</label>
-          <input type="password" placeholder="Min. 8 caractères" class="input-base" />
-        </div>
-        <button class="btn-gold w-full mt-2">Créer mon compte</button>
+      <!-- Formulaire (React island) -->
+      <div class="glass p-6">
+        <RegisterForm client:load defaultPlan={plan} />
       </div>
 
-      <p class="text-center font-sans text-[10px] text-t4 mt-6 max-w-xs mx-auto leading-relaxed">
-        En vous inscrivant, vous acceptez nos conditions. Données hébergées en Europe (RGPD).
-      </p>
-
-      <p class="text-center font-sans text-xs text-t4 mt-4">
+      <!-- Lien connexion -->
+      <p class="text-center font-sans text-xs text-t4 mt-6">
         Déjà un compte ?{' '}
         <a href="/auth/login" class="text-gold hover:text-gold-hover transition-colors">
           Se connecter
         </a>
       </p>
+
     </div>
   </div>
 </PublicLayout>

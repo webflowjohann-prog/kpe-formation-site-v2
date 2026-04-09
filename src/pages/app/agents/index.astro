@@ -1,0 +1,31 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro'
+---
+
+<AppLayout title="Agents">
+  <div class="px-5 py-6">
+    <div class="mb-6">
+      <span class="label text-gold block mb-1">Vos agents</span>
+      <h1 class="font-serif text-2xl text-t1 italic">6 agents IA</h1>
+    </div>
+
+    <div class="grid grid-cols-2 gap-3">
+      {[
+        { id: 'forge', name: 'FORGE', sub: 'Entraînement' },
+        { id: 'morphee', name: 'MORPHÉE', sub: 'Sommeil' },
+        { id: 'fuel', name: 'FUEL', sub: 'Nutrition' },
+        { id: 'zenith', name: 'ZÉNITH', sub: 'Mental' },
+        { id: 'atlas', name: 'ATLAS', sub: 'Expériences' },
+        { id: 'oracle', name: 'ORACLE', sub: 'Intelligence' },
+      ].map((agent) => (
+        <a
+          href={`/app/agents/${agent.id}`}
+          class="glass p-5 flex flex-col gap-2 hover:border-gold/25 transition-all active:scale-[0.98]"
+        >
+          <span class="label text-gold text-[10px]">{agent.name}</span>
+          <span class="font-sans text-xs text-t4">{agent.sub}</span>
+        </a>
+      ))}
+    </div>
+  </div>
+</AppLayout>
