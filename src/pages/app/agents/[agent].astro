@@ -4,6 +4,7 @@ import { AgentHeader } from '../../../components/ui/AgentHeader'
 import type { AgentId } from '../../../components/ui/AgentHeader'
 import AgentChat from '../../../components/agents/AgentChat'
 import FuelDashboard from '../../../components/agents/fuel/FuelDashboard'
+import MorpheeDashboard from '../../../components/agents/morphee/MorpheeDashboard'
 import { createServerSupabase } from '@/lib/supabase'
 
 const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
@@ -15,11 +16,16 @@ if (!agent || !VALID_AGENTS.includes(agent as AgentId)) {
 
 const agentId = agent as AgentId
 const user = Astro.locals.user!
+const supabase = createServerSupabase(Astro.cookies)
 
-// Pour FUEL : charger les prescriptions suppléments actives
+// Données FUEL
 let fuelSupplements: Array<{id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}> = []
+
+// Données MORPHÉE
+let sleepData = { sleep_hours: null, sleep_quality: null, morning_freshness: null, bedtime: null, wake_time: null, sleep_issues: null }
+let morpheePrescriptions: Array<{id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}> = []
+
 if (agentId === 'fuel') {
-  const supabase = createServerSupabase(Astro.cookies)
   const { data } = await supabase
     .from('agent_prescriptions')
     .select('id, title, description, timing, duration, priority')
@@ -29,14 +35,37 @@ if (agentId === 'fuel') {
     .order('created_at', { ascending: false })
   fuelSupplements = data ?? []
 }
+
+if (agentId === 'morphee') {
+  const [memberRes, presRes] = await Promise.all([
+    supabase
+      .from('members')
+      .select('sleep_hours, sleep_quality, morning_freshness, bedtime, wake_time, sleep_issues')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('agent_prescriptions')
+      .select('id, title, description, timing, duration, priority')
+      .eq('member_id', user.id)
+      .eq('agent', 'morphee')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false }),
+  ])
+  if (memberRes.data) sleepData = memberRes.data as typeof sleepData
+  morpheePrescriptions = presRes.data ?? []
+}
 ---
 
 <AppLayout title={agentId.toUpperCase()} agent={agentId}>
   <AgentHeader agent={agentId} client:load />
 
-  {agentId === 'fuel' ? (
+  {agentId === 'fuel' && (
     <FuelDashboard memberId={user.id} supplements={fuelSupplements} client:load />
-  ) : (
+  )}
+  {agentId === 'morphee' && (
+    <MorpheeDashboard memberId={user.id} sleepData={sleepData} prescriptions={morpheePrescriptions} client:load />
+  )}
+  {agentId !== 'fuel' && agentId !== 'morphee' && (
     <AgentChat agent={agentId} memberId={user.id} client:load />
   )}
 </AppLayout>
