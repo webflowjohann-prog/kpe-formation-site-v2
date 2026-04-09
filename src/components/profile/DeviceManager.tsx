@@ -44,8 +44,8 @@ export default function DeviceManager({ initialTerraUserId, initialLastSync, ini
     setError(null)
     try {
       const res = await fetch('/api/terra/connect', { method: 'POST' })
-      if (!res.ok) throw new Error('Erreur de connexion')
       const data = await res.json()
+      if (!res.ok) throw new Error(data.error ?? 'Erreur de connexion')
       if (data.url) {
         window.location.href = data.url
       }
