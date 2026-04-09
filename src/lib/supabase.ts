@@ -24,13 +24,14 @@ export function getSupabase() {
 export function createServerSupabase(cookies: AstroCookies) {
   return createServerClient(supabaseUrl, supabaseAnonKey, {
     cookies: {
-      getAll() {
-        return cookies.getAll()
+      get(name: string) {
+        return cookies.get(name)?.value
       },
-      setAll(cookiesToSet) {
-        cookiesToSet.forEach(({ name, value, options }) => {
-          cookies.set(name, value, options)
-        })
+      set(name: string, value: string, options: Record<string, unknown>) {
+        cookies.set(name, value, options as Parameters<typeof cookies.set>[2])
+      },
+      remove(name: string, options: Record<string, unknown>) {
+        cookies.delete(name, options as Parameters<typeof cookies.delete>[1])
       },
     },
   })
