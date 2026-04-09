@@ -38,11 +38,46 @@ export const POST: APIRoute = async ({ request }) => {
       }
 
       if (session.mode === 'payment') {
-        // Marquer la commande comme payée
-        await supabase
-          .from('partner_orders')
-          .update({ status: 'paid' })
-          .eq('stripe_session_id', session.id)
+        const paymentType = session.metadata?.type
+
+        if (paymentType === 'experience') {
+          // Confirmer la réservation d'expérience
+          const experienceId = session.metadata?.experience_id
+          if (experienceId) {
+            // Confirmer le booking
+            await supabase
+              .from('experience_bookings')
+              .update({
+                status: 'confirmed',
+                stripe_payment_intent: session.payment_intent as string ?? null,
+                confirmed_at: new Date().toISOString(),
+              })
+              .eq('stripe_session_id', session.id)
+
+            // Décrémenter les places
+            const { data: exp } = await supabase
+              .from('experiences')
+              .select('spots_remaining')
+              .eq('id', experienceId)
+              .single()
+            if (exp && exp.spots_remaining > 0) {
+              const newSpots = exp.spots_remaining - 1
+              await supabase
+                .from('experiences')
+                .update({
+                  spots_remaining: newSpots,
+                  status: newSpots === 0 ? 'full' : 'open',
+                })
+                .eq('id', experienceId)
+            }
+          }
+        } else {
+          // Marquer la commande marketplace comme payée
+          await supabase
+            .from('partner_orders')
+            .update({ status: 'paid' })
+            .eq('stripe_session_id', session.id)
+        }
       }
       break
     }

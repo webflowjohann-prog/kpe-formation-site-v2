@@ -7,6 +7,7 @@ import FuelDashboard from '../../../components/agents/fuel/FuelDashboard'
 import MorpheeDashboard from '../../../components/agents/morphee/MorpheeDashboard'
 import ForgeDashboard from '../../../components/agents/forge/ForgeDashboard'
 import ZenithDashboard from '../../../components/agents/zenith/ZenithDashboard'
+import AtlasDashboard from '../../../components/agents/atlas/AtlasDashboard'
 import { createServerSupabase } from '@/lib/supabase'
 
 const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
@@ -36,6 +37,16 @@ let forgePrescriptions: Prescription[] = []
 // Données ZÉNITH
 let mentalData = { stress_level: null, meditation_practice: null, mood_stability: null, anxiety_level: null, focus_score: null }
 let zenithPrescriptions: Prescription[] = []
+
+// Données ATLAS
+let atlasExperiences: Array<{
+  id: string; title: string; short_desc: string | null; location: string; country: string
+  category: string; date_start: string | null; date_end: string | null; duration_days: number | null
+  capacity: number; spots_remaining: number; price_cents: number; min_oracle_score: number
+  status: string; biomarker_requirements: unknown[]; prep_weeks: number | null
+}> = []
+let atlasBookings: Array<{id: string; experience_id: string; status: string; booked_at: string; amount_cents: number | null}> = []
+let atlasMemberScore = 0
 
 if (agentId === 'fuel') {
   const { data } = await supabase
@@ -86,6 +97,29 @@ if (agentId === 'forge') {
   forgePrescriptions = presRes.data ?? []
 }
 
+if (agentId === 'atlas') {
+  const [expRes, bookRes, memberRes] = await Promise.all([
+    supabase
+      .from('experiences')
+      .select('id, title, short_desc, location, country, category, date_start, date_end, duration_days, capacity, spots_remaining, price_cents, min_oracle_score, status, biomarker_requirements, prep_weeks')
+      .in('status', ['open', 'upcoming', 'full'])
+      .order('date_start', { ascending: true }),
+    supabase
+      .from('experience_bookings')
+      .select('id, experience_id, status, booked_at, amount_cents')
+      .eq('member_id', user.id)
+      .neq('status', 'refunded'),
+    supabase
+      .from('members')
+      .select('cortex_score')
+      .eq('id', user.id)
+      .single(),
+  ])
+  atlasExperiences = expRes.data ?? []
+  atlasBookings = bookRes.data ?? []
+  atlasMemberScore = memberRes.data?.cortex_score ?? 0
+}
+
 if (agentId === 'zenith') {
   const [memberRes, presRes] = await Promise.all([
     supabase
@@ -121,7 +155,10 @@ if (agentId === 'zenith') {
   {agentId === 'zenith' && (
     <ZenithDashboard memberId={user.id} mentalData={mentalData} prescriptions={zenithPrescriptions} client:load />
   )}
-  {agentId !== 'fuel' && agentId !== 'morphee' && agentId !== 'forge' && agentId !== 'zenith' && (
+  {agentId === 'atlas' && (
+    <AtlasDashboard memberId={user.id} cortexScore={atlasMemberScore} experiences={atlasExperiences} bookings={atlasBookings} client:load />
+  )}
+  {agentId !== 'fuel' && agentId !== 'morphee' && agentId !== 'forge' && agentId !== 'zenith' && agentId !== 'atlas' && (
     <AgentChat agent={agentId} memberId={user.id} client:load />
   )}
 </AppLayout>
