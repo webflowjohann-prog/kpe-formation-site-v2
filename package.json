@@ -11,6 +11,7 @@
     "typecheck": "astro check && tsc --noEmit"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.86.1",
     "@astrojs/netlify": "^6.3.0",
     "@astrojs/react": "^4.2.0",
     "@nanostores/react": "^0.7.3",
@@ -19,7 +20,8 @@
     "astro": "^5.6.0",
     "nanostores": "^0.11.3",
     "react": "^19.1.0",
-    "react-dom": "^19.1.0"
+    "react-dom": "^19.1.0",
+    "stripe": "^22.0.1"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.8",
