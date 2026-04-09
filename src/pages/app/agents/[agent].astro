@@ -5,6 +5,8 @@ import type { AgentId } from '../../../components/ui/AgentHeader'
 import AgentChat from '../../../components/agents/AgentChat'
 import FuelDashboard from '../../../components/agents/fuel/FuelDashboard'
 import MorpheeDashboard from '../../../components/agents/morphee/MorpheeDashboard'
+import ForgeDashboard from '../../../components/agents/forge/ForgeDashboard'
+import ZenithDashboard from '../../../components/agents/zenith/ZenithDashboard'
 import { createServerSupabase } from '@/lib/supabase'
 
 const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
@@ -18,12 +20,22 @@ const agentId = agent as AgentId
 const user = Astro.locals.user!
 const supabase = createServerSupabase(Astro.cookies)
 
+type Prescription = {id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}
+
 // Données FUEL
-let fuelSupplements: Array<{id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}> = []
+let fuelSupplements: Prescription[] = []
 
 // Données MORPHÉE
 let sleepData = { sleep_hours: null, sleep_quality: null, morning_freshness: null, bedtime: null, wake_time: null, sleep_issues: null }
-let morpheePrescriptions: Array<{id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}> = []
+let morpheePrescriptions: Prescription[] = []
+
+// Données FORGE
+let trainingData = { training_frequency: null, training_types: null, training_goals: null, resting_hr: null, injuries: null }
+let forgePrescriptions: Prescription[] = []
+
+// Données ZÉNITH
+let mentalData = { stress_level: null, meditation_practice: null, mood_stability: null, anxiety_level: null, focus_score: null }
+let zenithPrescriptions: Prescription[] = []
 
 if (agentId === 'fuel') {
   const { data } = await supabase
@@ -54,6 +66,44 @@ if (agentId === 'morphee') {
   if (memberRes.data) sleepData = memberRes.data as typeof sleepData
   morpheePrescriptions = presRes.data ?? []
 }
+
+if (agentId === 'forge') {
+  const [memberRes, presRes] = await Promise.all([
+    supabase
+      .from('members')
+      .select('training_frequency, training_types, training_goals, resting_hr, injuries')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('agent_prescriptions')
+      .select('id, title, description, timing, duration, priority')
+      .eq('member_id', user.id)
+      .eq('agent', 'forge')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false }),
+  ])
+  if (memberRes.data) trainingData = memberRes.data as typeof trainingData
+  forgePrescriptions = presRes.data ?? []
+}
+
+if (agentId === 'zenith') {
+  const [memberRes, presRes] = await Promise.all([
+    supabase
+      .from('members')
+      .select('stress_level, meditation_practice, mood_stability, anxiety_level, focus_score')
+      .eq('id', user.id)
+      .single(),
+    supabase
+      .from('agent_prescriptions')
+      .select('id, title, description, timing, duration, priority')
+      .eq('member_id', user.id)
+      .eq('agent', 'zenith')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false }),
+  ])
+  if (memberRes.data) mentalData = memberRes.data as typeof mentalData
+  zenithPrescriptions = presRes.data ?? []
+}
 ---
 
 <AppLayout title={agentId.toUpperCase()} agent={agentId}>
@@ -65,7 +115,13 @@ if (agentId === 'morphee') {
   {agentId === 'morphee' && (
     <MorpheeDashboard memberId={user.id} sleepData={sleepData} prescriptions={morpheePrescriptions} client:load />
   )}
-  {agentId !== 'fuel' && agentId !== 'morphee' && (
+  {agentId === 'forge' && (
+    <ForgeDashboard memberId={user.id} trainingData={trainingData} prescriptions={forgePrescriptions} client:load />
+  )}
+  {agentId === 'zenith' && (
+    <ZenithDashboard memberId={user.id} mentalData={mentalData} prescriptions={zenithPrescriptions} client:load />
+  )}
+  {agentId !== 'fuel' && agentId !== 'morphee' && agentId !== 'forge' && agentId !== 'zenith' && (
     <AgentChat agent={agentId} memberId={user.id} client:load />
   )}
 </AppLayout>
