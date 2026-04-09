@@ -3,10 +3,15 @@ import { QUESTIONS, TOTAL_QUESTIONS } from './questions'
 import ProgressBar from './ProgressBar'
 import QuestionScreen from './QuestionScreen'
 
-// Intervalle de sauvegarde automatique (toutes les N questions)
-const SAVE_INTERVAL = 10
-
 type Answers = Record<string, string | string[] | number | null>
+
+async function saveField(field: string, value: unknown, completed = false) {
+  await fetch('/api/onboarding/save', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ answers: { [field]: value }, completed }),
+  })
+}
 
 export default function OnboardingFlow() {
   const [index, setIndex] = useState(0)
@@ -17,26 +22,6 @@ export default function OnboardingFlow() {
 
   const question = QUESTIONS[index]
   const currentValue = answers[question.memberField] ?? null
-
-  // Sauvegarder les réponses en cours vers l'API
-  const save = useCallback(
-    async (finalAnswers: Answers, completed = false) => {
-      try {
-        const res = await fetch('/api/onboarding/save', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ answers: finalAnswers, completed }),
-        })
-        if (!res.ok) {
-          const data = await res.json()
-          throw new Error(data.error ?? 'Erreur de sauvegarde')
-        }
-      } catch (err) {
-        throw err
-      }
-    },
-    []
-  )
 
   const handleChange = useCallback(
     (value: string | string[] | number) => {
@@ -57,38 +42,25 @@ export default function OnboardingFlow() {
       return
     }
 
-    const updatedAnswers = { ...answers }
-
     if (isLast) {
+      // Dernière question : on attend la confirmation avant de rediriger
       setIsSaving(true)
       try {
-        await save(updatedAnswers, true)
+        await saveField(question.memberField, val, true)
         setDone(true)
-        // Redirect après un court délai pour afficher la confirmation
-        setTimeout(() => {
-          window.location.href = '/app'
-        }, 1800)
-      } catch (err) {
+        setTimeout(() => { window.location.href = '/app' }, 1800)
+      } catch {
         setError('Erreur de sauvegarde. Réessayez.')
         setIsSaving(false)
       }
       return
     }
 
-    // Sauvegarde intermédiaire tous les SAVE_INTERVAL questions
-    const nextIndex = index + 1
-    if (nextIndex % SAVE_INTERVAL === 0) {
-      setIsSaving(true)
-      try {
-        await save(updatedAnswers, false)
-      } catch {
-        // Silencieux — on continue quand même
-      }
-      setIsSaving(false)
-    }
+    // Sauvegarde immédiate fire-and-forget — ne bloque pas l'avancement
+    saveField(question.memberField, val).catch(() => {})
 
-    setIndex(nextIndex)
-  }, [index, answers, question, save])
+    setIndex(index + 1)
+  }, [index, answers, question])
 
   const handleBack = useCallback(() => {
     if (index > 0) setIndex(index - 1)
