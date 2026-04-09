@@ -1,0 +1,32 @@
+---
+import AppLayout from '../../../layouts/AppLayout.astro'
+import MonthlyQuestionnaire from '../../../components/profile/MonthlyQuestionnaire'
+import { createServerSupabase } from '@/lib/supabase'
+
+const user = Astro.locals.user!
+const supabase = createServerSupabase(Astro.cookies)
+const currentMonth = new Date().toISOString().slice(0, 7)
+
+const { data: existing } = await supabase
+  .from('monthly_responses')
+  .select('*')
+  .eq('member_id', user.id)
+  .eq('month', currentMonth)
+  .maybeSingle()
+---
+
+<AppLayout title="Bilan mensuel">
+  <div class="px-5 py-6">
+    <div class="mb-6">
+      <span class="label text-gold block mb-1">Questionnaire mensuel</span>
+      <h1 class="font-serif text-2xl text-t1 italic">Bilan {new Date().toLocaleDateString('fr-FR', { month: 'long', year: 'numeric' })}</h1>
+    </div>
+
+    <MonthlyQuestionnaire
+      memberId={user.id}
+      month={currentMonth}
+      existing={existing}
+      client:load
+    />
+  </div>
+</AppLayout>
