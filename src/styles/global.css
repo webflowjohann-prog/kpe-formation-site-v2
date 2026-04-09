@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Le projet est dans la home dir — gitignore liste les dossiers à exclure */
 
 /* ── NATICS Lab Design System ────────────────────────────────
@@ -221,6 +226,11 @@ body {
   .btn-gold:disabled {
     opacity: 0.4;
     cursor: not-allowed;
+  }
+
+  /* Animation fade-in — utilisée par l'onboarding */
+  .animate-fade-in {
+    animation: fadeIn 0.25s ease-out both;
   }
 
   /* Bouton outline */

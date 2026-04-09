@@ -1,50 +1,13 @@
 ---
 import PublicLayout from '../layouts/PublicLayout.astro'
+import OnboardingFlow from '../components/onboarding/OnboardingFlow'
 // Protégé par le middleware — accessible uniquement connecté + onboarding non terminé
 ---
 
-<PublicLayout title="Onboarding">
+<PublicLayout title="Personnalisation — NATICS Lab">
   <div class="min-h-screen flex items-center justify-center px-6 bg-bg">
-    <div class="w-full max-w-xl text-center">
-
-      <!-- Progress bar placeholder -->
-      <div class="w-full h-0.5 bg-white/[0.06] rounded-full mb-16">
-        <div class="h-full w-[5%] bg-gold rounded-full transition-all duration-500"></div>
-      </div>
-
-      <span class="label text-gold block mb-4">Onboarding — 65 questions</span>
-      <h1 class="font-serif text-3xl text-t1 italic mb-4">Personnalisons vos agents</h1>
-      <p class="font-sans text-sm text-t3 leading-relaxed mb-12 max-w-md mx-auto">
-        Ces questions permettent à vos 6 agents IA de calibrer leurs prescriptions
-        sur votre profil, vos objectifs et votre mode de vie.
-        Comptez environ 10-15 minutes.
-      </p>
-
-      <!-- Placeholder Sprint 2 -->
-      <div class="glass p-8 text-left mb-8">
-        <span class="label text-gold block mb-3">Question 1 / 65</span>
-        <h2 class="font-sans font-medium text-t1 text-lg mb-6">
-          Quel est votre objectif principal avec NATICS Lab ?
-        </h2>
-        <div class="flex flex-col gap-3">
-          {[
-            'Améliorer mes performances sportives',
-            'Optimiser mon sommeil et récupération',
-            'Mieux gérer mon stress et ma santé mentale',
-            'Optimiser ma nutrition et supplémentation',
-            'Préparer une expédition ou challenge physique',
-            'Suivi global de ma santé de précision',
-          ].map((option) => (
-            <button class="w-full text-left p-4 glass rounded-[14px] font-sans text-sm text-t2 hover:border-gold/30 hover:text-t1 transition-all">
-              {option}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      <p class="font-sans text-xs text-t4">
-        Sprint 2 — implémentation complète du questionnaire Typeform-style
-      </p>
+    <div class="w-full max-w-xl py-12">
+      <OnboardingFlow client:load />
     </div>
   </div>
 </PublicLayout>
