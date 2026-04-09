@@ -1,14 +1,10 @@
 ---
 import AppLayout from '../../layouts/AppLayout.astro'
+import DashboardApp from '../../components/dashboard/DashboardApp'
+
+const user = Astro.locals.user
 ---
 
-<AppLayout title="Dashboard">
-  <div class="px-5 py-6">
-    <!-- Placeholder Sprint 0 — Dashboard construit en Sprint 3 -->
-    <div class="glass p-8 text-center">
-      <p class="label mb-3">Sprint 0 — Skeleton</p>
-      <h2 class="font-serif text-2xl text-t1 italic mb-2">Dashboard</h2>
-      <p class="font-sans text-sm text-t3">Score, Daily Brief et Timeline arrivent en Sprint 3.</p>
-    </div>
-  </div>
+<AppLayout title="Dashboard — NATICS Lab">
+  <DashboardApp memberId={user!.id} client:load />
 </AppLayout>
