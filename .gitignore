@@ -1,0 +1,45 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+dist/
+.astro/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Netlify
+.netlify/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.idea/
+*.suo
+
+# Logs
+*.log
+npm-debug.log*
+
+# TypeScript
+*.tsbuildinfo
+
+# Autres projets dans la home dir — exclus du scan Tailwind CSS
+ikonik-ac-site/
+no-limit-academy/
+polyintel/
+natics-lab/
+Downloads/
+Desktop/
+Documents/
+Pictures/
+Movies/
+Music/
+Library/
+Applications/
+Public/

@@ -1,0 +1,49 @@
+---
+import PublicLayout from '../layouts/PublicLayout.astro'
+---
+
+<PublicLayout
+  title="Intelligence santé de précision"
+  description="NATICS Lab — Plateforme SaaS d'intelligence santé de précision. 6 agents IA, biométrie, nutrition, sommeil, mental."
+  showNav={true}
+>
+  <section class="min-h-screen flex flex-col items-center justify-center px-6 text-center">
+    <!-- Logo -->
+    <div class="mb-8">
+      <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-12 w-auto mx-auto opacity-90" />
+    </div>
+
+    <!-- Titre -->
+    <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl text-t1 mb-4 max-w-2xl leading-tight">
+      Intelligence santé<br />
+      <em class="text-gold">de précision</em>
+    </h1>
+
+    <p class="font-sans text-base text-t3 max-w-md mx-auto leading-relaxed mb-10">
+      6 agents IA. Vos biomarqueurs. Vos wearables.<br />
+      Une plateforme pour performer, récupérer, durer.
+    </p>
+
+    <!-- CTA -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/auth/register" class="btn-gold px-8 h-12 text-[10px]">
+        Commencer
+      </a>
+      <a href="/auth/login" class="btn-outline px-8 h-12 text-[10px]">
+        Se connecter
+      </a>
+    </div>
+
+    <!-- Agents preview -->
+    <div class="mt-16 flex flex-wrap justify-center gap-2">
+      {['FORGE', 'MORPHÉE', 'FUEL', 'ZÉNITH', 'ATLAS', 'ORACLE'].map((agent) => (
+        <span class="agent-badge">{agent}</span>
+      ))}
+    </div>
+
+    <!-- Disclaimer RGPD -->
+    <p class="mt-12 font-sans text-[10px] text-t4 max-w-xs mx-auto leading-relaxed">
+      Outil de bien-être. Ne remplace pas un avis médical. Données hébergées en Europe (UE).
+    </p>
+  </section>
+</PublicLayout>

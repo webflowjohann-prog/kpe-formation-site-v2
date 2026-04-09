@@ -1,0 +1,39 @@
+---
+import PublicLayout from '../../layouts/PublicLayout.astro'
+---
+
+<PublicLayout title="Connexion">
+  <div class="min-h-screen flex items-center justify-center px-5 py-12">
+    <div class="w-full max-w-sm">
+      <div class="text-center mb-10">
+        <a href="/" class="inline-block mb-8">
+          <img src="/images/logo-blanc.webp" alt="NATICS Lab" class="h-8 w-auto mx-auto" />
+        </a>
+        <h1 class="font-serif text-2xl text-t1 italic">Connexion</h1>
+        <p class="font-sans text-sm text-t3 mt-2">Bon retour.</p>
+      </div>
+
+      <!-- Formulaire — logique Auth Supabase en Sprint 1 -->
+      <div class="glass p-6 flex flex-col gap-4">
+        <div class="flex flex-col gap-1.5">
+          <label class="label">Email</label>
+          <input type="email" placeholder="vous@exemple.com" class="input-base" />
+        </div>
+        <div class="flex flex-col gap-1.5">
+          <label class="label">Mot de passe</label>
+          <input type="password" placeholder="••••••••" class="input-base" />
+        </div>
+        <button class="btn-gold w-full mt-2">Se connecter</button>
+        <div class="divider my-1"></div>
+        <button class="btn-outline w-full text-[9px]">Lien magique par email</button>
+      </div>
+
+      <p class="text-center font-sans text-xs text-t4 mt-6">
+        Pas encore de compte ?{' '}
+        <a href="/auth/register" class="text-gold hover:text-gold-hover transition-colors">
+          S'inscrire
+        </a>
+      </p>
+    </div>
+  </div>
+</PublicLayout>

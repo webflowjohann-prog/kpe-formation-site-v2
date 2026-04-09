@@ -1,0 +1,35 @@
+---
+import BaseLayout from './BaseLayout.astro'
+
+interface Props {
+  title?: string
+  description?: string
+  showNav?: boolean
+}
+
+const { title, description, showNav = false } = Astro.props
+---
+
+<BaseLayout title={title} description={description}>
+  <slot name="head" slot="head" />
+
+  {showNav && (
+    <header class="fixed top-0 left-0 right-0 z-40 h-16 flex items-center px-6">
+      <div class="glass px-5 py-3 flex items-center justify-between w-full max-w-5xl mx-auto">
+        <a href="/" class="flex items-center gap-2">
+          <img src="/images/logo-nav.png" alt="NATICS Lab" class="h-7 w-auto" />
+        </a>
+        <nav class="hidden md:flex items-center gap-6">
+          <a href="#agents" class="label hover:text-t1 transition-colors">Agents</a>
+          <a href="#methode" class="label hover:text-t1 transition-colors">Méthode</a>
+          <a href="#prix" class="label hover:text-t1 transition-colors">Tarifs</a>
+        </nav>
+        <a href="/auth/login" class="btn-gold text-xs px-5 h-9">Accès app</a>
+      </div>
+    </header>
+  )}
+
+  <main class:list={['min-h-screen', showNav && 'pt-16']}>
+    <slot />
+  </main>
+</BaseLayout>

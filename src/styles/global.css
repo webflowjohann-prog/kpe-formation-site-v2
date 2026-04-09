@@ -1,0 +1,249 @@
+@import "tailwindcss";
+
+/* Le projet est dans la home dir — gitignore liste les dossiers à exclure */
+
+/* ── NATICS Lab Design System ────────────────────────────────
+   Palette : Monochrome + Or uniquement. Aucune autre couleur.
+   Dark mode unique. Typographie Playfair Display + DM Sans.
+──────────────────────────────────────────────────────────── */
+
+@theme {
+  /* Couleurs fond / surfaces */
+  --color-bg: #0D0D0D;
+  --color-surface: #1a1a1a;
+  --color-card: #262626;
+
+  /* Or NATICS Lab — seule couleur accent */
+  --color-gold: #c9a96e;
+  --color-gold-hover: #b8963e;
+
+  /* Texte */
+  --color-t1: #ffffff;
+  --color-t2: #D9D9D9;
+  --color-t3: #A6A6A6;
+  --color-t4: #595959;
+
+  /* Séparateurs */
+  --color-sep: #D9D9D9;
+
+  /* Typographie */
+  --font-serif: "Playfair Display", Georgia, serif;
+  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+
+  /* Rayons */
+  --radius-card: 20px;
+  --radius-btn: 12px;
+
+  /* Ombres */
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 4px 20px rgba(201, 169, 110, 0.25);
+}
+
+/* ── Polices self-hosted (fichiers dans /public/fonts/) ──── */
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/PlayfairDisplay-Italic.woff2") format("woff2");
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: "Playfair Display";
+  src: url("/fonts/PlayfairDisplay-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans-Light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: "DM Sans";
+  src: url("/fonts/DMSans-Medium.woff2") format("woff2");
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Reset global ────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  background-color: #0D0D0D;
+  color: #ffffff;
+  font-family: "DM Sans", system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: #0D0D0D;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Sélection texte ─────────────────────────────────────── */
+::selection {
+  background-color: rgba(201, 169, 110, 0.25);
+  color: #ffffff;
+}
+
+/* ── Scrollbar personnalisée ─────────────────────────────── */
+::-webkit-scrollbar {
+  width: 4px;
+  height: 4px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(201, 169, 110, 0.3);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(201, 169, 110, 0.5);
+}
+
+/* ── Classes composants réutilisables ────────────────────── */
+@layer components {
+  /* Glass card — glassmorphism dark */
+  .glass {
+    background: rgba(38, 38, 38, 0.6);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  }
+
+  /* Label — DM Sans 500, uppercase, tracking */
+  .label {
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #A6A6A6;
+  }
+
+  /* Score — Playfair Display 300, or */
+  .score-text {
+    font-family: "Playfair Display", Georgia, serif;
+    font-weight: 300;
+    color: #c9a96e;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.06);
+  }
+
+  /* Agent badge */
+  .agent-badge {
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #c9a96e;
+    padding: 3px 8px;
+    border: 1px solid rgba(201, 169, 110, 0.25);
+    border-radius: 100px;
+  }
+
+  /* Input de base */
+  .input-base {
+    width: 100%;
+    height: 44px;
+    padding: 0 16px;
+    background: #262626;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-size: 14px;
+    color: #ffffff;
+    transition: border-color 0.2s, background 0.2s;
+    outline: none;
+  }
+  .input-base::placeholder {
+    color: #595959;
+  }
+  .input-base:focus {
+    border-color: rgba(201, 169, 110, 0.4);
+    background: #1a1a1a;
+  }
+
+  /* Bouton gold */
+  .btn-gold {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 24px;
+    background: #c9a96e;
+    color: #0D0D0D;
+    border-radius: 12px;
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: background 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+    border: none;
+  }
+  .btn-gold:hover {
+    background: #b8963e;
+    box-shadow: 0 4px 20px rgba(201, 169, 110, 0.25);
+  }
+  .btn-gold:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  /* Bouton outline */
+  .btn-outline {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 44px;
+    padding: 0 24px;
+    background: transparent;
+    color: #c9a96e;
+    border: 1px solid rgba(201, 169, 110, 0.3);
+    border-radius: 12px;
+    font-family: "DM Sans", system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    transition: border-color 0.2s, background 0.2s;
+    cursor: pointer;
+  }
+  .btn-outline:hover {
+    border-color: rgba(201, 169, 110, 0.6);
+    background: rgba(201, 169, 110, 0.05);
+  }
+}
