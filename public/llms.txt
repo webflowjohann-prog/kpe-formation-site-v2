@@ -4,14 +4,14 @@
 
 ## Pages principales
 
-- [Accueil](https://www.formation-kinesiologie.com/)
-- [Formation en ligne](https://www.formation-kinesiologie.com/formation-en-ligne)
-- [Formation présentiel](https://www.formation-kinesiologie.com/formation-presentiel)
-- [La Méthode KPE](https://www.formation-kinesiologie.com/methode-kpe)
-- [Joël Prieur](https://www.formation-kinesiologie.com/joel-prieur)
-- [Blog](https://www.formation-kinesiologie.com/blog)
-- [Contact](https://www.formation-kinesiologie.com/contact)
+- [Accueil](https://formation-kinesiologie.com/)
+- [Formation en ligne](https://formation-kinesiologie.com/formation-en-ligne)
+- [Formation présentiel](https://formation-kinesiologie.com/formation-presentiel)
+- [La Méthode KPE](https://formation-kinesiologie.com/methode-kpe)
+- [Joël Prieur](https://formation-kinesiologie.com/joel-prieur)
+- [Blog](https://formation-kinesiologie.com/blog)
+- [Contact](https://formation-kinesiologie.com/contact)
 
 ## Informations complètes
 
-- [llms-full.txt](https://www.formation-kinesiologie.com/llms-full.txt)
+- [llms-full.txt](https://formation-kinesiologie.com/llms-full.txt)

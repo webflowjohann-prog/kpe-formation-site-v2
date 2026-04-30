@@ -1,5 +1,7 @@
 User-agent: *
 Allow: /
 Disallow: /api/
+Disallow: /admin/
+Disallow: /espace-eleve/
 
-Sitemap: https://www.formation-kinesiologie.com/sitemap-index.xml
+Sitemap: https://formation-kinesiologie.com/sitemap-index.xml

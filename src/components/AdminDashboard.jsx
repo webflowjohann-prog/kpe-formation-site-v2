@@ -653,7 +653,7 @@ function EmailMarketingTab({ session }) {
     { id: 'header', type: 'header', locked: true },
     { id: Date.now().toString(), type: 'text', content: 'Bonjour {{name}},' },
     { id: (Date.now() + 1).toString(), type: 'text', content: 'Votre contenu ici...' },
-    { id: (Date.now() + 2).toString(), type: 'button', text: 'Accéder à mon espace', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+    { id: (Date.now() + 2).toString(), type: 'button', text: 'Accéder à mon espace', url: 'https://formation-kinesiologie.com/espace-eleve/' },
     { id: 'signature', type: 'signature', locked: true },
   ]);
 
@@ -667,7 +667,7 @@ function EmailMarketingTab({ session }) {
         { type: 'text', content: 'Bonjour {{name}},' },
         { type: 'text', content: 'Cela fait un moment que vous n\'avez pas visité votre espace formation KPE. Vos modules vous attendent !' },
         { type: 'text', content: 'Saviez-vous que les élèves qui pratiquent régulièrement obtiennent des résultats remarquables dès les premières séances avec leurs consultants ?' },
-        { type: 'button', text: 'Reprendre ma formation', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'button', text: 'Reprendre ma formation', url: 'https://formation-kinesiologie.com/espace-eleve/' },
         { type: 'signature', locked: true },
       ]
     },
@@ -680,7 +680,7 @@ function EmailMarketingTab({ session }) {
         { type: 'text', content: 'Bonjour {{name}},' },
         { type: 'text', content: 'Vous avez déjà franchi un cap important en suivant la formation KPE en ligne. Félicitations !' },
         { type: 'text', content: 'Pour aller encore plus loin, la formation en présentiel à Aurillac vous permet de pratiquer directement sous la supervision de Joël Prieur. 8 week-ends, des cas réels, et l\'énergie du groupe.' },
-        { type: 'button', text: 'Découvrir le présentiel', url: 'https://kpe-formation-site.netlify.app/formation-presentiel/' },
+        { type: 'button', text: 'Découvrir le présentiel', url: 'https://formation-kinesiologie.com/formation-presentiel/' },
         { type: 'signature', locked: true },
       ]
     },
@@ -693,7 +693,7 @@ function EmailMarketingTab({ session }) {
         { type: 'text', content: 'Bonjour {{name}},' },
         { type: 'text', content: 'Bonne nouvelle ! De nouveaux contenus sont disponibles dans votre espace formation KPE.' },
         { type: 'text', content: 'Connectez-vous dès maintenant pour découvrir les nouvelles leçons et continuer votre progression.' },
-        { type: 'button', text: 'Accéder aux nouveautés', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'button', text: 'Accéder aux nouveautés', url: 'https://formation-kinesiologie.com/espace-eleve/' },
         { type: 'signature', locked: true },
       ]
     },
@@ -705,7 +705,7 @@ function EmailMarketingTab({ session }) {
         { type: 'header', locked: true },
         { type: 'text', content: 'Bonjour {{name}},' },
         { type: 'text', content: 'Pour une durée limitée, profitez d\'une réduction exceptionnelle sur la formation KPE en ligne.' },
-        { type: 'button', text: 'Profiter de l\'offre', url: 'https://kpe-formation-site.netlify.app/achat/' },
+        { type: 'button', text: 'Profiter de l\'offre', url: 'https://formation-kinesiologie.com/achat/' },
         { type: 'signature', locked: true },
       ]
     },
@@ -717,7 +717,7 @@ function EmailMarketingTab({ session }) {
         { type: 'header', locked: true },
         { type: 'text', content: 'Bonjour {{name}},' },
         { type: 'text', content: 'Votre contenu ici...' },
-        { type: 'button', text: 'Accéder à mon espace', url: 'https://kpe-formation-site.netlify.app/espace-eleve/' },
+        { type: 'button', text: 'Accéder à mon espace', url: 'https://formation-kinesiologie.com/espace-eleve/' },
         { type: 'signature', locked: true },
       ]
     }
@@ -818,7 +818,7 @@ function EmailMarketingTab({ session }) {
   const addBlock = (type) => {
     const newBlock = { id: Date.now().toString(), type };
     if (type === 'text') newBlock.content = 'Nouveau texte...';
-    if (type === 'button') { newBlock.text = 'Cliquez ici'; newBlock.url = 'https://kpe-formation-site.netlify.app/espace-eleve/'; }
+    if (type === 'button') { newBlock.text = 'Cliquez ici'; newBlock.url = 'https://formation-kinesiologie.com/espace-eleve/'; }
     if (type === 'image') { newBlock.src = ''; newBlock.alt = ''; }
     if (type === 'divider') { /* nothing extra */ }
 

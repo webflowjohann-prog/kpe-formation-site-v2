@@ -10,7 +10,7 @@ export interface Props {
 }
 
 const { title, description, canonical, ogImage = '/images/joel-hero.webp', ogType = 'website', schema, breadcrumbs } = Astro.props;
-const siteUrl = 'https://www.formation-kinesiologie.com';
+const siteUrl = 'https://formation-kinesiologie.com';
 const canonicalUrl = canonical || new URL(Astro.url.pathname, siteUrl).href;
 
 const breadcrumbSchema = breadcrumbs ? {
