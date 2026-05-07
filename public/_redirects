@@ -13,6 +13,8 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 /blog-joel-prieur                           /blog/                                      301
 /contact-formation-kinesiologie             /contact/                                   301
 /initiation                                 /formation-en-ligne/                        301
+/initiation-offerte                          /formation-en-ligne/                        301
+/formation-kpe                               /formation-en-ligne/                        301
 
 # Anciens articles Webflow
 /blog/kinesiologie-et-fatigue-depression-malaise-physique           /blog/kinesiologie-stress-anxiete-liberation-emotionnelle/   301
