@@ -3,7 +3,6 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 
 # Alias sitemap standard
 /sitemap.xml                                /sitemap-index.xml                          301
-
 # Anciennes URLs Webflow - nouvelles URLs Astro
 /formations-kinesiologie-en-ligne           /formation-en-ligne/                        301
 /formations-kinesiologie-en-presentiel      /formation-presentiel/                      301
@@ -15,18 +14,13 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 /initiation                                 /formation-en-ligne/                        301
 /initiation-offerte                          /formation-en-ligne/                        301
 /formation-kpe                               /formation-en-ligne/                        301
-/initiation-offerte                          /formation-en-ligne/                        301
-/formation-kpe                               /formation-en-ligne/                        301
-
 # Anciens articles Webflow
 /blog/kinesiologie-et-fatigue-depression-malaise-physique           /blog/kinesiologie-stress-anxiete-liberation-emotionnelle/   301
 /blog/la-kinesiologie-est-letude-du-mouvement-et-de-sa-perception   /blog/quest-ce-que-la-kinesiologie-psycho-energetique/        301
 /blog/limpact-de-la-kinesiologie-psycho-energetique-sur-le-stress   /blog/kinesiologie-gestion-stress-equilibre/                  301
-
 # Utility pages
 /utility-pages/mentions-legales             /mentions-legales/                          301
 /utility-pages/vie-privee-et-cookies        /politique-cookies/                         301
-
 # Anciennes URLs Podia
 /store/*                                    /achat/                                     301
 /courses/*                                  /formation-en-ligne/                        301
