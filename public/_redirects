@@ -24,3 +24,12 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 # Anciennes URLs Podia
 /store/*                                    /achat/                                     301
 /courses/*                                  /formation-en-ligne/                        301
+
+# === Anciennes URLs Webflow découvertes via GSC (404 → redirections) ===
+/blog/la-kinesiologie-est-une-branche-de-la-therapie-holistique     /blog/quest-ce-que-la-kinesiologie-psycho-energetique/           301
+/blog/un-bref-apercu-de-la-kinesiologie                             /blog/quest-ce-que-la-kinesiologie-psycho-energetique/           301
+/blog/la-kinesiologie-est-letude-du-mouvement-et-de-sa-perception   /blog/quest-ce-que-la-kinesiologie-psycho-energetique/           301
+/blog/rechercher-un-sens-et-un-but-pour-soi-meme                    /blog/kinesiologie-stress-anxiete-liberation-emotionnelle/       301
+/blog/limpact-de-la-kinesiologie-psycho-energetique-sur-le-stress   /blog/kinesiologie-gestion-stress-equilibre/                     301
+/category/beginner                                                  /blog/                                                           301
+/style-guide                                                        /                                                                301
