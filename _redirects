@@ -1,12 +1,10 @@
-# REDIRECTIONS SEO - formation-kinesiologie.com
-
-# Force apex (sans www)
-https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:splat    301!
+# Force apex domain (sans www)
+https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:splat   301!
 
 # Alias sitemap standard
 /sitemap.xml                                /sitemap-index.xml                          301
 
-# Anciennes URLs Webflow
+# Anciennes URLs Webflow - nouvelles URLs Astro
 /formations-kinesiologie-en-ligne           /formation-en-ligne/                        301
 /formations-kinesiologie-en-presentiel      /formation-presentiel/                      301
 /formation-en-ligne-detail                  /formation-en-ligne/                        301
