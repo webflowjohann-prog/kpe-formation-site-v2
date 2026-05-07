@@ -15,6 +15,8 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 /initiation                                 /formation-en-ligne/                        301
 /initiation-offerte                          /formation-en-ligne/                        301
 /formation-kpe                               /formation-en-ligne/                        301
+/initiation-offerte                          /formation-en-ligne/                        301
+/formation-kpe                               /formation-en-ligne/                        301
 
 # Anciens articles Webflow
 /blog/kinesiologie-et-fatigue-depression-malaise-physique           /blog/kinesiologie-stress-anxiete-liberation-emotionnelle/   301
