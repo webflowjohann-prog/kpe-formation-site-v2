@@ -26,3 +26,4 @@ https://www.formation-kinesiologie.com/*    https://formation-kinesiologie.com/:
 # Anciennes URLs Podia
 /store/*                                    /achat/                                     301
 /courses/*                                  /formation-en-ligne/                        301
+# Force rebuild jeu.  7 mai 2026 12:21:16 CEST
