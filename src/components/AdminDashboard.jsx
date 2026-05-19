@@ -631,6 +631,8 @@ function RevenueChart({ enrollments }) {
 function EmailMarketingTab({ session }) {
   const [students, setStudents] = useState([]);
   const [podiaContacts, setPodiaContacts] = useState([]);
+  const [leads, setLeads] = useState([]);
+  const [leadTags, setLeadTags] = useState([]);
   const [loading, setLoading] = useState(true);
   const [subject, setSubject] = useState('');
   const [filter, setFilter] = useState('all');
@@ -728,12 +730,26 @@ function EmailMarketingTab({ session }) {
   const loadStudents = async () => {
     setLoading(true);
     try {
+      // 1. Élèves et contacts Podia (API existante)
       const res = await fetch('/api/newsletter', {
         headers: { 'Authorization': `Bearer ${session.access_token}` }
       });
       const data = await res.json();
       if (data.students) setStudents(data.students);
       if (data.podiaContacts) setPodiaContacts(data.podiaContacts);
+
+      // 2. Leads marketing (Meta Ads, formulaires) — Supabase direct
+      const supabase = getSupabase();
+      const { data: leadsData } = await supabase
+        .from('leads')
+        .select('id, email, first_name, last_name, full_name, phone, source, status, subscribed, lead_tag_links(tag_id, lead_tags(id, name, color))')
+        .eq('subscribed', true)
+        .order('created_at', { ascending: false });
+      const { data: tagsData } = await supabase
+        .from('lead_tags')
+        .select('id, name, color');
+      if (leadsData) setLeads(leadsData);
+      if (tagsData) setLeadTags(tagsData);
     } catch (err) { console.error(err); }
     setLoading(false);
   };
@@ -787,13 +803,22 @@ function EmailMarketingTab({ session }) {
     if (filter === 'podia_all') return podiaContacts;
     if (filter === 'podia_subscribed') return podiaContacts.filter(c => c.subscribed === 'Subscribed');
     if (filter === 'podia_buyers') return podiaContacts.filter(c => parseSpent(c.spent) > 0);
+    // Filtres pour les leads marketing
+    const normalizeLead = l => ({ ...l, full_name: l.full_name || `${l.first_name || ''} ${l.last_name || ''}`.trim() || l.email });
+    if (filter === 'leads_all') return leads.map(normalizeLead);
+    if (filter === 'leads_meta') return leads.filter(l => l.source === 'meta_ads').map(normalizeLead);
+    if (filter && filter.startsWith('leads_tag_')) {
+      const tagId = filter.replace('leads_tag_', '');
+      return leads.filter(l => l.lead_tag_links?.some(link => link.tag_id === tagId)).map(normalizeLead);
+    }
     return students;
   })();
 
-  // Combine students + podia for manual picker
+  // Combine students + podia + leads for manual picker
   const allPickerContacts = [
     ...students.map(s => ({ ...s, _source: 'student' })),
-    ...podiaContacts.map(c => ({ id: `podia_${c.id}`, email: c.email, full_name: c.name, _source: 'podia' }))
+    ...podiaContacts.map(c => ({ id: `podia_${c.id}`, email: c.email, full_name: c.name, _source: 'podia' })),
+    ...leads.map(l => ({ id: `lead_${l.id}`, email: l.email, full_name: l.full_name || `${l.first_name || ''} ${l.last_name || ''}`.trim() || l.email, _source: 'lead', _leadSource: l.source }))
   ];
 
   const recipients = selectionMode === 'manual'
@@ -1049,6 +1074,7 @@ function EmailMarketingTab({ session }) {
         <KpiCard label="En ligne" value={students.filter(s => s.product_type === 'online').length} />
         <KpiCard label="Présentiel" value={students.filter(s => s.product_type === 'presentiel').length} />
         <KpiCard label="Contacts Podia" value={podiaContacts.length} />
+        <KpiCard label="Leads Meta" value={leads.filter(l => l.source === 'meta_ads').length} sub={`${leads.length} leads au total`} />
       </div>
 
       {/* Templates */}
@@ -1116,6 +1142,20 @@ function EmailMarketingTab({ session }) {
             <button onClick={() => setFilter('podia_all')} style={{ ...styles.btn, ...(filter === 'podia_all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia tous ({podiaContacts.length})</button>
             <button onClick={() => setFilter('podia_subscribed')} style={{ ...styles.btn, ...(filter === 'podia_subscribed' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia abonnés ({podiaContacts.filter(c => c.subscribed).length})</button>
             <button onClick={() => setFilter('podia_buyers')} style={{ ...styles.btn, ...(filter === 'podia_buyers' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>Podia acheteurs ({podiaContacts.filter(c => parseSpent(c.spent) > 0).length})</button>
+            <span style={{ width: '1px', background: '#e5e7eb', margin: '0 4px' }} />
+            <button onClick={() => setFilter('leads_all')} style={{ ...styles.btn, ...(filter === 'leads_all' ? styles.btnPrimary : styles.btnSecondary), fontSize: '13px', padding: '6px 14px' }}>🎯 Leads tous ({leads.length})</button>
+            <button onClick={() => setFilter('leads_meta')} style={{ ...styles.btn, fontSize: '13px', padding: '6px 14px', background: filter === 'leads_meta' ? '#1877F2' : 'white', color: filter === 'leads_meta' ? 'white' : '#374151', border: filter === 'leads_meta' ? '1px solid #1877F2' : '1px solid #e5e7eb' }}>Meta Ads ({leads.filter(l => l.source === 'meta_ads').length})</button>
+            {leadTags.map(tag => {
+              const count = leads.filter(l => l.lead_tag_links?.some(link => link.tag_id === tag.id)).length;
+              if (count === 0) return null;
+              const filterKey = `leads_tag_${tag.id}`;
+              const isActive = filter === filterKey;
+              return (
+                <button key={tag.id} onClick={() => setFilter(filterKey)} style={{ ...styles.btn, fontSize: '13px', padding: '6px 14px', background: isActive ? tag.color : 'white', color: isActive ? 'white' : '#374151', border: isActive ? `1px solid ${tag.color}` : '1px solid #e5e7eb' }}>
+                  {tag.name} ({count})
+                </button>
+              );
+            })}
           </div>
         )}
 
