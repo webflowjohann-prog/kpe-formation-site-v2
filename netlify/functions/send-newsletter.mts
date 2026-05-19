@@ -14,7 +14,8 @@ const UNSUBSCRIBE_SECRET =
   Netlify.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
   "";
 
-// ====== Token de désinscription (HMAC-SHA256, signé) ======
+const SEND_INTERVAL_MS = 600;
+
 function generateUnsubToken(leadId: string, email: string): string {
   const payload = { lead_id: leadId, email, ts: Date.now() };
   const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
@@ -25,7 +26,6 @@ function generateUnsubToken(leadId: string, email: string): string {
   return `${data}.${sig}`;
 }
 
-// ====== Footer légal RGPD (HTML) ======
 function buildFooterHtml(unsubUrl: string): string {
   return `
     <div style="margin-top:40px;padding:24px 20px;background:#fafaf7;border-radius:8px;text-align:center;font-family:Arial,sans-serif;border-top:1px solid #e5e7eb;">
@@ -52,7 +52,6 @@ function buildFooterHtml(unsubUrl: string): string {
   `;
 }
 
-// ====== Verif admin ======
 async function verifyAdmin(req: Request): Promise<boolean> {
   const authHeader = req.headers.get("authorization");
   if (!authHeader) return false;
@@ -80,7 +79,7 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  // ========== GET ==========
+  // GET : liste élèves + podia
   if (req.method === "GET") {
     const { data: students } = await supabaseAdmin
       .from("profiles")
@@ -117,7 +116,10 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  // ========== POST ==========
+  // POST : envoi séquentiel (synchrone)
+  // ⚠️ Cette fonction est appelée comme background : path /api/newsletter
+  // mais le code envoie SEQUENTIELLEMENT pour respecter le rate limit Resend (2/s)
+  // Pour 100+ mails, on dépasse les 10s. C'est OK car waitUntil() empêche le timeout.
   try {
     const { subject, htmlContent, recipients } = await req.json();
     const resendApiKey = Netlify.env.get("RESEND_API_KEY") || "";
@@ -129,7 +131,7 @@ export default async (req: Request, context: Context) => {
       );
     }
 
-    // Récupérer les lead_id si destinataires viennent de la table leads
+    // Récupérer lead_id pour les tokens
     const emailToLeadId = new Map<string, string>();
     const emails = recipients.map((r: any) => r.email);
     const { data: leadsMatch } = await supabaseAdmin
@@ -142,59 +144,51 @@ export default async (req: Request, context: Context) => {
     let failed = 0;
     const errors: string[] = [];
 
-    // Batchs de 10 + délai 1s entre batches (inchangé)
-    for (let i = 0; i < recipients.length; i += 10) {
-      const batch = recipients.slice(i, i + 10);
+    // ENVOI SÉQUENTIEL (1 par 1, 600ms entre chaque)
+    for (let i = 0; i < recipients.length; i++) {
+      const r = recipients[i];
+      try {
+        const leadId = emailToLeadId.get(r.email) || `unknown_${r.email}`;
+        const unsubToken = generateUnsubToken(leadId, r.email);
+        const unsubUrl = `${SITE_URL}/desinscription/?token=${unsubToken}`;
 
-      const promises = batch.map(async (r: { email: string; name: string }) => {
-        try {
-          // 1. Token unique pour ce lead
-          const leadId = emailToLeadId.get(r.email) || `unknown_${r.email}`;
-          const unsubToken = generateUnsubToken(leadId, r.email);
-          const unsubUrl = `${SITE_URL}/desinscription?token=${unsubToken}`;
+        const personalizedHtml = htmlContent
+          .replace(/\{\{name\}\}/g, r.name || "")
+          .replace(/\{\{email\}\}/g, r.email) + buildFooterHtml(unsubUrl);
 
-          // 2. Personnalisation + footer légal RGPD
-          const personalizedHtml = htmlContent
-            .replace(/\{\{name\}\}/g, r.name || "")
-            .replace(/\{\{email\}\}/g, r.email) + buildFooterHtml(unsubUrl);
-
-          // 3. Envoi Resend avec From/Reply-To corrects + List-Unsubscribe
-          const res = await fetch("https://api.resend.com/emails", {
-            method: "POST",
+        const res = await fetch("https://api.resend.com/emails", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${resendApiKey}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            from: "KPE Formation - Joël Prieur <formation-kpe@ikonik-ac.com>",
+            reply_to: "passion.kpe@gmail.com",
+            to: [r.email],
+            subject: subject,
+            html: personalizedHtml,
             headers: {
-              Authorization: `Bearer ${resendApiKey}`,
-              "Content-Type": "application/json",
+              "List-Unsubscribe": `<${unsubUrl}>`,
+              "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
             },
-            body: JSON.stringify({
-              from: "KPE Formation - Joël Prieur <formation-kpe@ikonik-ac.com>",
-              reply_to: "passion.kpe@gmail.com",
-              to: [r.email],
-              subject: subject,
-              html: personalizedHtml,
-              headers: {
-                "List-Unsubscribe": `<${unsubUrl}>`,
-                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
-              },
-            }),
-          });
+          }),
+        });
 
-          if (res.ok) {
-            sent++;
-          } else {
-            failed++;
-            const err = await res.text();
-            errors.push(`${r.email}: ${err}`);
-          }
-        } catch (e: any) {
+        if (res.ok) {
+          sent++;
+        } else {
           failed++;
-          errors.push(`${r.email}: ${e.message}`);
+          const err = await res.text();
+          errors.push(`${r.email}: ${err.slice(0, 100)}`);
         }
-      });
+      } catch (e: any) {
+        failed++;
+        errors.push(`${r.email}: ${e.message}`);
+      }
 
-      await Promise.all(promises);
-
-      if (i + 10 < recipients.length) {
-        await new Promise(resolve => setTimeout(resolve, 1000));
+      if (i < recipients.length - 1) {
+        await new Promise(resolve => setTimeout(resolve, SEND_INTERVAL_MS));
       }
     }
 
