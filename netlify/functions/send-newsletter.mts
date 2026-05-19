@@ -31,12 +31,17 @@ function buildFooterHtml(unsubUrl: string): string {
     <div style="margin-top:40px;padding:24px 20px;background:#fafaf7;border-radius:8px;text-align:center;font-family:Arial,sans-serif;border-top:1px solid #e5e7eb;">
       <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0 0 12px;">
         Vous recevez ce message car vous avez manifesté votre intérêt pour la formation 
-        Kinésiologie Psycho-Énergétique de Joël Prieur.
+        Kinésiologie Psycho-Énergétique de Joël Prieur via 
+        <a href="${SITE_URL}" style="color:#0d4f4f;text-decoration:none;">formation-kinesiologie.com</a>.
       </p>
       <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0 0 16px;">
         <strong>Joël Prieur — KPE Formation</strong><br>
         2 rue Lamartine, 15290 Parlan, France<br>
         06 76 96 69 04 — contact@formation-kinesiologie.com
+      </p>
+      <p style="font-size:11px;color:#9ca3af;line-height:1.5;margin:0 0 12px;">
+        Email expédié par IKONIK, prestataire technique de KPE Formation.<br>
+        Pour toute question, répondez directement à ce mail (Joël Prieur).
       </p>
       <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0;">
         <a href="${unsubUrl}" style="color:#0d4f4f;text-decoration:underline;">Se désinscrire de ces emails</a>
@@ -161,7 +166,7 @@ export default async (req: Request, context: Context) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              from: "Joël Prieur <contact@formation-kinesiologie.com>",
+              from: "KPE Formation - Joël Prieur <formation-kpe@ikonik-ac.com>",
               reply_to: "passion.kpe@gmail.com",
               to: [r.email],
               subject: subject,
