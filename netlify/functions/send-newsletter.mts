@@ -1,5 +1,6 @@
 import type { Context, Config } from "@netlify/functions";
 import { createClient } from "@supabase/supabase-js";
+import { createHmac } from "node:crypto";
 
 const supabaseAdmin = createClient(
   Netlify.env.get("SUPABASE_URL") || "",
@@ -7,6 +8,46 @@ const supabaseAdmin = createClient(
   { auth: { autoRefreshToken: false, persistSession: false } }
 );
 
+const SITE_URL = Netlify.env.get("SITE_URL") || "https://formation-kinesiologie.com";
+const UNSUBSCRIBE_SECRET =
+  Netlify.env.get("UNSUBSCRIBE_SECRET") ||
+  Netlify.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+  "";
+
+// ====== Token de désinscription (HMAC-SHA256, signé) ======
+function generateUnsubToken(leadId: string, email: string): string {
+  const payload = { lead_id: leadId, email, ts: Date.now() };
+  const data = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const sig = createHmac("sha256", UNSUBSCRIBE_SECRET)
+    .update(data)
+    .digest("base64url")
+    .slice(0, 32);
+  return `${data}.${sig}`;
+}
+
+// ====== Footer légal RGPD (HTML) ======
+function buildFooterHtml(unsubUrl: string): string {
+  return `
+    <div style="margin-top:40px;padding:24px 20px;background:#fafaf7;border-radius:8px;text-align:center;font-family:Arial,sans-serif;border-top:1px solid #e5e7eb;">
+      <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0 0 12px;">
+        Vous recevez ce message car vous avez manifesté votre intérêt pour la formation 
+        Kinésiologie Psycho-Énergétique de Joël Prieur.
+      </p>
+      <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0 0 16px;">
+        <strong>Joël Prieur — KPE Formation</strong><br>
+        2 rue Lamartine, 15290 Parlan, France<br>
+        06 76 96 69 04 — contact@formation-kinesiologie.com
+      </p>
+      <p style="font-size:12px;color:#6b7280;line-height:1.5;margin:0;">
+        <a href="${unsubUrl}" style="color:#0d4f4f;text-decoration:underline;">Se désinscrire de ces emails</a>
+        &nbsp;·&nbsp;
+        <a href="${SITE_URL}/mentions-legales" style="color:#0d4f4f;text-decoration:underline;">Mentions légales</a>
+      </p>
+    </div>
+  `;
+}
+
+// ====== Verif admin ======
 async function verifyAdmin(req: Request): Promise<boolean> {
   const authHeader = req.headers.get("authorization");
   if (!authHeader) return false;
@@ -34,7 +75,7 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  // GET: return list of students + podia contacts
+  // ========== GET ==========
   if (req.method === "GET") {
     const { data: students } = await supabaseAdmin
       .from("profiles")
@@ -51,7 +92,6 @@ export default async (req: Request, context: Context) => {
       return { ...s, product_type: enr?.product_type || "online" };
     });
 
-    // Paginate podia_contacts (PostgREST limit = 1000 rows per request)
     let allPodiaContacts: any[] = [];
     let from = 0;
     const pageSize = 1000;
@@ -72,7 +112,7 @@ export default async (req: Request, context: Context) => {
     });
   }
 
-  // POST: send newsletter
+  // ========== POST ==========
   try {
     const { subject, htmlContent, recipients } = await req.json();
     const resendApiKey = Netlify.env.get("RESEND_API_KEY") || "";
@@ -84,20 +124,36 @@ export default async (req: Request, context: Context) => {
       );
     }
 
+    // Récupérer les lead_id si destinataires viennent de la table leads
+    const emailToLeadId = new Map<string, string>();
+    const emails = recipients.map((r: any) => r.email);
+    const { data: leadsMatch } = await supabaseAdmin
+      .from("leads")
+      .select("id, email")
+      .in("email", emails);
+    (leadsMatch || []).forEach(l => emailToLeadId.set(l.email, l.id));
+
     let sent = 0;
     let failed = 0;
     const errors: string[] = [];
 
-    // Send emails in batches of 10 to avoid rate limits
+    // Batchs de 10 + délai 1s entre batches (inchangé)
     for (let i = 0; i < recipients.length; i += 10) {
       const batch = recipients.slice(i, i + 10);
 
       const promises = batch.map(async (r: { email: string; name: string }) => {
         try {
+          // 1. Token unique pour ce lead
+          const leadId = emailToLeadId.get(r.email) || `unknown_${r.email}`;
+          const unsubToken = generateUnsubToken(leadId, r.email);
+          const unsubUrl = `${SITE_URL}/desinscription?token=${unsubToken}`;
+
+          // 2. Personnalisation + footer légal RGPD
           const personalizedHtml = htmlContent
             .replace(/\{\{name\}\}/g, r.name || "")
-            .replace(/\{\{email\}\}/g, r.email);
+            .replace(/\{\{email\}\}/g, r.email) + buildFooterHtml(unsubUrl);
 
+          // 3. Envoi Resend avec From/Reply-To corrects + List-Unsubscribe
           const res = await fetch("https://api.resend.com/emails", {
             method: "POST",
             headers: {
@@ -105,10 +161,15 @@ export default async (req: Request, context: Context) => {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              from: "KPE Formation <noreply@ikonik-ac.com>",
+              from: "Joël Prieur <contact@formation-kinesiologie.com>",
+              reply_to: "passion.kpe@gmail.com",
               to: [r.email],
               subject: subject,
               html: personalizedHtml,
+              headers: {
+                "List-Unsubscribe": `<${unsubUrl}>`,
+                "List-Unsubscribe-Post": "List-Unsubscribe=One-Click",
+              },
             }),
           });
 
@@ -127,7 +188,6 @@ export default async (req: Request, context: Context) => {
 
       await Promise.all(promises);
 
-      // Small delay between batches
       if (i + 10 < recipients.length) {
         await new Promise(resolve => setTimeout(resolve, 1000));
       }
