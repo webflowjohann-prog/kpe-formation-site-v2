@@ -28,27 +28,56 @@ const courseSchema = {
       "availability": "https://schema.org/InStock"
     }
   ],
-  "hasCourseInstance": {
-    "@type": "CourseInstance",
-    "courseMode": "blended",
-    "location": {
-      "@type": "Place",
-      "name": "Hôtel Campanile Aurillac",
-      "address": "ZAC de la Jordanne, 15000 Aurillac"
+  "hasCourseInstance": [
+    {
+      "@type": "CourseInstance",
+      "name": "Formation KPE en ligne",
+      "courseMode": "online",
+      "courseWorkload": "PT20H",
+      "offers": {
+        "@type": "Offer",
+        "price": "1580",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock",
+        "url": "https://formation-kinesiologie.com/achat"
+      }
     },
-    "startDate": "2026-09-19"
-  },
+    {
+      "@type": "CourseInstance",
+      "name": "Formation KPE en présentiel — 8 week-ends à Aurillac",
+      "courseMode": "onsite",
+      "startDate": "2026-09-19",
+      "endDate": "2027-05-23",
+      "location": {
+        "@type": "Place",
+        "name": "Hôtel Campanile Aurillac",
+        "address": {
+          "@type": "PostalAddress",
+          "streetAddress": "ZAC de la Jordanne",
+          "addressLocality": "Aurillac",
+          "postalCode": "15000",
+          "addressCountry": "FR"
+        }
+      },
+      "offers": {
+        "@type": "Offer",
+        "price": "3999",
+        "priceCurrency": "EUR",
+        "availability": "https://schema.org/InStock"
+      }
+    }
+  ],
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "5.0",
-    "reviewCount": "2500",
+    "reviewCount": "6",
     "bestRating": "5"
   }
 };
 ---
 
 <BaseLayout
-  title="Formation Kinésiologie Psycho-Énergétique | KPE par Joël Prieur — En ligne & Présentiel"
+  title="Formation Kinésiologie en Ligne & Présentiel Aurillac | KPE"
   description="Devenez praticien en kinésiologie psycho-énergétique. Formation complète par Joël Prieur : 8 modules, 20h+ de vidéo, certificat. En ligne 1 580€ ou présentiel à Aurillac 3 999€. +2 500 étudiants formés."
   schema={courseSchema}
 >
