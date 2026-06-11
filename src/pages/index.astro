@@ -86,12 +86,69 @@ const courseSchema = {
     "bestRating": "5"
   }
 };
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Faut-il des pré-requis pour suivre la formation ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Aucun pré-requis n'est demandé. La formation est conçue pour être assimilée par toute personne motivée et bienveillante, qu'elle soit professionnelle de santé ou en reconversion complète."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Comment se déroule la formation en ligne ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Dès votre inscription, vous accédez à l'ensemble des vidéos (+20h) et supports PDF. Vous travaillez à votre rythme, sans date limite. En cas de questions, vous contactez directement Joël par email ou téléphone. Vous bénéficiez également des groupes Facebook et WhatsApp pour échanger avec les autres étudiants."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Puis-je m'installer après la formation ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Oui. Une fois votre formation validée, vous obtenez le certificat de praticien en Kinésiologie Psycho-Énergétique et pouvez vous installer en tant que professionnel."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Combien de temps faut-il pour compléter la formation ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Chaque module comprend ses propres heures d'intégration, de 50h à 110h selon le contenu. La plupart des étudiants y consacrent entre 6 mois et 1 an selon leur rythme."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Quelle est la différence entre la KPE et les autres formations ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La KPE est la seule méthode qui synthétise plusieurs branches de la kinésiologie (Touch For Health, Brain Gym, kinésiologie avancée, spécialisée) avec la thérapie des corps subtils. Là où les écoles généralistes comme l'EKTC enseignent des modules séparés, la KPE offre une méthode unifiée dès le premier jour."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "La formation est-elle finançable ?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "La formation est éligible aux financements OPCO et France Travail. Nous vous accompagnons dans la constitution de votre dossier. Le paiement en 3× sans frais est disponible pour l'auto-financement."
+      }
+    }
+  ]
+};
+
+const pageSchemas = [courseSchema, faqSchema];
 ---
 
 <BaseLayout
   title="Formation Kinésiologie en Ligne & Présentiel Aurillac | KPE"
   description="Devenez praticien en kinésiologie psycho-énergétique. Formation complète par Joël Prieur : 8 modules, 20h+ de vidéo, certificat. En ligne 1 580€ ou présentiel à Aurillac 3 999€. +2 500 étudiants formés."
-  schema={courseSchema}
+  schema={pageSchemas}
 >
 
 <!-- ═══ HERO ═══ -->
