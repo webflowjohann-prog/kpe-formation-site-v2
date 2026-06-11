@@ -3,17 +3,35 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 const pageSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
+  "@id": "https://formation-kinesiologie.com/joel-prieur#person",
   "name": "Joël Prieur",
-  "jobTitle": "Formateur en Kinésiologie Psycho-Énergétique",
-  "description": "Créateur de la méthode KPE, ancien professionnel de santé, formateur en kinésiologie depuis plus de 20 ans.",
+  "honorificSuffix": "D.O.",
+  "jobTitle": "Formateur en Kinésiologie Psycho-Énergétique, Ostéopathe D.O.",
+  "description": "Créateur de la méthode KPE (Kinésiologie Psycho-Énergétique). Kinésithérapeute de formation, ostéopathe D.O., formé au Touch For Health, Brain Gym, kinésiologie avancée et spécialisée. Plus de 20 ans d'expérience clinique et plus de 2 500 étudiants formés.",
   "url": "https://formation-kinesiologie.com/joel-prieur",
   "image": "https://formation-kinesiologie.com/images/blog/joel-expert-bibliotheque.webp",
+  "knowsAbout": [
+    "Kinésiologie Psycho-Énergétique",
+    "Kinésiologie",
+    "Touch For Health",
+    "Brain Gym",
+    "Kinésiologie appliquée et spécialisée",
+    "Ostéopathie",
+    "Kinésithérapie",
+    "Thérapie des corps subtils",
+    "Test musculaire de précision"
+  ],
   "sameAs": [
     "https://www.facebook.com/joelkpe/",
     "https://www.instagram.com/formation_passion_kinesiologie/",
     "https://www.linkedin.com/in/joel-prieur-b445087a/"
   ],
-  "worksFor": { "@type": "Organization", "name": "KPE" }
+  "worksFor": {
+    "@type": "Organization",
+    "name": "JOËL PRIEUR FORMATIONS KPE",
+    "url": "https://formation-kinesiologie.com",
+    "founder": { "@id": "https://formation-kinesiologie.com/joel-prieur#person" }
+  }
 };
 ---
 
