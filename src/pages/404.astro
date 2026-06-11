@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page introuvable | KPE Formation Kinésiologie"
+  description="Cette page n'existe pas ou a été déplacée. Retrouvez la formation KPE, le blog et toutes nos ressources sur la kinésiologie psycho-énergétique."
+>
+
+<section class="page-hero">
+  <div class="container" style="text-align:center;">
+    <div class="page-hero-badge">Erreur 404</div>
+    <h1>Cette page a pris la <em style="color:var(--teal-700);font-style:italic;">tangente</em></h1>
+    <p class="page-hero-sub">La page que vous cherchez n'existe pas ou a été déplacée lors de la refonte du site. Pas de panique — voici les chemins les plus utiles.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:20px;max-width:900px;margin:0 auto;">
+      <a href="/" style="background:white;padding:26px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);text-decoration:none;border:1px solid var(--gray-100);">
+        <h3 style="font-size:16px;margin-bottom:8px;color:var(--teal-700);">🏠 Accueil</h3>
+        <p style="color:var(--gray-600);font-size:14px;line-height:1.6;">La présentation complète de la formation KPE.</p>
+      </a>
+      <a href="/formation-en-ligne" style="background:white;padding:26px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);text-decoration:none;border:1px solid var(--gray-100);">
+        <h3 style="font-size:16px;margin-bottom:8px;color:var(--teal-700);">🎓 Formation en ligne</h3>
+        <p style="color:var(--gray-600);font-size:14px;line-height:1.6;">8 modules, 20h+ de vidéo, certificat de praticien — 1 580€.</p>
+      </a>
+      <a href="/blog" style="background:white;padding:26px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);text-decoration:none;border:1px solid var(--gray-100);">
+        <h3 style="font-size:16px;margin-bottom:8px;color:var(--teal-700);">📚 Blog</h3>
+        <p style="color:var(--gray-600);font-size:14px;line-height:1.6;">Articles sur la kinésiologie, le test musculaire, la reconversion.</p>
+      </a>
+      <a href="/contact" style="background:white;padding:26px;border-radius:14px;box-shadow:0 1px 3px rgba(0,0,0,0.06);text-decoration:none;border:1px solid var(--gray-100);">
+        <h3 style="font-size:16px;margin-bottom:8px;color:var(--teal-700);">✉️ Contact</h3>
+        <p style="color:var(--gray-600);font-size:14px;line-height:1.6;">Une question ? Joël Prieur vous répond directement.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
