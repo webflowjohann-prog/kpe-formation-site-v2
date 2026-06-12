@@ -42,4 +42,6 @@ Movies/
 Music/
 Library/
 Applications/
-Public/
+/Public/
+# Répertoire public/ du projet Astro (ignoré par case-insensitivity macOS sinon)
+!public/

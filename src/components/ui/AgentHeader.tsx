@@ -55,14 +55,15 @@ export function AgentHeader({ agent, subtitle }: AgentHeaderProps) {
   const config = AGENTS[agent]
 
   return (
-    <div className="relative h-52 overflow-hidden">
-      {/* Photo B&W agent */}
+    <div className="relative h-52 overflow-hidden bg-surface">
+      {/* Photo B&W agent — graceful fallback si absente */}
       <img
         src={config.image}
         alt=""
         aria-hidden="true"
         className="w-full h-full object-cover grayscale"
         style={{ opacity: 0.35 }}
+        onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
       />
 
       {/* Gradient overlay */}
@@ -78,6 +79,7 @@ export function AgentHeader({ agent, subtitle }: AgentHeaderProps) {
         <span className="label text-gold block mb-1.5">Agent</span>
         <h1 className="font-serif text-3xl text-t1 italic tracking-wide">{config.name}</h1>
         <p className="font-sans text-sm text-t3 mt-1">{subtitle ?? config.subtitle}</p>
+        <p className="font-sans text-xs text-t4 mt-0.5 italic">{config.tagline}</p>
       </div>
     </div>
   )

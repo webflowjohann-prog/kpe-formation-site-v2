@@ -56,14 +56,14 @@ export const POST: APIRoute = async ({ request }) => {
 
             // Décrémenter les places
             const { data: exp } = await supabase
-              .from('experiences')
+              .from('experience_catalog')
               .select('spots_remaining')
               .eq('id', experienceId)
               .single()
             if (exp && exp.spots_remaining > 0) {
               const newSpots = exp.spots_remaining - 1
               await supabase
-                .from('experiences')
+                .from('experience_catalog')
                 .update({
                   spots_remaining: newSpots,
                   status: newSpots === 0 ? 'full' : 'open',

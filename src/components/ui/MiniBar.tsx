@@ -1,3 +1,5 @@
+import { useState, useEffect } from 'react'
+
 interface MiniBarProps {
   label: string
   value: number
@@ -8,6 +10,13 @@ interface MiniBarProps {
 
 export function MiniBar({ label, value, max = 100, unit = '', highlight = false }: MiniBarProps) {
   const pct = Math.min(Math.max((value / max) * 100, 0), 100)
+  const [displayPct, setDisplayPct] = useState(0)
+
+  // Animation d'entrée : barre part de 0 et monte vers la valeur cible
+  useEffect(() => {
+    const timer = setTimeout(() => setDisplayPct(pct), 100)
+    return () => clearTimeout(timer)
+  }, [pct])
 
   return (
     <div className="flex flex-col gap-1.5">
@@ -25,13 +34,14 @@ export function MiniBar({ label, value, max = 100, unit = '', highlight = false 
           {unit && <span className="text-[10px] text-t4 ml-0.5">{unit}</span>}
         </span>
       </div>
-      <div className="h-[3px] bg-white/[0.06] rounded-full overflow-hidden">
+      <div className="h-[3px] rounded-full overflow-hidden" style={{ background: 'rgba(0,0,0,0.07)' }}>
         <div
-          className={[
-            'h-full rounded-full transition-all duration-700 ease-out',
-            highlight ? 'bg-gold' : 'bg-t4',
-          ].join(' ')}
-          style={{ width: `${pct}%` }}
+          className="h-full rounded-full"
+          style={{
+            width: `${displayPct}%`,
+            background: highlight ? '#c9a96e' : 'rgba(0,0,0,0.18)',
+            transition: 'width 0.9s cubic-bezier(0.4, 0, 0.2, 1)',
+          }}
         />
       </div>
     </div>

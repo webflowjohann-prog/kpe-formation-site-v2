@@ -34,7 +34,7 @@ export function ScoreRing({
             cy={cy}
             r={r}
             fill="none"
-            stroke="rgba(255,255,255,0.06)"
+            stroke="rgba(0,0,0,0.07)"
             strokeWidth={strokeWidth}
           />
           <circle
@@ -55,7 +55,7 @@ export function ScoreRing({
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span
             className="font-serif text-gold leading-none"
-            style={{ fontSize: size * 0.28, fontWeight: 300 }}
+            style={{ fontSize: size * 0.4, fontWeight: 700, letterSpacing: '-2px' }}
           >
             {Math.round(score)}
           </span>

@@ -35,12 +35,14 @@ const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? 'https://naticslab.com'
 
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json" />
-    <meta name="theme-color" content="#0D0D0D" />
+    <meta name="theme-color" content="#FFFFFF" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
 
     <!-- Favicon -->
+    <link rel="icon" href="/images/logo/logo-natics-plein.png" type="image/png" />
     <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/images/logo/logo-natics-plein.png" />
 
     <!-- Slot head additionnel (meta spécifiques par page) -->
     <slot name="head" />

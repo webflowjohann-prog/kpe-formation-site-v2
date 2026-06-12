@@ -45,7 +45,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
     const productIds = body.products.map((p) => p.product_id)
 
     const { data: dbProducts } = await supabase
-      .from('products')
+      .from('partner_products')
       .select('id, name, price_cents, stripe_price_id, partner_id, image_url')
       .in('id', productIds)
       .eq('active', true)

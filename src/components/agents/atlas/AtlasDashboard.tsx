@@ -379,14 +379,14 @@ export default function AtlasDashboard({ memberId, cortexScore, experiences, boo
 
   return (
     <div>
-      <div className="flex gap-0 border-b border-white/[0.06] px-5">
+      <div className="flex gap-0 border-b border-sep px-5">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={[
-              'px-4 py-3 font-sans text-xs font-medium transition-all border-b-2 -mb-px',
-              tab === t ? 'text-gold border-gold' : 'text-t4 border-transparent hover:text-t2',
+              'px-4 py-3 font-sans text-xs transition-all border-b-2 -mb-px',
+              tab === t ? 'text-t1 font-bold border-gold' : 'text-t3 font-medium border-transparent hover:text-t2',
             ].join(' ')}
           >
             {t}

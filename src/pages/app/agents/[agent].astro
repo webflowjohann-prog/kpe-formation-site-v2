@@ -3,6 +3,7 @@ import AppLayout from '../../../layouts/AppLayout.astro'
 import { AgentHeader } from '../../../components/ui/AgentHeader'
 import type { AgentId } from '../../../components/ui/AgentHeader'
 import AgentChat from '../../../components/agents/AgentChat'
+import HeroImage from '../../../components/ui/HeroImage'
 import FuelDashboard from '../../../components/agents/fuel/FuelDashboard'
 import MorpheeDashboard from '../../../components/agents/morphee/MorpheeDashboard'
 import ForgeDashboard from '../../../components/agents/forge/ForgeDashboard'
@@ -12,6 +13,15 @@ import OracleDashboard from '../../../components/agents/oracle/OracleDashboard'
 import { createServerSupabase } from '@/lib/supabase'
 
 const VALID_AGENTS: AgentId[] = ['forge', 'morphee', 'fuel', 'zenith', 'atlas', 'oracle']
+
+const HERO_CONFIG: Record<string, { image: string; name: string; tagline: string }> = {
+  forge:   { image: '/images/heroes/athlete-start.png', name: 'Forge',   tagline: 'Performance & Récupération' },
+  morphee: { image: '/images/heroes/ocean-bw.png',      name: 'Morphée', tagline: 'Sommeil & Régénération' },
+  fuel:    { image: '/images/heroes/capsules.png',       name: 'Fuel',    tagline: 'Nutrition de Précision' },
+  zenith:  { image: '/images/heroes/brain-hands.png',   name: 'Zénith',  tagline: 'Mental & Bien-être' },
+  atlas:   { image: '/images/heroes/mountain.png',       name: 'Atlas',   tagline: 'Expériences & Dépassement' },
+  oracle:  { image: '/images/heroes/syringe.png',        name: 'Oracle',  tagline: 'Intelligence Santé' },
+}
 const { agent } = Astro.params
 
 if (!agent || !VALID_AGENTS.includes(agent as AgentId)) {
@@ -23,21 +33,30 @@ const user = Astro.locals.user!
 const supabase = createServerSupabase(Astro.cookies)
 
 type Prescription = {id: string; title: string; description: string | null; timing: string | null; duration: string | null; priority: string}
+type Product = {
+  id: string; name: string; description: string | null; price_cents: number
+  category: string; agent_tags: string[] | null; dosage: string | null
+  image_url: string | null; featured: boolean; partners: { name: string } | null
+}
 
 // Données FUEL
 let fuelSupplements: Prescription[] = []
+let fuelProducts: Product[] = []
 
 // Données MORPHÉE
 let sleepData = { sleep_hours: null, sleep_quality: null, morning_freshness: null, bedtime: null, wake_time: null, sleep_issues: null }
 let morpheePrescriptions: Prescription[] = []
+let morpheeProducts: Product[] = []
 
 // Données FORGE
 let trainingData = { training_frequency: null, sports: null, training_goal: null, resting_hr: null, injuries: null }
 let forgePrescriptions: Prescription[] = []
+let forgeProducts: Product[] = []
 
 // Données ZÉNITH
 let mentalData = { stress_level: null, meditation_frequency: null, mood_general: null, concentration_quality: null, has_breathwork: null }
 let zenithPrescriptions: Prescription[] = []
+let zenithProducts: Product[] = []
 
 // Données ORACLE
 let oracleBiomarkers: Array<{
@@ -63,18 +82,27 @@ let atlasBookings: Array<{id: string; experience_id: string; status: string; boo
 let atlasMemberScore = 0
 
 if (agentId === 'fuel') {
-  const { data } = await supabase
-    .from('agent_prescriptions')
-    .select('id, title, description, timing, duration, priority')
-    .eq('member_id', user.id)
-    .eq('agent', 'fuel')
-    .eq('status', 'active')
-    .order('created_at', { ascending: false })
-  fuelSupplements = data ?? []
+  const [presRes, prodRes] = await Promise.all([
+    supabase
+      .from('agent_prescriptions')
+      .select('id, title, description, timing, duration, priority')
+      .eq('member_id', user.id)
+      .eq('agent', 'fuel')
+      .eq('status', 'active')
+      .order('created_at', { ascending: false }),
+    supabase
+      .from('partner_products')
+      .select('id, name, description, price_cents, category, agent_tags, dosage, image_url, featured, partners(name)')
+      .contains('agent_tags', ['fuel'])
+      .eq('active', true)
+      .order('featured', { ascending: false }),
+  ])
+  fuelSupplements = presRes.data ?? []
+  fuelProducts = (prodRes.data ?? []) as Product[]
 }
 
 if (agentId === 'morphee') {
-  const [memberRes, presRes] = await Promise.all([
+  const [memberRes, presRes, prodRes] = await Promise.all([
     supabase
       .from('member_health_profiles')
       .select('sleep_hours, sleep_quality, morning_freshness, bedtime, wake_time, sleep_issues')
@@ -87,13 +115,20 @@ if (agentId === 'morphee') {
       .eq('agent', 'morphee')
       .eq('status', 'active')
       .order('created_at', { ascending: false }),
+    supabase
+      .from('partner_products')
+      .select('id, name, description, price_cents, category, agent_tags, dosage, image_url, featured, partners(name)')
+      .contains('agent_tags', ['morphee'])
+      .eq('active', true)
+      .order('featured', { ascending: false }),
   ])
   if (memberRes.data) sleepData = memberRes.data as typeof sleepData
   morpheePrescriptions = presRes.data ?? []
+  morpheeProducts = (prodRes.data ?? []) as Product[]
 }
 
 if (agentId === 'forge') {
-  const [memberRes, presRes] = await Promise.all([
+  const [memberRes, presRes, prodRes] = await Promise.all([
     supabase
       .from('member_health_profiles')
       .select('training_frequency, sports, training_goal, resting_hr, injuries')
@@ -106,9 +141,16 @@ if (agentId === 'forge') {
       .eq('agent', 'forge')
       .eq('status', 'active')
       .order('created_at', { ascending: false }),
+    supabase
+      .from('partner_products')
+      .select('id, name, description, price_cents, category, agent_tags, dosage, image_url, featured, partners(name)')
+      .contains('agent_tags', ['forge'])
+      .eq('active', true)
+      .order('featured', { ascending: false }),
   ])
   if (memberRes.data) trainingData = memberRes.data as typeof trainingData
   forgePrescriptions = presRes.data ?? []
+  forgeProducts = (prodRes.data ?? []) as Product[]
 }
 
 if (agentId === 'oracle') {
@@ -167,7 +209,7 @@ if (agentId === 'oracle') {
 if (agentId === 'atlas') {
   const [expRes, bookRes, memberRes] = await Promise.all([
     supabase
-      .from('experiences')
+      .from('experience_catalog')
       .select('id, title, short_desc, location, country, category, date_start, date_end, duration_days, capacity, spots_remaining, price_cents, min_oracle_score, status, biomarker_requirements, prep_weeks')
       .in('status', ['open', 'upcoming', 'full'])
       .order('date_start', { ascending: true }),
@@ -188,7 +230,7 @@ if (agentId === 'atlas') {
 }
 
 if (agentId === 'zenith') {
-  const [memberRes, presRes] = await Promise.all([
+  const [memberRes, presRes, prodRes] = await Promise.all([
     supabase
       .from('member_health_profiles')
       .select('stress_level, meditation_frequency, mood_general, concentration_quality, has_breathwork')
@@ -201,26 +243,41 @@ if (agentId === 'zenith') {
       .eq('agent', 'zenith')
       .eq('status', 'active')
       .order('created_at', { ascending: false }),
+    supabase
+      .from('partner_products')
+      .select('id, name, description, price_cents, category, agent_tags, dosage, image_url, featured, partners(name)')
+      .contains('agent_tags', ['zenith'])
+      .eq('active', true)
+      .order('featured', { ascending: false }),
   ])
   if (memberRes.data) mentalData = memberRes.data as typeof mentalData
   zenithPrescriptions = presRes.data ?? []
+  zenithProducts = (prodRes.data ?? []) as Product[]
 }
 ---
 
 <AppLayout title={agentId.toUpperCase()} agent={agentId}>
   <AgentHeader agent={agentId} client:load />
 
+  {/* Hero image */}
+  <HeroImage
+    imageSrc={HERO_CONFIG[agentId]?.image ?? ''}
+    agentName={HERO_CONFIG[agentId]?.name ?? agentId}
+    tagline={HERO_CONFIG[agentId]?.tagline ?? ''}
+    client:load
+  />
+
   {agentId === 'fuel' && (
-    <FuelDashboard memberId={user.id} supplements={fuelSupplements} client:load />
+    <FuelDashboard memberId={user.id} supplements={fuelSupplements} products={fuelProducts} client:load />
   )}
   {agentId === 'morphee' && (
-    <MorpheeDashboard memberId={user.id} sleepData={sleepData} prescriptions={morpheePrescriptions} client:load />
+    <MorpheeDashboard memberId={user.id} sleepData={sleepData} prescriptions={morpheePrescriptions} products={morpheeProducts} client:load />
   )}
   {agentId === 'forge' && (
-    <ForgeDashboard memberId={user.id} trainingData={trainingData} prescriptions={forgePrescriptions} client:load />
+    <ForgeDashboard memberId={user.id} trainingData={trainingData} prescriptions={forgePrescriptions} products={forgeProducts} client:load />
   )}
   {agentId === 'zenith' && (
-    <ZenithDashboard memberId={user.id} mentalData={mentalData} prescriptions={zenithPrescriptions} client:load />
+    <ZenithDashboard memberId={user.id} mentalData={mentalData} prescriptions={zenithPrescriptions} products={zenithProducts} client:load />
   )}
   {agentId === 'atlas' && (
     <AtlasDashboard memberId={user.id} cortexScore={atlasMemberScore} experiences={atlasExperiences} bookings={atlasBookings} client:load />

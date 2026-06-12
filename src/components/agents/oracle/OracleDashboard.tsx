@@ -62,23 +62,25 @@ const CATEGORY_LABELS: Record<string, string> = {
 function getStatus(b: BiomarkerResult): BiomarkerStatus {
   const { value, optimal_min, optimal_max, normal_min, normal_max } = b
   if (optimal_min !== null && optimal_max !== null && value >= optimal_min && value <= optimal_max) return 'optimal'
-  if (normal_min !== null && normal_max !== null && value >= normal_min && value <= normal_max) return 'unknown'
+  if (normal_min !== null && normal_max !== null && value >= normal_min && value <= normal_max) return 'normal'
   if (normal_min !== null && value < normal_min) return 'low'
   if (normal_max !== null && value > normal_max) return 'high'
   return 'unknown'
 }
 
 function statusLabel(s: BiomarkerStatus): string {
-  if (s === 'optimal') return 'Optimal'
-  if (s === 'low') return 'Bas'
-  if (s === 'high') return 'Élevé'
-  return 'Normal'
+  if (s === 'optimal') return 'Optimal ✓'
+  if (s === 'normal') return 'Normal'
+  if (s === 'low') return 'Bas ↓'
+  if (s === 'high') return 'Élevé ↑'
+  return '—'
 }
 
 function statusColor(s: BiomarkerStatus): string {
-  if (s === 'optimal') return 'text-gold'
-  if (s === 'low') return 'text-blue-400'
-  if (s === 'high') return 'text-red-400'
+  if (s === 'optimal') return 'text-gold-dark'
+  if (s === 'normal') return 'text-success'
+  if (s === 'low') return 'text-alert-red'
+  if (s === 'high') return 'text-alert-orange'
   return 'text-t3'
 }
 
@@ -115,11 +117,11 @@ function BiomarkerDetail({ b, onClose }: { b: BiomarkerResult; onClose: () => vo
       {/* Barre de position */}
       {(b.normal_min !== null || b.normal_max !== null) && (
         <div className="mb-4">
-          <div className="relative h-2 bg-white/[0.06] rounded-full overflow-hidden">
+          <div className="relative h-2 bg-black/[0.06] rounded-full overflow-hidden">
             {/* Zone normale */}
             {b.normal_min !== null && b.normal_max !== null && (
               <div
-                className="absolute top-0 h-full bg-white/[0.08] rounded-full"
+                className="absolute top-0 h-full bg-black/[0.08] rounded-full"
                 style={{
                   left: '15%',
                   right: '15%',
@@ -138,7 +140,7 @@ function BiomarkerDetail({ b, onClose }: { b: BiomarkerResult; onClose: () => vo
             )}
             {/* Curseur valeur */}
             <div
-              className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-bg ${status === 'optimal' ? 'bg-gold' : status === 'low' || status === 'high' ? 'bg-red-400' : 'bg-white'}`}
+              className={`absolute top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-card ${status === 'optimal' ? 'bg-gold' : status === 'low' ? 'bg-alert-red' : status === 'high' ? 'bg-alert-orange' : status === 'normal' ? 'bg-success' : 'bg-t4'}`}
               style={{ left: `calc(${rangePercent()}% - 6px)` }}
             />
           </div>
@@ -388,14 +390,14 @@ export default function OracleDashboard({ memberId, biomarkers, scoreHistory, da
 
   return (
     <div>
-      <div className="flex gap-0 border-b border-white/[0.06] px-5">
+      <div className="flex gap-0 border-b border-sep px-5">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={[
-              'px-4 py-3 font-sans text-xs font-medium transition-all border-b-2 -mb-px',
-              tab === t ? 'text-gold border-gold' : 'text-t4 border-transparent hover:text-t2',
+              'px-4 py-3 font-sans text-xs transition-all border-b-2 -mb-px',
+              tab === t ? 'text-t1 font-bold border-gold' : 'text-t3 font-medium border-transparent hover:text-t2',
             ].join(' ')}
           >
             {t}

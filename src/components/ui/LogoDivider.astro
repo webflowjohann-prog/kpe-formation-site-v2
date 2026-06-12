@@ -1,0 +1,19 @@
+---
+interface Props {
+  class?: string
+}
+const { class: className = '' } = Astro.props
+---
+
+<div class={`flex items-center gap-6 py-12 md:py-20 px-6 ${className}`}>
+  <div class="flex-1 h-px bg-border opacity-50" aria-hidden="true"></div>
+  <img
+    src="/images/logo/logo-natics-plein.png"
+    alt="NATICS Lab"
+    width="90"
+    height="45"
+    loading="lazy"
+    style="object-fit: contain; aspect-ratio: 2 / 1;"
+  />
+  <div class="flex-1 h-px bg-border opacity-50" aria-hidden="true"></div>
+</div>

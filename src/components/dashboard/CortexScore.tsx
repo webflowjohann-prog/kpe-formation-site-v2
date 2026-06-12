@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react'
 import { ScoreRing } from '../ui/ScoreRing'
 import { MiniBar } from '../ui/MiniBar'
 
@@ -12,8 +13,6 @@ export interface ScoreData {
   calculated_at: string
 }
 
-const LEVEL_ORDER = ['Bronze', 'Silver', 'Gold', 'Platinum']
-
 interface Props {
   score: number
   data: ScoreData | null
@@ -21,10 +20,10 @@ interface Props {
 
 function LevelBadge({ level }: { level: string }) {
   const colors: Record<string, string> = {
-    Bronze: 'text-[#8B6914] border-[#8B6914]/30 bg-[#8B6914]/08',
-    Silver: 'text-t3 border-white/20 bg-white/04',
-    Gold: 'text-gold border-gold/30 bg-gold/08',
-    Platinum: 'text-[#E5E4E2] border-[#E5E4E2]/30 bg-white/06',
+    Bronze:   'text-[#8B6914] border-[#8B6914]/30 bg-[#8B6914]/08',
+    Silver:   'text-t2 border-t4 bg-surface',
+    Gold:     'text-gold border-gold/30 bg-gold/08',
+    Platinum: 'text-[#6B6B6B] border-[#6B6B6B]/30 bg-[#F0F0F0]',
   }
   return (
     <span
@@ -40,27 +39,45 @@ function LevelBadge({ level }: { level: string }) {
 }
 
 export default function CortexScore({ score, data }: Props) {
+  // Animation compteur 0 → score réel
+  const [displayScore, setDisplayScore] = useState(0)
+
+  useEffect(() => {
+    if (score === 0) return
+    let current = 0
+    const target = score
+    const step = target / (1200 / 16)
+    const timer = setInterval(() => {
+      current += step
+      if (current >= target) {
+        setDisplayScore(target)
+        clearInterval(timer)
+      } else {
+        setDisplayScore(Math.round(current))
+      }
+    }, 16)
+    return () => clearInterval(timer)
+  }, [score])
+
   const level = data?.level ?? (score >= 85 ? 'Platinum' : score >= 70 ? 'Gold' : score >= 50 ? 'Silver' : 'Bronze')
-  const hasSubScores = data && (
-    data.sleep_score !== null || data.activity_score !== null
-  )
+  const hasSubScores = data && (data.sleep_score !== null || data.activity_score !== null)
 
   const subScores = [
-    { label: 'Sommeil', value: data?.sleep_score ?? 0, highlight: (data?.sleep_score ?? 0) >= 70 },
-    { label: 'Récupération', value: data?.recovery_score ?? 0, highlight: (data?.recovery_score ?? 0) >= 70 },
-    { label: 'Activité', value: data?.activity_score ?? 0, highlight: (data?.activity_score ?? 0) >= 70 },
-    { label: 'Biomarqueurs', value: data?.biomarker_score ?? 0, highlight: (data?.biomarker_score ?? 0) >= 70 },
-    { label: 'Compliance', value: data?.compliance_score ?? 0, highlight: (data?.compliance_score ?? 0) >= 70 },
+    { label: 'Sommeil',      value: data?.sleep_score      ?? 0, highlight: (data?.sleep_score      ?? 0) >= 70 },
+    { label: 'Récupération', value: data?.recovery_score   ?? 0, highlight: (data?.recovery_score   ?? 0) >= 70 },
+    { label: 'Activité',     value: data?.activity_score   ?? 0, highlight: (data?.activity_score   ?? 0) >= 70 },
+    { label: 'Biomarqueurs', value: data?.biomarker_score  ?? 0, highlight: (data?.biomarker_score  ?? 0) >= 70 },
+    { label: 'Compliance',   value: data?.compliance_score ?? 0, highlight: (data?.compliance_score ?? 0) >= 70 },
   ]
 
   return (
     <section className="px-5 pt-6 pb-2">
       {/* Ring + level */}
       <div className="flex flex-col items-center gap-4 mb-8">
-        <ScoreRing score={score} size={180} strokeWidth={10} label="CORTEX" />
+        <ScoreRing score={displayScore} size={180} strokeWidth={10} label="CORTEX" />
         <LevelBadge level={level} />
         {data?.calculated_at && (
-          <p className="font-sans text-[10px] text-t4">
+          <p className="font-sans text-[10px] text-t3">
             Calculé le{' '}
             {new Date(data.calculated_at).toLocaleDateString('fr-FR', {
               day: 'numeric',
@@ -70,7 +87,7 @@ export default function CortexScore({ score, data }: Props) {
         )}
       </div>
 
-      {/* Sub-scores */}
+      {/* Sub-scores avec barres animées en or */}
       {hasSubScores ? (
         <div className="glass p-5 flex flex-col gap-4">
           {subScores.map((s) => (
@@ -79,7 +96,7 @@ export default function CortexScore({ score, data }: Props) {
         </div>
       ) : (
         <div className="glass p-5 text-center">
-          <p className="font-sans text-xs text-t4 leading-relaxed">
+          <p className="font-sans text-xs text-t3 leading-relaxed">
             Connectez un wearable ou scannez vos biomarqueurs pour afficher votre score détaillé.
           </p>
           <div className="flex gap-2 justify-center mt-4">

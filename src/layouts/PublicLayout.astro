@@ -14,19 +14,38 @@ const { title, description, showNav = false } = Astro.props
   <slot name="head" slot="head" />
 
   {showNav && (
-    <header class="fixed top-0 left-0 right-0 z-40 h-16 flex items-center px-6">
+    <header id="public-header" class="fixed top-0 left-0 right-0 z-40 h-16 flex items-center px-6 transition-all duration-300">
       <div class="glass px-5 py-3 flex items-center justify-between w-full max-w-5xl mx-auto">
-        <a href="/" class="flex items-center gap-2">
-          <img src="/images/logo-nav.png" alt="NATICS Lab" class="h-7 w-auto" />
+        <a href="/" aria-label="NATICS Lab">
+          <img
+            id="header-logo"
+            src="/images/logo/logo-natics-plein.png"
+            alt="NATICS Lab"
+            width="88"
+            height="44"
+            style="object-fit: contain; aspect-ratio: 2 / 1; height: 28px; width: auto;"
+          />
         </a>
         <nav class="hidden md:flex items-center gap-6">
           <a href="#agents" class="label hover:text-t1 transition-colors">Agents</a>
           <a href="#methode" class="label hover:text-t1 transition-colors">Méthode</a>
           <a href="#prix" class="label hover:text-t1 transition-colors">Tarifs</a>
         </nav>
-        <a href="/auth/login" class="btn-gold text-xs px-5 h-9">Accès app</a>
+        <a href="/auth/login" class="btn-gold px-5 h-9">Accès app</a>
       </div>
     </header>
+    <script>
+      const logo = document.getElementById('header-logo') as HTMLImageElement | null
+      if (logo) {
+        const swap = () => {
+          logo.src = window.scrollY > 80
+            ? '/images/logo/logo-natics-noir.png'
+            : '/images/logo/logo-natics-plein.png'
+        }
+        window.addEventListener('scroll', swap, { passive: true })
+        swap()
+      }
+    </script>
   )}
 
   <main class:list={['min-h-screen', showNav && 'pt-16']}>
