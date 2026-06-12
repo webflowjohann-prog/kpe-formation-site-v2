@@ -1,0 +1,327 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Témoignages des étudiants KPE",
+  "description": "Avis et témoignages des étudiants formés à la méthode KPE par Joël Prieur.",
+  "numberOfItems": 7
+};
+
+const temoignages = [
+  { name: "Marie D.", role: "Reconversion après 15 ans en comptabilité", stars: 5, text: "La KPE a changé ma vie. En 6 mois j'ai quitté mon poste en comptabilité et ouvert mon cabinet. Les résultats avec mes consultants sont impressionnants dès les premières séances.", initials: "MD" },
+  { name: "Thomas R.", role: "Ostéopathe D.O.", stars: 5, text: "J'intègre la KPE dans chaque consultation d'ostéopathie. Le test musculaire de précision m'a ouvert des portes que je ne soupçonnais pas. La dimension psycho-émotionnelle complète parfaitement mon approche.", initials: "TR" },
+  { name: "Sophie L.", role: "Coach en développement personnel", stars: 5, text: "Après plusieurs formations en PNL et coaching, la KPE m'a apporté l'outil qui me manquait : le test musculaire. Mes clients ressentent la différence immédiatement.", initials: "SL" },
+  { name: "Laurent P.", role: "Kinésiologue installé depuis 2 ans", stars: 5, text: "Le rapport qualité-prix est imbattable. J'ai comparé avec l'EKTC et Ekivie — la KPE offre un programme aussi complet pour une fraction du prix. Et l'accès direct à Joël est un vrai plus.", initials: "LP" },
+  { name: "Isabelle M.", role: "Infirmière en reconversion", stars: 5, text: "Mon background médical m'a permis d'intégrer rapidement les concepts. Mais ce qui m'a surprise, c'est la puissance de l'approche émotionnelle. La KPE va bien au-delà de ce que j'imaginais.", initials: "IM" },
+  { name: "Pierre C.", role: "Praticien bien-être", stars: 5, text: "Le module sur les sabotages inconscients a tout changé dans ma pratique. Je comprends enfin pourquoi certains clients restaient bloqués malgré les séances. La KPE désamorce les causes profondes.", initials: "PC" },
+];
+---
+
+<BaseLayout title="Témoignages | KPE — Ce que disent nos étudiants" description="Découvrez les témoignages des étudiants formés à la kinésiologie psycho-énergétique par Joël Prieur. Reconversions réussies, praticiens installés, résultats concrets." schema={schema} breadcrumbs={[{name: "Témoignages", url: "/temoignages"}]}>
+
+<section class="page-hero">
+  <div class="container">
+    <div class="page-hero-badge">Témoignages</div>
+    <h1>Ils ont choisi la KPE</h1>
+    <p class="page-hero-sub">Reconversions réussies, praticiens installés, résultats concrets — les étudiants de Joël Prieur partagent leur expérience.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="section-label">Témoignages vidéo</div>
+    <h2 class="section-title">Ils témoignent en vidéo</h2>
+    <p style="color:var(--gray-500);max-width:560px;margin:0 auto 40px;text-align:center;line-height:1.7;">Des élèves de Joël Prieur partagent leur expérience de la formation KPE, en toute authenticité.</p>
+    <div class="video-testi-grid">
+      <div class="video-testi-card" onclick="openVideoModal('72b3e9aef313f0e790e29570af3fa84d')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/72b3e9aef313f0e790e29570af3fa84d/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('8d268781a1f130ec6e75593720d0142f')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/8d268781a1f130ec6e75593720d0142f/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('91f95cc1887902e4fed6d86e215439f5')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/91f95cc1887902e4fed6d86e215439f5/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('a778d4f0c69eec020c98ab826c89b3b6')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/a778d4f0c69eec020c98ab826c89b3b6/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('e8b90ea7a9b2c2f12df806c0c8fc8f56')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/e8b90ea7a9b2c2f12df806c0c8fc8f56/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('ee2e39d58b058882bf636ce560799cc0')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/ee2e39d58b058882bf636ce560799cc0/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('385b5d9b8d819b36080da225f3cf0cfd')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/385b5d9b8d819b36080da225f3cf0cfd/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('3a0a19bb052cac288b88ece84d392a25')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/3a0a19bb052cac288b88ece84d392a25/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage Virginie - élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('1859c8e6369ae298a67726ef8fb58c6d')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/1859c8e6369ae298a67726ef8fb58c6d/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage Sandrine - élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+      <div class="video-testi-card" onclick="openVideoModal('5ae397caf746c3bd4ea9dad245b07d14')">
+        <img src="https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/5ae397caf746c3bd4ea9dad245b07d14/thumbnails/thumbnail.jpg?time=4s&width=400&height=600&fit=crop" alt="Témoignage Patrice - élève KPE" loading="lazy">
+        <div class="video-play-btn"><svg width="32" height="32" viewBox="0 0 24 24" fill="white"><path d="M8 5v14l11-7z"/></svg></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Video lightbox modal -->
+<div id="video-modal" class="video-modal" onclick="closeVideoModal(event)">
+  <button class="video-modal-close" onclick="closeVideoModal(event)" aria-label="Fermer">&times;</button>
+  <div class="video-modal-content" onclick="event.stopPropagation()">
+    <iframe id="video-modal-iframe" src="" allow="autoplay; fullscreen" allowfullscreen style="width:100%;height:100%;border:none;border-radius:12px;"></iframe>
+  </div>
+</div>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="section-label">Avis écrits</div>
+    <h2 class="section-title">Ce qu'ils en disent</h2>
+    <div class="testi-grid">
+      {temoignages.map(t => (
+        <div class="testi-card">
+          <div class="testi-stars">{"★".repeat(t.stars)}</div>
+          <blockquote>"{t.text}"</blockquote>
+          <div class="testi-author">
+            <div class="testi-avatar">{t.initials}</div>
+            <div>
+              <div class="testi-name">{t.name}</div>
+              <div class="testi-role">{t.role}</div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--gray-50);">
+  <div class="container">
+    <div class="section-label">Avis Google</div>
+    <h2 class="section-title">Ce que disent nos anciens élèves sur Google</h2>
+    <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-bottom:40px;">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+      <div style="display:flex;align-items:baseline;gap:8px;">
+        <span style="font-family:var(--font-display);font-size:32px;font-weight:700;color:var(--gray-900);">5.0</span>
+        <span style="color:#f5a623;font-size:20px;">★★★★★</span>
+        <span style="color:var(--gray-500);font-size:15px;">59 avis</span>
+      </div>
+    </div>
+    <div class="google-reviews-grid">
+      <div class="google-review-card">
+        <div class="google-review-header">
+          <div class="google-review-avatar" style="background:#4285F4;">EC</div>
+          <div>
+            <div class="google-review-name">Elodie COLIN</div>
+            <div class="google-review-meta">★★★★★ · août 2025</div>
+          </div>
+          <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <p class="google-review-text">Une formation passionnante, complète et profondément humaine. Joël est un formateur très investi, à l'écoute, toujours disponible, et généreux dans sa transmission. Je recommande vivement cette formation à tous ceux qui souhaitent découvrir la kinésiologie.</p>
+      </div>
+      <div class="google-review-card">
+        <div class="google-review-header">
+          <div class="google-review-avatar" style="background:#34A853;">SB</div>
+          <div>
+            <div class="google-review-name">Sandy Bouissou</div>
+            <div class="google-review-meta">★★★★★ · mai 2025</div>
+          </div>
+          <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <p class="google-review-text">Formation de qualité avec un enseignement sérieux et passionné. Joël est très professionnel et investi, toujours soucieux de la qualité de sa formation et de l'accompagnement de ses élèves. Une vraie reconversion réussie grâce à la KPE.</p>
+      </div>
+      <div class="google-review-card">
+        <div class="google-review-header">
+          <div class="google-review-avatar" style="background:#EA4335;">CL</div>
+          <div>
+            <div class="google-review-name">Cassandra L.</div>
+            <div class="google-review-meta">★★★★★ · mai 2025</div>
+          </div>
+          <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+        </div>
+        <p class="google-review-text">J'ai suivi cette formation de septembre 2024 à mai 2025. La formation est complète, les explications sont claires et les formateurs très disponibles et à l'écoute en cas de questions. Je recommande cette formation à tous les profils.</p>
+      </div>
+    </div>
+    <div id="google-reviews-more" style="display:none;margin-top:20px;">
+      <div class="google-reviews-grid">
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#7B1FA2;">B</div>
+            <div>
+              <div class="google-review-name">Bernadette</div>
+              <div class="google-review-meta">★★★★★ · mai 2024</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Formation très enrichissante et très intense, de belles rencontres. Merci Joël et Marine pour la transmission de cette pratique la KPE.</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#0097A7;">IC</div>
+            <div>
+              <div class="google-review-name">Isabelle Clier</div>
+              <div class="google-review-meta">★★★★★ · octobre 2022</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">C'est une formation passionnante, complète, concrète et sérieuse qui fournit une merveilleuse boite à outil pour ceux qui veulent développer une activité destinée aux personnes en développement personnel. Avec une ambiance chaleureuse et bienveillante.</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#455A64;">GG</div>
+            <div>
+              <div class="google-review-name">Gwen G</div>
+              <div class="google-review-meta">★★★★★ · avril 2024</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">La formation a été très enrichissante tant sur le plan professionnel que personnel, et j'ai eu l'occasion de faire de belles rencontres.</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#E91E63;">M</div>
+            <div>
+              <div class="google-review-name">Melody</div>
+              <div class="google-review-meta">★★★★★ · octobre 2021</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Une formation géniale notamment pour une reconversion professionnelle, je recommande vivement ! Un vrai voyage à l'intérieur de soi avec un formateur passionné et qui maîtrise parfaitement son sujet.</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#1565C0;">FV</div>
+            <div>
+              <div class="google-review-name">Francois Verschae</div>
+              <div class="google-review-meta">★★★★★ · mai 2023</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Formation effectuée par un vrai professionnel humain et compétent, pétri de nombreuses expériences donnant une validation dans l'excellence pour le côté pratique et professionnel à venir.</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#F57C00;">SE</div>
+            <div>
+              <div class="google-review-name">Centre S-EVOLUTION</div>
+              <div class="google-review-meta">★★★★★ · octobre 2022</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Formation très qualitative. Vous pouvez y aller les yeux fermés ! Formateur très pro, rempli de savoir et accessible. Je recommande !</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#AB47BC;">CV</div>
+            <div>
+              <div class="google-review-name">Charlotte Vallon</div>
+              <div class="google-review-meta">★★★★★ · mai 2024</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Formation très enrichissante et de très belles rencontres ! Je recommande vivement !!</p>
+        </div>
+        <div class="google-review-card">
+          <div class="google-review-header">
+            <div class="google-review-avatar" style="background:#00897B;">MO</div>
+            <div>
+              <div class="google-review-name">Marianne osteo</div>
+              <div class="google-review-meta">★★★★★ · octobre 2022</div>
+            </div>
+            <svg class="google-review-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92a5.06 5.06 0 01-2.2 3.32v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.1z" fill="#4285F4"/><path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/><path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"/><path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/></svg>
+          </div>
+          <p class="google-review-text">Magique ! Complet et très clair.</p>
+        </div>
+      </div>
+    </div>
+    <div style="text-align:center;margin-top:40px;display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <button id="btn-voir-plus" onclick="document.getElementById('google-reviews-more').style.display='block';this.style.display='none';" class="btn-primary" style="background:transparent;color:var(--teal-700);border:1.5px solid var(--teal-200);cursor:pointer;font-size:15px;font-weight:600;padding:12px 28px;border-radius:8px;">Voir plus d'avis ↓</button>
+      <a href="https://g.co/kgs/RP47tJ" target="_blank" rel="noopener" class="btn-primary" style="background:var(--teal-900);color:white;">Voir les 59 avis sur Google ★★★★★ →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section" style="background:var(--teal-900);color:white;text-align:center;">
+  <div class="container">
+    <h2 style="font-family:var(--font-display);font-size:clamp(24px,3vw,40px);margin-bottom:16px;">Rejoignez-les</h2>
+    <p style="color:rgba(255,255,255,0.6);max-width:500px;margin:0 auto 30px;">Plus de 2 500 étudiants ont choisi la méthode KPE. Et vous ?</p>
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+      <a href="/formation-en-ligne" class="btn-primary" style="background:white;color:var(--teal-900);">Formation en ligne — 1 580€ →</a>
+      <a href="/formation-presentiel" class="btn-primary" style="background:transparent;color:white;border:1.5px solid rgba(255,255,255,0.3);">Présentiel — 3 999€ →</a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+window.openVideoModal = function(videoId) {
+  var modal = document.getElementById('video-modal');
+  var iframe = document.getElementById('video-modal-iframe');
+  iframe.src = 'https://customer-81ckzyr1xmvagtrr.cloudflarestream.com/' + videoId + '/iframe?autoplay=true';
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+window.closeVideoModal = function() {
+  var modal = document.getElementById('video-modal');
+  var iframe = document.getElementById('video-modal-iframe');
+  iframe.src = '';
+  modal.classList.remove('active');
+  document.body.style.overflow = '';
+};
+document.addEventListener('keydown', function(e) { if (e.key === 'Escape') window.closeVideoModal(); });
+</script>
+
+</BaseLayout>
+
+<style>
+.page-hero { padding: clamp(120px,12vw,180px) 0 clamp(60px,6vw,100px); background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%); }
+.page-hero h1 { font-family: var(--font-display); font-size: clamp(32px,4vw,56px); font-weight: 600; color: var(--gray-900); margin-bottom: 16px; line-height: 1.1; }
+.page-hero-badge { display: inline-block; background: var(--teal-100); color: var(--teal-700); padding: 6px 16px; border-radius: 100px; font-size: 13px; font-weight: 600; margin-bottom: 20px; }
+.page-hero-sub { font-size: clamp(15px,1.2vw,18px); color: var(--gray-500); max-width: 600px; line-height: 1.7; }
+.video-testi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.video-testi-card { position: relative; border-radius: 14px; overflow: hidden; cursor: pointer; aspect-ratio: 3/4; background: var(--gray-100); transition: transform 0.2s, box-shadow 0.2s; }
+.video-testi-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.15); }
+.video-testi-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.video-play-btn { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 60px; height: 60px; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: background 0.2s, transform 0.2s; }
+.video-testi-card:hover .video-play-btn { background: var(--teal-700); transform: translate(-50%,-50%) scale(1.1); }
+.video-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 9999; align-items: center; justify-content: center; padding: 20px; }
+.video-modal.active { display: flex; }
+.video-modal-close { position: absolute; top: 20px; right: 24px; background: none; border: none; color: white; font-size: 36px; cursor: pointer; z-index: 10000; line-height: 1; opacity: 0.7; transition: opacity 0.2s; }
+.video-modal-close:hover { opacity: 1; }
+.video-modal-content { width: 100%; max-width: 400px; aspect-ratio: 9/16; max-height: 85vh; }
+@media (max-width: 900px) { .video-testi-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (max-width: 600px) { .video-testi-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; } .video-play-btn { width: 44px; height: 44px; } .video-play-btn svg { width: 22px; height: 22px; } }
+.video-placeholder { position: relative; border-radius: 16px; overflow: hidden; margin-top: 30px; }
+.video-overlay { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); text-align: center; }
+.video-overlay p { color: var(--gray-600); font-size: 16px; font-weight: 500; }
+.testi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; margin-top: 40px; }
+.testi-card { background: white; border: 1px solid var(--gray-100); border-radius: 16px; padding: 28px; }
+.testi-stars { color: var(--gold); font-size: 16px; letter-spacing: 2px; margin-bottom: 12px; }
+.testi-card blockquote { font-size: 15px; color: var(--gray-600); line-height: 1.7; font-style: italic; margin-bottom: 20px; }
+.testi-author { display: flex; align-items: center; gap: 12px; }
+.testi-avatar { width: 40px; height: 40px; border-radius: 50%; background: var(--teal-500); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: white; flex-shrink: 0; }
+.testi-name { font-weight: 600; font-size: 14px; color: var(--gray-800); }
+.testi-role { font-size: 12px; color: var(--gray-400); }
+.google-reviews-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+.google-review-card { background: white; border: 1px solid var(--gray-100); border-radius: 16px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.04); }
+.google-review-header { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+.google-review-avatar { width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px; color: white; flex-shrink: 0; }
+.google-review-name { font-weight: 600; font-size: 14px; color: var(--gray-800); }
+.google-review-meta { font-size: 12px; color: var(--gray-400); }
+.google-review-meta { color: #f5a623; }
+.google-review-icon { margin-left: auto; flex-shrink: 0; }
+.google-review-text { font-size: 14px; color: var(--gray-600); line-height: 1.7; margin: 0; }
+</style>

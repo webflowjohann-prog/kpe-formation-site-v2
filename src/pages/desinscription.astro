@@ -1,0 +1,216 @@
+---
+// /src/pages/desinscription.astro
+// Page publique de désinscription RGPD
+---
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Désinscription | KPE Formation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #fafaf7;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #1f2937;
+    }
+    .card {
+      background: white;
+      border-radius: 16px;
+      padding: 48px 40px;
+      max-width: 480px;
+      width: 90%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.06);
+      text-align: center;
+    }
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: #0d4f4f;
+      margin-bottom: 8px;
+      line-height: 1;
+    }
+    .brand {
+      font-size: 13px;
+      color: #9ca3af;
+      margin-bottom: 32px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      font-weight: 500;
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      margin: 0 0 16px;
+      color: #111;
+      font-weight: 600;
+    }
+    p {
+      font-size: 15px;
+      line-height: 1.6;
+      color: #4b5563;
+      margin: 0 0 24px;
+    }
+    .email {
+      font-weight: 600;
+      color: #0d4f4f;
+    }
+    button {
+      background: #0d4f4f;
+      color: white;
+      border: none;
+      padding: 14px 32px;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: inherit;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    button:hover { background: #0a3f3f; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .secondary {
+      background: white;
+      color: #6b7280;
+      border: 1px solid #e5e7eb;
+    }
+    .secondary:hover { background: #f9fafb; }
+    .success {
+      background: #ecfdf5;
+      color: #059669;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    .error {
+      background: #fef2f2;
+      color: #dc2626;
+      padding: 16px;
+      border-radius: 12px;
+      margin-bottom: 24px;
+      font-size: 14px;
+    }
+    .footer-link {
+      display: block;
+      margin-top: 32px;
+      color: #9ca3af;
+      font-size: 13px;
+      text-decoration: none;
+    }
+    .footer-link:hover { color: #0d4f4f; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="logo">k</div>
+    <div class="brand">KPE Formation</div>
+    <div id="content">
+      <p style="color:#9ca3af">Chargement...</p>
+    </div>
+    <a href="/" class="footer-link">← Retour au site</a>
+  </div>
+
+  <script is:inline>
+    (async () => {
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token');
+      const content = document.getElementById('content');
+
+      if (!token) {
+        content.innerHTML = `
+          <h1>Lien invalide</h1>
+          <p>Le lien de désinscription est incorrect ou expiré.</p>
+          <p>Pour vous désinscrire, contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+        `;
+        return;
+      }
+
+      try {
+        const res = await fetch('/api/unsubscribe?token=' + encodeURIComponent(token));
+        const data = await res.json();
+
+        if (!res.ok || data.error) {
+          content.innerHTML = `
+            <h1>Lien invalide</h1>
+            <p>${data.error || 'Une erreur est survenue.'}</p>
+            <p>Pour vous désinscrire, contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+          `;
+          return;
+        }
+
+        if (data.already_unsubscribed) {
+          content.innerHTML = `
+            <div class="success">✓ Vous êtes déjà désinscrit(e).</div>
+            <p>L'adresse <span class="email">${data.email}</span> ne reçoit plus aucune communication de notre part.</p>
+          `;
+          return;
+        }
+
+        const greeting = data.first_name ? `Bonjour ${data.first_name},` : 'Bonjour,';
+        content.innerHTML = `
+          <h1>Confirmer la désinscription</h1>
+          <p>${greeting}</p>
+          <p>Vous êtes sur le point de vous désinscrire des emails de la formation KPE pour l'adresse <span class="email">${data.email}</span>.</p>
+          <p>Vous ne recevrez plus aucune communication de notre part.</p>
+          <button id="confirm">Confirmer ma désinscription</button>
+          <button class="secondary" onclick="window.location.href='/'">Annuler</button>
+        `;
+
+        document.getElementById('confirm').addEventListener('click', async () => {
+          const btn = document.getElementById('confirm');
+          btn.disabled = true;
+          btn.textContent = 'Désinscription en cours...';
+          try {
+            const r = await fetch('/api/unsubscribe', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token })
+            });
+            const d = await r.json();
+            if (d.ok) {
+              content.innerHTML = `
+                <div class="success">✓ Désinscription confirmée</div>
+                <h1>Vous avez bien été désinscrit(e)</h1>
+                <p>Vous ne recevrez plus aucun email de notre part. Si vous changez d'avis, vous pouvez nous recontacter à tout moment.</p>
+                <p style="font-size:13px;color:#9ca3af;margin-top:24px;">Si vous vous êtes désinscrit(e) par erreur, contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+              `;
+            } else {
+              content.innerHTML = `
+                <div class="error">${d.error || 'Erreur lors de la désinscription'}</div>
+                <p>Contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+              `;
+            }
+          } catch (e) {
+            content.innerHTML = `
+              <div class="error">Erreur réseau</div>
+              <p>Réessayez ou contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+            `;
+          }
+        });
+      } catch (e) {
+        content.innerHTML = `
+          <h1>Erreur</h1>
+          <p>Une erreur est survenue. Contactez-nous à <strong>contact@formation-kinesiologie.com</strong>.</p>
+        `;
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,12 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdminDashboard from '../components/AdminDashboard.jsx';
+---
+
+<BaseLayout title="Administration | KPE Formation" description="Tableau de bord administration KPE Formation." breadcrumbs={[{name: "Administration", url: "/admin"}]}>
+
+<section style="padding: clamp(100px,10vw,140px) 0 60px; min-height: 80vh; background: #f9fafb;">
+  <AdminDashboard client:only="react" />
+</section>
+
+</BaseLayout>
