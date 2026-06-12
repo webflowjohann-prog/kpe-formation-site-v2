@@ -4,6 +4,21 @@ import { createServerSupabase } from '@/lib/supabase'
 // Seuls ces champs remontent directement dans members
 const MEMBERS_DIRECT = new Set(['full_name'])
 
+// Champs BOOLEAN dans member_health_profiles — la question répond par "Oui…" / "Non…"
+// On convertit : commence par 'Oui' → true, sinon false
+const BOOLEAN_FIELDS = new Set([
+  'has_coach', 'has_vo2_test', 'has_evening_routine', 'has_nutrition_assessment',
+  'has_breathwork', 'has_expedition', 'has_wearable', 'has_blood_work', 'knows_hrv',
+])
+
+// medications est TEXT[] dans members mais TEXT dans member_health_profiles (saisie libre)
+function toProfileValue(field: string, value: unknown): unknown {
+  if (BOOLEAN_FIELDS.has(field)) {
+    return typeof value === 'string' ? value.startsWith('Oui') : Boolean(value)
+  }
+  return value
+}
+
 // Champs valides issus de questions.ts — écrits dans onboarding_responses
 const ALLOWED_FIELDS = new Set([
   'full_name', 'age', 'gender', 'height_cm', 'weight_kg',
@@ -87,7 +102,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
       const profile: Record<string, unknown> = { member_id: user.id }
       for (const { field, value } of allResponses) {
         if (field !== 'full_name') {
-          profile[field] = value
+          profile[field] = toProfileValue(field, value)
         }
       }
 

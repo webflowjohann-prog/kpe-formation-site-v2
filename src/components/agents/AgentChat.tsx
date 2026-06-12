@@ -33,6 +33,7 @@ export default function AgentChat({ agent, memberId }: Props) {
   const [historyLoaded, setHistoryLoaded] = useState(false)
   const bottomRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLTextAreaElement>(null)
+  const autoBriefDone = useRef(false)
 
   // Charger l'historique Supabase au montage
   useEffect(() => {
@@ -59,6 +60,42 @@ export default function AgentChat({ agent, memberId }: Props) {
         setHistoryLoaded(true)
       })
   }, [agent, memberId])
+
+  // Auto-briefing : déclenché quand l'historique est chargé et vide
+  useEffect(() => {
+    if (!historyLoaded) return
+    if (messages.length > 0) return
+    if (autoBriefDone.current) return
+    autoBriefDone.current = true
+
+    setLoading(agent)
+    fetch('/api/agents/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ agent, message: 'BRIEFING_AUTO' }),
+    })
+      .then((res) => res.ok ? res.json() : Promise.reject())
+      .then((data) => {
+        addMessage(agent, {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: data.response,
+          agent,
+          created_at: new Date().toISOString(),
+          hasPrescription: !!data.prescription,
+        })
+      })
+      .catch(() => {
+        addMessage(agent, {
+          id: crypto.randomUUID(),
+          role: 'assistant',
+          content: 'Je suis prêt à vous accompagner. Posez-moi votre première question.',
+          agent,
+          created_at: new Date().toISOString(),
+        })
+      })
+      .finally(() => setLoading(null))
+  }, [historyLoaded, agent])
 
   // Auto-scroll
   useEffect(() => {
@@ -170,8 +207,8 @@ export default function AgentChat({ agent, memberId }: Props) {
       </div>
 
       {/* Input */}
-      <div className="shrink-0 px-5 pb-4 pt-2 border-t border-white/[0.06]">
-        <div className="flex items-end gap-3 bg-white/[0.04] border border-white/[0.08] rounded-2xl px-4 py-3 focus-within:border-gold/30 transition-colors">
+      <div className="shrink-0 px-5 pb-4 pt-2 border-t border-black/[0.06]">
+        <div className="flex items-end gap-3 bg-black/[0.03] border border-black/[0.06] rounded-2xl px-4 py-3 focus-within:border-gold/30 transition-colors">
           <textarea
             ref={inputRef}
             value={input}

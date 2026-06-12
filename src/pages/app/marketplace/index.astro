@@ -6,7 +6,7 @@ import { createServerSupabase } from '@/lib/supabase'
 const supabase = createServerSupabase(Astro.cookies)
 
 const { data: products } = await supabase
-  .from('products')
+  .from('partner_products')
   .select('id, name, description, price_cents, category, agent_tags, dosage, image_url, featured, partners(name)')
   .eq('active', true)
   .order('featured', { ascending: false })

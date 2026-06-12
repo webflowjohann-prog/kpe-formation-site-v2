@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useStore } from '@nanostores/react'
 import AgentChat from '../AgentChat'
 import type { AgentId } from '@/stores/chat'
+import { $cart, addToCart } from '@/stores/cart'
 
 const AGENT: AgentId = 'morphee'
 
@@ -22,10 +24,52 @@ interface Prescription {
   priority: string
 }
 
+interface Product {
+  id: string
+  name: string
+  description: string | null
+  price_cents: number
+  dosage: string | null
+  partners: { name: string } | null
+}
+
 interface Props {
   memberId: string
   sleepData: SleepData
   prescriptions: Prescription[]
+  products: Product[]
+}
+
+function fmt(cents: number): string {
+  return (cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })
+}
+
+function SleepProductCard({ product }: { product: Product }) {
+  const cart = useStore($cart)
+  const inCart = cart.find((i) => i.productId === product.id)
+  const [added, setAdded] = useState(false)
+  function handleAdd() {
+    addToCart({ productId: product.id, name: product.name, price_cents: product.price_cents, quantity: 1, partner_name: product.partners?.name })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
+  return (
+    <div className="glass p-4">
+      <p className="font-sans text-sm font-medium text-t1 mb-0.5">{product.name}</p>
+      {product.partners && <p className="font-sans text-[10px] text-t4">{product.partners.name}</p>}
+      {product.description && <p className="font-sans text-[11px] text-t3 leading-relaxed mt-1 line-clamp-2">{product.description}</p>}
+      {product.dosage && <p className="font-sans text-[10px] text-t4 mt-0.5">{product.dosage}</p>}
+      <div className="flex items-center justify-between mt-3">
+        <span className="font-serif text-base text-gold">{fmt(product.price_cents)}</span>
+        <button
+          onClick={handleAdd}
+          className={['px-3 py-1.5 rounded-xl font-sans text-[10px] font-medium transition-all', added || inCart ? 'bg-gold/15 border border-gold/30 text-gold' : 'bg-surface border border-border text-t2 hover:border-gold/25'].join(' ')}
+        >
+          {added ? 'Ajouté' : inCart ? 'Dans le panier' : 'Ajouter'}
+        </button>
+      </div>
+    </div>
+  )
 }
 
 const TABS = ['Chat', 'Analyse', 'Protocole'] as const
@@ -137,56 +181,64 @@ function AnalyseTab({ data }: { data: SleepData }) {
   )
 }
 
-function ProtocoleTab({ prescriptions }: { prescriptions: Prescription[] }) {
-  if (prescriptions.length === 0) {
-    return (
-      <div className="px-5 py-8 text-center">
-        <p className="font-sans text-sm text-t3 mb-2">Aucun protocole actif.</p>
-        <p className="font-sans text-xs text-t4 mb-6">
-          Parlez à MORPHÉE pour recevoir votre routine du soir personnalisée.
-        </p>
-        <a href="#" onClick={(e) => { e.preventDefault(); }} className="btn-outline h-9 px-4 text-[9px] inline-flex items-center">
-          Aller au chat
-        </a>
-      </div>
-    )
-  }
-
+function ProtocoleTab({ prescriptions, products }: { prescriptions: Prescription[]; products: Product[] }) {
   return (
     <div className="px-5 py-4 flex flex-col gap-3">
-      <span className="label text-gold">Protocole du soir actif</span>
-      {prescriptions.map((p, i) => (
-        <div key={p.id} className="glass p-4 flex gap-4 items-start">
-          <div className="w-7 h-7 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0 mt-0.5">
-            <span className="font-sans text-[9px] text-gold font-medium">{i + 1}</span>
+      {products.length > 0 && (
+        <div>
+          <span className="label text-gold block mb-3">Produits sommeil</span>
+          <div className="flex flex-col gap-3 mb-2">
+            {products.map((p) => <SleepProductCard key={p.id} product={p} />)}
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="font-sans text-sm font-medium text-t1 mb-0.5">{p.title}</p>
-            {p.description && <p className="font-sans text-xs text-t3 leading-relaxed">{p.description}</p>}
-            <div className="flex gap-3 mt-2">
-              {p.timing && <span className="font-sans text-[10px] text-t4">{p.timing}</span>}
-              {p.duration && <span className="font-sans text-[10px] text-t4">{p.duration}</span>}
-            </div>
-          </div>
+          <a href="/app/marketplace" className="btn-outline h-9 w-full flex items-center justify-center text-[10px]">
+            Voir tout le catalogue
+          </a>
         </div>
-      ))}
+      )}
+      {prescriptions.length > 0 ? (
+        <>
+          <span className="label text-gold">Protocole du soir actif</span>
+          {prescriptions.map((p, i) => (
+            <div key={p.id} className="glass p-4 flex gap-4 items-start">
+              <div className="w-7 h-7 rounded-full bg-gold/10 border border-gold/20 flex items-center justify-center shrink-0 mt-0.5">
+                <span className="font-sans text-[9px] text-gold font-medium">{i + 1}</span>
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="font-sans text-sm font-medium text-t1 mb-0.5">{p.title}</p>
+                {p.description && <p className="font-sans text-xs text-t3 leading-relaxed">{p.description}</p>}
+                <div className="flex gap-3 mt-2">
+                  {p.timing && <span className="font-sans text-[10px] text-t4">{p.timing}</span>}
+                  {p.duration && <span className="font-sans text-[10px] text-t4">{p.duration}</span>}
+                </div>
+              </div>
+            </div>
+          ))}
+        </>
+      ) : (
+        <div className="glass p-4 text-center">
+          <p className="font-sans text-xs text-t3 mb-1">Aucun protocole actif.</p>
+          <p className="font-sans text-xs text-t4">
+            Parlez à MORPHÉE pour recevoir votre routine du soir personnalisée.
+          </p>
+        </div>
+      )}
     </div>
   )
 }
 
-export default function MorpheeDashboard({ memberId, sleepData, prescriptions }: Props) {
+export default function MorpheeDashboard({ memberId, sleepData, prescriptions, products }: Props) {
   const [tab, setTab] = useState<Tab>('Chat')
 
   return (
     <div>
-      <div className="flex gap-0 border-b border-white/[0.06] px-5">
+      <div className="flex gap-0 border-b border-sep px-5">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={[
-              'px-4 py-3 font-sans text-xs font-medium transition-all border-b-2 -mb-px',
-              tab === t ? 'text-gold border-gold' : 'text-t4 border-transparent hover:text-t2',
+              'px-4 py-3 font-sans text-xs transition-all border-b-2 -mb-px',
+              tab === t ? 'text-t1 font-bold border-gold' : 'text-t3 font-medium border-transparent hover:text-t2',
             ].join(' ')}
           >
             {t}
@@ -196,7 +248,7 @@ export default function MorpheeDashboard({ memberId, sleepData, prescriptions }:
 
       {tab === 'Chat' && <AgentChat agent={AGENT} memberId={memberId} />}
       {tab === 'Analyse' && <AnalyseTab data={sleepData} />}
-      {tab === 'Protocole' && <ProtocoleTab prescriptions={prescriptions} />}
+      {tab === 'Protocole' && <ProtocoleTab prescriptions={prescriptions} products={products} />}
     </div>
   )
 }

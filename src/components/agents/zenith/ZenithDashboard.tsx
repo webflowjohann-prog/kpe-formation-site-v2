@@ -1,6 +1,8 @@
 import { useState } from 'react'
+import { useStore } from '@nanostores/react'
 import AgentChat from '../AgentChat'
 import type { AgentId } from '@/stores/chat'
+import { $cart, addToCart } from '@/stores/cart'
 
 const AGENT: AgentId = 'zenith'
 
@@ -21,10 +23,52 @@ interface Prescription {
   priority: string
 }
 
+interface Product {
+  id: string
+  name: string
+  description: string | null
+  price_cents: number
+  dosage: string | null
+  partners: { name: string } | null
+}
+
 interface Props {
   memberId: string
   mentalData: MentalData
   prescriptions: Prescription[]
+  products: Product[]
+}
+
+function fmt(cents: number): string {
+  return (cents / 100).toLocaleString('fr-FR', { style: 'currency', currency: 'EUR' })
+}
+
+function MentalProductCard({ product }: { product: Product }) {
+  const cart = useStore($cart)
+  const inCart = cart.find((i) => i.productId === product.id)
+  const [added, setAdded] = useState(false)
+  function handleAdd() {
+    addToCart({ productId: product.id, name: product.name, price_cents: product.price_cents, quantity: 1, partner_name: product.partners?.name })
+    setAdded(true)
+    setTimeout(() => setAdded(false), 2000)
+  }
+  return (
+    <div className="glass p-4">
+      <p className="font-sans text-sm font-medium text-t1 mb-0.5">{product.name}</p>
+      {product.partners && <p className="font-sans text-[10px] text-t4">{product.partners.name}</p>}
+      {product.description && <p className="font-sans text-[11px] text-t3 leading-relaxed mt-1 line-clamp-2">{product.description}</p>}
+      {product.dosage && <p className="font-sans text-[10px] text-t4 mt-0.5">{product.dosage}</p>}
+      <div className="flex items-center justify-between mt-3">
+        <span className="font-serif text-base text-gold">{fmt(product.price_cents)}</span>
+        <button
+          onClick={handleAdd}
+          className={['px-3 py-1.5 rounded-xl font-sans text-[10px] font-medium transition-all', added || inCart ? 'bg-gold/15 border border-gold/30 text-gold' : 'bg-surface border border-border text-t2 hover:border-gold/25'].join(' ')}
+        >
+          {added ? 'Ajouté' : inCart ? 'Dans le panier' : 'Ajouter'}
+        </button>
+      </div>
+    </div>
+  )
 }
 
 const TABS = ['Chat', 'Sessions', 'Protocoles'] as const
@@ -126,7 +170,7 @@ function SessionsTab() {
   )
 }
 
-function ProtocolesTab({ data, prescriptions }: { data: MentalData; prescriptions: Prescription[] }) {
+function ProtocolesTab({ data, prescriptions, products }: { data: MentalData; prescriptions: Prescription[]; products: Product[] }) {
   const { stress_level, mood_general, concentration_quality, meditation_frequency, has_breathwork } = data
 
   const metrics = [
@@ -218,23 +262,35 @@ function ProtocolesTab({ data, prescriptions }: { data: MentalData; prescription
           </svg>
         </a>
       </div>
+
+      {products.length > 0 && (
+        <div>
+          <p className="label mb-3">Outils & suppléments mental</p>
+          <div className="flex flex-col gap-3">
+            {products.map((p) => <MentalProductCard key={p.id} product={p} />)}
+          </div>
+          <a href="/app/marketplace" className="btn-outline h-9 w-full flex items-center justify-center text-[10px] mt-3">
+            Voir tout le catalogue
+          </a>
+        </div>
+      )}
     </div>
   )
 }
 
-export default function ZenithDashboard({ memberId, mentalData, prescriptions }: Props) {
+export default function ZenithDashboard({ memberId, mentalData, prescriptions, products }: Props) {
   const [tab, setTab] = useState<Tab>('Chat')
 
   return (
     <div>
-      <div className="flex gap-0 border-b border-white/[0.06] px-5">
+      <div className="flex gap-0 border-b border-sep px-5">
         {TABS.map((t) => (
           <button
             key={t}
             onClick={() => setTab(t)}
             className={[
-              'px-4 py-3 font-sans text-xs font-medium transition-all border-b-2 -mb-px',
-              tab === t ? 'text-gold border-gold' : 'text-t4 border-transparent hover:text-t2',
+              'px-4 py-3 font-sans text-xs transition-all border-b-2 -mb-px',
+              tab === t ? 'text-t1 font-bold border-gold' : 'text-t3 font-medium border-transparent hover:text-t2',
             ].join(' ')}
           >
             {t}
@@ -244,7 +300,7 @@ export default function ZenithDashboard({ memberId, mentalData, prescriptions }:
 
       {tab === 'Chat' && <AgentChat agent={AGENT} memberId={memberId} />}
       {tab === 'Sessions' && <SessionsTab />}
-      {tab === 'Protocoles' && <ProtocolesTab data={mentalData} prescriptions={prescriptions} />}
+      {tab === 'Protocoles' && <ProtocolesTab data={mentalData} prescriptions={prescriptions} products={products} />}
     </div>
   )
 }

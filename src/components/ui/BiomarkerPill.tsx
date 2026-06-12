@@ -1,4 +1,4 @@
-export type BiomarkerStatus = 'optimal' | 'low' | 'high' | 'unknown'
+export type BiomarkerStatus = 'optimal' | 'normal' | 'low' | 'high' | 'unknown'
 
 interface BiomarkerPillProps {
   name: string
@@ -8,11 +8,28 @@ interface BiomarkerPillProps {
   onClick?: () => void
 }
 
-const STATUS_CLASSES: Record<BiomarkerStatus, string> = {
-  optimal: 'border-gold/30 text-gold',
-  low: 'border-t3/20 text-t3',
-  high: 'border-t3/20 text-t3',
-  unknown: 'border-white/[0.08] text-t4',
+// Styles contrastés sur fond blanc — badge avec fond coloré + border visible
+const STATUS_STYLES: Record<BiomarkerStatus, { wrapper: string; dot: string }> = {
+  optimal: {
+    wrapper: 'badge-optimal cursor-pointer',
+    dot: 'bg-gold',
+  },
+  normal: {
+    wrapper: 'badge-normal',
+    dot: 'bg-success',
+  },
+  low: {
+    wrapper: 'badge-alert',
+    dot: 'bg-alert-red',
+  },
+  high: {
+    wrapper: 'badge-warning',
+    dot: 'bg-alert-orange',
+  },
+  unknown: {
+    wrapper: 'inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-surface border border-border text-t2',
+    dot: 'bg-t3',
+  },
 }
 
 export function BiomarkerPill({
@@ -23,24 +40,19 @@ export function BiomarkerPill({
   onClick,
 }: BiomarkerPillProps) {
   const Component = onClick ? 'button' : 'div'
+  const styles = STATUS_STYLES[status]
 
   return (
     <Component
-      className={[
-        'inline-flex items-center gap-1.5 px-3 py-1.5',
-        'bg-surface border rounded-full',
-        'transition-all duration-150',
-        STATUS_CLASSES[status],
-        onClick ? 'hover:bg-card cursor-pointer' : '',
-      ].join(' ')}
+      className={[styles.wrapper, 'transition-all duration-150'].join(' ')}
       onClick={onClick}
     >
-      <span className="font-sans font-medium uppercase tracking-[0.12em] text-[8px]">{name}</span>
-      <span className="w-px h-3 bg-current opacity-20" aria-hidden="true" />
-      <span className="font-sans text-[11px] font-medium tabular-nums">
+      <span className={['w-1.5 h-1.5 rounded-full shrink-0', styles.dot].join(' ')} />
+      <span className="font-sans font-medium uppercase tracking-[0.10em] text-[9px]">{name}</span>
+      <span className="font-sans text-[11px] font-bold tabular-nums ml-0.5">
         {value}
         {unit && (
-          <span className="text-[8px] ml-0.5 opacity-50">{unit}</span>
+          <span className="text-[9px] font-normal opacity-60 ml-0.5">{unit}</span>
         )}
       </span>
     </Component>

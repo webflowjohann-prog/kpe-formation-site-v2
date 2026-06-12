@@ -37,8 +37,8 @@ export const onRequest = defineMiddleware(async (context, next) => {
     return redirect('/app')
   }
 
-  // Vérifier onboarding pour les routes /app/*
-  if (locals.user && url.pathname.startsWith('/app') && url.pathname !== '/app') {
+  // Vérifier onboarding pour toutes les routes /app
+  if (locals.user && url.pathname.startsWith('/app')) {
     const { data: member } = await supabase
       .from('members')
       .select('onboarding_completed')

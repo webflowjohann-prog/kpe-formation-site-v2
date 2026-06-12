@@ -25,11 +25,11 @@ function Skeleton() {
   return (
     <div className="px-5 pt-6 flex flex-col gap-6 animate-pulse">
       <div className="flex flex-col items-center gap-4">
-        <div className="w-44 h-44 rounded-full bg-white/[0.04]" />
-        <div className="w-20 h-5 rounded-full bg-white/[0.04]" />
+        <div className="w-44 h-44 rounded-full bg-black/[0.04]" />
+        <div className="w-20 h-5 rounded-full bg-black/[0.04]" />
       </div>
-      <div className="h-32 rounded-[20px] bg-white/[0.04]" />
-      <div className="h-24 rounded-[20px] bg-white/[0.04]" />
+      <div className="h-32 rounded-[20px] bg-black/[0.04]" />
+      <div className="h-24 rounded-[20px] bg-black/[0.04]" />
     </div>
   )
 }

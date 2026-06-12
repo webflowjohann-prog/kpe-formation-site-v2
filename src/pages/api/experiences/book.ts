@@ -19,7 +19,7 @@ export const POST: APIRoute = async ({ request, cookies }) => {
 
   // Charger l'expérience
   const { data: exp, error: expErr } = await admin
-    .from('experiences')
+    .from('experience_catalog')
     .select('id, title, price_cents, spots_remaining, min_oracle_score, status')
     .eq('id', body.experience_id)
     .single()
