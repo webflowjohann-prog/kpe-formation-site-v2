@@ -18,8 +18,14 @@ const currentPath = Astro.url.pathname
 
   <!-- Header app mobile -->
   <header class="sticky top-0 z-30 h-14 flex items-center justify-between px-5 bg-bg/80 backdrop-blur-[16px] border-b border-white/[0.04]">
-    <a href="/app" class="flex items-center gap-2">
-      <img src="/images/logo-nav.png" alt="NATICS Lab" class="h-6 w-auto" />
+    <a href="/app" aria-label="NATICS Lab">
+      <img
+        src="/images/logo/logo-natics-plein.png"
+        alt="NATICS Lab"
+        width="80"
+        height="40"
+        style="object-fit: contain; aspect-ratio: 2 / 1; height: 24px; width: auto;"
+      />
     </a>
     <div class="flex items-center gap-3">
       <a

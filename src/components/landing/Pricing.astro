@@ -81,7 +81,7 @@ const PLANS = [
     <!-- En-tête -->
     <div class="text-center mb-16">
       <span class="label text-gold block mb-4">Tarifs</span>
-      <h2 class="font-serif text-4xl sm:text-5xl text-t1 italic mb-5">
+      <h2 class="font-sans text-4xl sm:text-5xl text-t1 mb-5" style="font-weight:600;letter-spacing:-0.015em;line-height:1.1;">
         Investissez dans votre performance
       </h2>
       <p class="font-sans text-t3 text-base max-w-md mx-auto leading-relaxed">
@@ -110,11 +110,11 @@ const PLANS = [
           <!-- Plan header -->
           <div class="mb-6">
             <span class="label text-t3 block mb-2">{plan.tagline}</span>
-            <h3 class={`font-serif text-xl italic mb-4 ${plan.highlight ? 'text-gold' : 'text-t1'}`}>
+            <h3 class={`font-sans text-xl mb-4 ${plan.highlight ? 'text-gold' : 'text-t1'}`} style="font-weight:600;letter-spacing:-0.01em;">
               {plan.name}
             </h3>
             <div class="flex items-end gap-1">
-              <span class={`font-serif font-light leading-none ${plan.highlight ? 'text-gold' : 'text-t1'}`} style="font-size:2.5rem;">
+              <span class={`font-sans leading-none tabular-nums ${plan.highlight ? 'text-gold' : 'text-t1'}`} style="font-size:2.5rem;font-weight:700;letter-spacing:-0.02em;">
                 {plan.price === '0' ? 'Gratuit' : `${plan.price}€`}
               </span>
               {plan.period && (

@@ -1,3 +1,7 @@
+/* Montserrat Variable — normal + italic */
+@import "@fontsource-variable/montserrat";
+@import "@fontsource-variable/montserrat/wght-italic.css";
+
 @import "tailwindcss";
 
 @keyframes fadeIn {
@@ -5,172 +9,264 @@
   to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Le projet est dans la home dir — gitignore liste les dossiers à exclure */
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
 
-/* ── NATICS Lab Design System ────────────────────────────────
-   Palette : Monochrome + Or uniquement. Aucune autre couleur.
-   Dark mode unique. Typographie Playfair Display + DM Sans.
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.97); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* ── NATICS Lab Design System — Luxury Health Tech ────────────
+   Palette : Adobe Color "Watch in a Man" + Or NATICS.
+   Typographie Montserrat (400/500/600/700 + italiques).
 ──────────────────────────────────────────────────────────── */
 
 @theme {
-  /* Couleurs fond / surfaces */
-  --color-bg: #0D0D0D;
-  --color-surface: #1a1a1a;
-  --color-card: #262626;
+  /* Fond / surfaces */
+  --color-bg:      #FFFFFF;
+  --color-surface: #F7F7F7;
+  --color-card:    #FFFFFF;
 
-  /* Or NATICS Lab — seule couleur accent */
-  --color-gold: #c9a96e;
-  --color-gold-hover: #b8963e;
+  /* Or NATICS Lab */
+  --color-gold:       #c9a96e;
+  --color-gold-hover: #a88a4e;
+  --color-gold-light: #e8d5a8;
+  --color-gold-dark:  #a88a4e;
 
-  /* Texte */
-  --color-t1: #ffffff;
-  --color-t2: #D9D9D9;
-  --color-t3: #A6A6A6;
-  --color-t4: #595959;
+  /* Alertes / statuts */
+  --color-alert-red:    #D94F4F;
+  --color-alert-orange: #E8913A;
+  --color-success:      #4CAF50;
 
-  /* Séparateurs */
-  --color-sep: #D9D9D9;
+  /* Texte — hiérarchie claire sur fond blanc */
+  --color-t1:         #0D0D0D;
+  --color-t2:         #595959;
+  --color-t3:         #A6A6A6;
+  --color-t4:         #D9D9D9;
+  --color-text-dark:  #262626;
 
-  /* Typographie */
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "DM Sans", system-ui, -apple-system, sans-serif;
+  /* Séparateur */
+  --color-sep:    #E0E0E0;
+  --color-border: #D9D9D9;
+
+  /* Typographie — Montserrat partout */
+  --font-display: 'Montserrat Variable', 'Montserrat', sans-serif;
+  --font-body:    'Montserrat Variable', 'Montserrat', sans-serif;
+  /* Rétrocompatibilité — composants utilisant font-serif / font-sans */
+  --font-serif:   'Montserrat Variable', 'Montserrat', sans-serif;
+  --font-sans:    'Montserrat Variable', 'Montserrat', sans-serif;
 
   /* Rayons */
   --radius-card: 20px;
-  --radius-btn: 12px;
+  --radius-btn:  14px;
 
   /* Ombres */
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.4);
-  --shadow-glow: 0 4px 20px rgba(201, 169, 110, 0.25);
-}
-
-/* ── Polices self-hosted (fichiers dans /public/fonts/) ──── */
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/PlayfairDisplay-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/PlayfairDisplay-Italic.woff2") format("woff2");
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: "Playfair Display";
-  src: url("/fonts/PlayfairDisplay-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DM Sans";
-  src: url("/fonts/DMSans-Light.woff2") format("woff2");
-  font-weight: 300;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DM Sans";
-  src: url("/fonts/DMSans-Regular.woff2") format("woff2");
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: "DM Sans";
-  src: url("/fonts/DMSans-Medium.woff2") format("woff2");
-  font-weight: 500;
-  font-style: normal;
-  font-display: swap;
+  --shadow-card:  0 2px 16px rgba(0, 0, 0, 0.04);
+  --shadow-hover: 0 4px 24px rgba(0, 0, 0, 0.08);
+  --shadow-glass: 0 2px 12px rgba(0, 0, 0, 0.05);
+  --shadow-glow:  0 4px 20px rgba(201, 169, 110, 0.20);
 }
 
 /* ── Reset global ────────────────────────────────────────── */
-*, *::before, *::after {
-  box-sizing: border-box;
-}
+*, *::before, *::after { box-sizing: border-box; }
 
 html {
-  background-color: #0D0D0D;
-  color: #ffffff;
-  font-family: "DM Sans", system-ui, sans-serif;
+  background-color: #FFFFFF;
+  color: #0D0D0D;
+  font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
 }
 
 body {
-  background-color: #0D0D0D;
+  background-color: #FFFFFF;
   min-height: 100vh;
   overflow-x: hidden;
 }
 
-/* ── Sélection texte ─────────────────────────────────────── */
-::selection {
-  background-color: rgba(201, 169, 110, 0.25);
-  color: #ffffff;
+/* ── Hiérarchie typographique — Montserrat ───────────────── */
+@layer base {
+  h1 {
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+  }
+  h2 {
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.1;
+  }
+  h3 {
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+  /* Tabular nums — stabilise chiffres animés (stats, scores) */
+  [data-counter],
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
 }
 
-/* ── Scrollbar personnalisée ─────────────────────────────── */
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
+/* ── Transition page fade ────────────────────────────────── */
+main {
+  animation: fadeIn 0.2s ease-out both;
 }
-::-webkit-scrollbar-track {
-  background: transparent;
+
+/* ── Sélection ───────────────────────────────────────────── */
+::selection {
+  background-color: rgba(201, 169, 110, 0.20);
+  color: #0D0D0D;
 }
-::-webkit-scrollbar-thumb {
-  background: rgba(201, 169, 110, 0.3);
-  border-radius: 2px;
+
+/* ── Scrollbar ───────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.12); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.22); }
+
+/* ── Override global : white-opacity → dark subtle (thème clair) ──
+   Sur fond blanc, "border-white/[0.06]" et "bg-white/[0.04]" sont
+   invisibles. On les convertit en équivalents sombres discrets.
+──────────────────────────────────────────────────────────────────── */
+[class*="border-white\/"] {
+  border-color: rgba(0, 0, 0, 0.07) !important;
 }
-::-webkit-scrollbar-thumb:hover {
-  background: rgba(201, 169, 110, 0.5);
+
+/* Fonds blancs semi-transparents → fonds noirs très légers */
+[class*="bg-white\/[0.0"] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+
+/* Dividers h-px (un peu plus visibles) */
+.h-px[class*="bg-white\/"] {
+  background-color: rgba(0, 0, 0, 0.07) !important;
 }
 
 /* ── Classes composants réutilisables ────────────────────── */
 @layer components {
-  /* Glass card — glassmorphism dark */
-  .glass {
-    background: rgba(38, 38, 38, 0.6);
-    backdrop-filter: blur(24px);
-    -webkit-backdrop-filter: blur(24px);
-    border: 1px solid rgba(255, 255, 255, 0.06);
+
+  /* Card standard — fond blanc, bordure, ombre, hover subtle */
+  .card {
+    background: #FFFFFF;
+    border: 0.5px solid rgba(0, 0, 0, 0.08);
     border-radius: 20px;
-    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+    padding: 24px;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+  }
+  .card:hover {
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+    transform: translateY(-2px);
   }
 
-  /* Label — DM Sans 500, uppercase, tracking */
+  /* Glass card — semi-transparent, flou */
+  .glass {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 0.5px solid rgba(0, 0, 0, 0.07);
+    border-radius: 20px;
+    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.04);
+  }
+
+  /* ── Badges biomarqueurs (critique : fond coloré + border) ── */
+  .badge-normal {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(76, 175, 80, 0.08);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    color: #2E7D32;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-alert {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(217, 79, 79, 0.08);
+    border: 1px solid rgba(217, 79, 79, 0.4);
+    color: #C62828;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+  }
+  .badge-warning {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(232, 145, 58, 0.08);
+    border: 1px solid rgba(232, 145, 58, 0.3);
+    color: #E65100;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+  .badge-optimal {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(201, 169, 110, 0.10);
+    border: 1px solid rgba(201, 169, 110, 0.35);
+    color: #a88a4e;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+  }
+
+  /* Label / eyebrow — uppercase, tracking +0.12em, style Temple */
   .label {
-    font-family: "DM Sans", system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 9px;
-    letter-spacing: 0.15em;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 10px;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #A6A6A6;
   }
 
-  /* Score — Playfair Display 300, or */
+  /* Score CORTEX */
   .score-text {
-    font-family: "Playfair Display", Georgia, serif;
-    font-weight: 300;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-size: 72px;
+    font-weight: 700;
     color: #c9a96e;
+    letter-spacing: -0.02em;
+    font-variant-numeric: tabular-nums;
   }
 
   /* Divider */
   .divider {
     height: 1px;
-    background: rgba(255, 255, 255, 0.06);
+    background: #E0E0E0;
   }
 
   /* Agent badge */
   .agent-badge {
-    font-family: "DM Sans", system-ui, sans-serif;
-    font-weight: 500;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
     font-size: 8px;
-    letter-spacing: 0.15em;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
     color: #c9a96e;
     padding: 3px 8px;
@@ -178,60 +274,52 @@ body {
     border-radius: 100px;
   }
 
-  /* Input de base */
+  /* Input */
   .input-base {
     width: 100%;
     height: 44px;
     padding: 0 16px;
-    background: #262626;
-    border: 1px solid rgba(255, 255, 255, 0.06);
+    background: #F7F7F7;
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: 12px;
-    font-family: "DM Sans", system-ui, sans-serif;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
     font-size: 14px;
-    color: #ffffff;
+    color: #0D0D0D;
     transition: border-color 0.2s, background 0.2s;
     outline: none;
   }
-  .input-base::placeholder {
-    color: #595959;
-  }
+  .input-base::placeholder { color: #A6A6A6; }
   .input-base:focus {
-    border-color: rgba(201, 169, 110, 0.4);
-    background: #1a1a1a;
+    border-color: rgba(201, 169, 110, 0.5);
+    background: #FFFFFF;
+    box-shadow: 0 0 0 3px rgba(201, 169, 110, 0.08);
   }
 
-  /* Bouton gold */
+  /* Bouton gold (CTA) — uppercase, tracking +0.08em */
   .btn-gold {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     height: 44px;
-    padding: 0 24px;
+    padding: 0 28px;
     background: #c9a96e;
-    color: #0D0D0D;
-    border-radius: 12px;
-    font-family: "DM Sans", system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 9px;
-    letter-spacing: 0.15em;
+    color: #FFFFFF;
+    border-radius: 14px;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
-    transition: background 0.2s, box-shadow 0.2s;
+    transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
     cursor: pointer;
     border: none;
   }
   .btn-gold:hover {
-    background: #b8963e;
-    box-shadow: 0 4px 20px rgba(201, 169, 110, 0.25);
+    background: #a88a4e;
+    transform: scale(1.02);
+    box-shadow: 0 4px 20px rgba(201, 169, 110, 0.30);
   }
-  .btn-gold:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
-
-  /* Animation fade-in — utilisée par l'onboarding */
-  .animate-fade-in {
-    animation: fadeIn 0.25s ease-out both;
-  }
+  .btn-gold:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
   /* Bouton outline */
   .btn-outline {
@@ -243,11 +331,11 @@ body {
     background: transparent;
     color: #c9a96e;
     border: 1px solid rgba(201, 169, 110, 0.3);
-    border-radius: 12px;
-    font-family: "DM Sans", system-ui, sans-serif;
-    font-weight: 500;
-    font-size: 9px;
-    letter-spacing: 0.15em;
+    border-radius: 14px;
+    font-family: 'Montserrat Variable', 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     transition: border-color 0.2s, background 0.2s;
     cursor: pointer;
@@ -257,48 +345,70 @@ body {
     background: rgba(201, 169, 110, 0.05);
   }
 
-  /* ── Page transitions ──────────────────────────────────────────────────────── */
-  @keyframes slideUp {
-    from { opacity: 0; transform: translateY(12px); }
-    to   { opacity: 1; transform: translateY(0); }
+  /* Hero image d'agent */
+  .agent-hero {
+    height: 240px;
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    margin: 0 16px;
+    background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  }
+  .agent-hero img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: grayscale(100%);
+  }
+  .agent-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0) 30%, rgba(0,0,0,0.75) 100%);
+    pointer-events: none;
   }
 
-  @keyframes scaleIn {
-    from { opacity: 0; transform: scale(0.97); }
-    to   { opacity: 1; transform: scale(1); }
+  /* Tampon logo — cachet coin bas-droit sur photos N&B */
+  .photo-stamp {
+    position: relative;
+  }
+  .photo-stamp::after {
+    content: '';
+    position: absolute;
+    bottom: 24px;
+    right: 24px;
+    width: 64px;
+    height: 32px;
+    background-image: url('/images/logo/logo-natics-blanc.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    opacity: 0.65;
+    pointer-events: none;
   }
 
-  .animate-slide-up {
-    animation: slideUp 0.3s ease-out both;
+  /* Animations */
+  .animate-fade-in  { animation: fadeIn  0.25s ease-out both; }
+  .animate-slide-up { animation: slideUp 0.30s ease-out both; }
+  .animate-scale-in { animation: scaleIn 0.25s ease-out both; }
+
+  /* Skeleton loader */
+  .skeleton {
+    background: linear-gradient(
+      90deg,
+      rgba(0,0,0,0.04) 25%,
+      rgba(0,0,0,0.07) 50%,
+      rgba(0,0,0,0.04) 75%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: 8px;
   }
 
-  .animate-scale-in {
-    animation: scaleIn 0.25s ease-out both;
-  }
-
-  /* ── Scrollbar ────────────────────────────────────────────────────────────── */
-  ::-webkit-scrollbar { width: 4px; height: 4px; }
-  ::-webkit-scrollbar-track { background: transparent; }
-  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
-  ::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.15); }
-
-  /* ── Focus visible ────────────────────────────────────────────────────────── */
+  /* Focus visible */
   :focus-visible {
     outline: 2px solid rgba(201, 169, 110, 0.5);
     outline-offset: 2px;
     border-radius: 4px;
-  }
-
-  /* ── Skeleton loader ─────────────────────────────────────────────────────── */
-  @keyframes shimmer {
-    0%   { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-  }
-
-  .skeleton {
-    background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.04) 75%);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    border-radius: 8px;
   }
 }
