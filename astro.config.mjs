@@ -10,6 +10,7 @@ export default defineConfig({
       filter: (page) =>
         !page.includes('/admin/') &&
         !page.includes('/espace-eleve/') &&
+        !page.includes('/presentation/') &&
         !page.includes('/api/'),
       changefreq: 'weekly',
       priority: 0.7,

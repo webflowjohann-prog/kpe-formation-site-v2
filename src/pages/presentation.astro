@@ -1,0 +1,218 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+// ⚠️ REMPLACER par l'ID Cloudflare Stream de la vidéo de présentation de Joël (6 min)
+// Upload : dash.cloudflare.com > Stream > Upload, puis copier l'ID de la vidéo
+const VIDEO_ID = 'VIDEO_ID_A_REMPLACER';
+const STREAM_CUSTOMER = 'customer-81ckzyr1xmvagtrr';
+---
+
+<BaseLayout
+  title="Joël vous présente la formation KPE en 6 minutes"
+  description="Joël Prieur, fondateur de la méthode KPE, vous explique en vidéo le contenu de la formation en Kinésiologie Psycho-Énergétique."
+  noindex={true}
+>
+
+<section class="video-hero">
+  <div class="container">
+    <div class="page-hero-badge">Message de Joël Prieur</div>
+    <h1>6 minutes pour tout comprendre<br>de la formation KPE</h1>
+    <p class="page-hero-sub">Vous avez demandé des informations sur la formation — merci ! Plutôt qu'un long email, Joël a préféré vous parler directement. Dans cette vidéo, il vous explique exactement ce que vous allez apprendre, comment se déroule la formation, et à qui elle s'adresse.</p>
+
+    <div class="video-wrapper">
+      <iframe
+        src={`https://${STREAM_CUSTOMER}.cloudflarestream.com/${VIDEO_ID}/iframe?preload=true&poster=https%3A%2F%2F${STREAM_CUSTOMER}.cloudflarestream.com%2F${VIDEO_ID}%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s`}
+        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+        allowfullscreen
+        loading="lazy"
+        title="Présentation de la formation KPE par Joël Prieur"
+      ></iframe>
+    </div>
+  </div>
+</section>
+
+<section class="section next-steps">
+  <div class="container">
+    <h2>Et maintenant ?</h2>
+    <p class="next-steps-sub">Après la vidéo, trois façons d'avancer selon où vous en êtes :</p>
+
+    <div class="steps-grid">
+      <a href="/#tarifs" class="step-card step-card--featured">
+        <div class="step-icon">✓</div>
+        <h3>Je suis prêt·e à m'inscrire</h3>
+        <p>Choisissez votre format — en ligne à votre rythme (1 580 €) ou en présentiel à Aurillac (3 999 €, certifiante).</p>
+        <span class="step-link">Voir les tarifs &amp; s'inscrire →</span>
+      </a>
+
+      <a href="/formation-presentiel" class="step-card">
+        <div class="step-icon">📋</div>
+        <h3>Je veux voir le programme détaillé</h3>
+        <p>Le contenu complet des 8 modules, les dates des week-ends à Aurillac, et les modalités de certification.</p>
+        <span class="step-link">Découvrir le programme →</span>
+      </a>
+
+      <a href="/contact" class="step-card">
+        <div class="step-icon">💬</div>
+        <h3>J'ai encore une question</h3>
+        <p>Une situation particulière, un financement à monter ? Joël vous répond personnellement par email.</p>
+        <span class="step-link">Contacter Joël →</span>
+      </a>
+    </div>
+
+    <div class="financing-note">
+      🛡️ Formation éligible aux financements OPCO, France Travail et aides régionales. <a href="/financement">En savoir plus sur les financements</a>
+    </div>
+  </div>
+</section>
+
+</BaseLayout>
+
+<style>
+.video-hero {
+  padding: clamp(120px, 12vw, 170px) 0 clamp(50px, 5vw, 80px);
+  background: linear-gradient(135deg, var(--teal-50) 0%, var(--white) 100%);
+  text-align: center;
+}
+
+.video-hero h1 {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 52px);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 16px;
+  line-height: 1.15;
+}
+
+.page-hero-badge {
+  display: inline-block;
+  background: var(--teal-100);
+  color: var(--teal-700);
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.page-hero-sub {
+  font-size: clamp(15px, 1.2vw, 17px);
+  color: var(--gray-500);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.7;
+}
+
+.video-wrapper {
+  position: relative;
+  max-width: 860px;
+  margin: clamp(32px, 4vw, 48px) auto 0;
+  aspect-ratio: 16 / 9;
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 24px 64px rgba(2, 81, 89, 0.18);
+  background: var(--gray-900);
+}
+
+.video-wrapper iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+.next-steps {
+  padding: clamp(60px, 7vw, 100px) 0;
+  text-align: center;
+}
+
+.next-steps h2 {
+  font-family: var(--font-display);
+  font-size: clamp(26px, 3vw, 40px);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 12px;
+}
+
+.next-steps-sub {
+  font-size: 16px;
+  color: var(--gray-500);
+  margin-bottom: clamp(32px, 4vw, 48px);
+}
+
+.steps-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+  max-width: 1000px;
+  margin: 0 auto;
+  text-align: left;
+}
+
+.step-card {
+  display: block;
+  background: var(--gray-50);
+  border: 1.5px solid var(--gray-100);
+  border-radius: 16px;
+  padding: 28px;
+  text-decoration: none;
+  transition: border-color 0.25s, box-shadow 0.25s, transform 0.25s;
+}
+
+.step-card:hover {
+  border-color: var(--teal-300);
+  box-shadow: 0 8px 28px rgba(2, 81, 89, 0.1);
+  transform: translateY(-2px);
+}
+
+.step-card--featured {
+  background: linear-gradient(180deg, var(--teal-50), var(--white));
+  border-color: var(--teal-400);
+}
+
+.step-icon {
+  font-size: 26px;
+  margin-bottom: 12px;
+}
+
+.step-card h3 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  color: var(--gray-900);
+  margin-bottom: 8px;
+}
+
+.step-card p {
+  font-size: 14px;
+  color: var(--gray-500);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+
+.step-link {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--teal-700);
+}
+
+.financing-note {
+  margin-top: clamp(32px, 4vw, 48px);
+  background: var(--teal-50);
+  border-radius: 12px;
+  padding: 18px 24px;
+  font-size: 14px;
+  color: var(--gray-700);
+  max-width: 720px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.financing-note a {
+  color: var(--teal-700);
+  text-decoration: underline;
+}
+
+@media (max-width: 500px) {
+  .video-wrapper { border-radius: 12px; }
+}
+</style>
