@@ -19,14 +19,29 @@ const STREAM_CUSTOMER = 'customer-81ckzyr1xmvagtrr';
     <h1>6 minutes pour tout comprendre<br>de la formation KPE</h1>
     <p class="page-hero-sub">Vous avez demandé des informations sur la formation — merci ! Plutôt qu'un long email, Joël a préféré vous parler directement. Dans cette vidéo, il vous explique exactement ce que vous allez apprendre, comment se déroule la formation, et à qui elle s'adresse.</p>
 
-    <div class="video-wrapper">
-      <iframe
-        src={`https://${STREAM_CUSTOMER}.cloudflarestream.com/${VIDEO_ID}/iframe?preload=true&poster=https%3A%2F%2F${STREAM_CUSTOMER}.cloudflarestream.com%2F${VIDEO_ID}%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s`}
-        allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
-        allowfullscreen
-        loading="lazy"
-        title="Présentation de la formation KPE par Joël Prieur"
-      ></iframe>
+    <div class="video-layout">
+      <div class="video-wrapper">
+        <iframe
+          src={`https://${STREAM_CUSTOMER}.cloudflarestream.com/${VIDEO_ID}/iframe?preload=true&poster=https%3A%2F%2F${STREAM_CUSTOMER}.cloudflarestream.com%2F${VIDEO_ID}%2Fthumbnails%2Fthumbnail.jpg%3Ftime%3D2s`}
+          allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture; fullscreen"
+          allowfullscreen
+          loading="lazy"
+          title="Présentation de la formation KPE par Joël Prieur"
+        ></iframe>
+      </div>
+      <div class="video-aside">
+        <h2>Dans cette vidéo, Joël vous explique :</h2>
+        <ul class="video-points">
+          <li>Ce qu'est concrètement la Kinésiologie Psycho-Énergétique</li>
+          <li>Le contenu des 8 modules et comment se déroule la formation</li>
+          <li>La différence entre le format en ligne et le présentiel à Aurillac</li>
+          <li>À qui s'adresse la formation — aucun pré-requis nécessaire</li>
+          <li>Comment se passe la certification de praticien KPE</li>
+        </ul>
+        <div class="video-aside-note">
+          <strong>6 minutes</strong> — et vous saurez si cette formation est faite pour vous.
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -102,14 +117,22 @@ const STREAM_CUSTOMER = 'customer-81ckzyr1xmvagtrr';
   line-height: 1.7;
 }
 
+.video-layout {
+  display: grid;
+  grid-template-columns: minmax(300px, 400px) 1fr;
+  gap: clamp(32px, 5vw, 64px);
+  align-items: center;
+  max-width: 960px;
+  margin: clamp(32px, 4vw, 48px) auto 0;
+  text-align: left;
+}
+
 .video-wrapper {
   position: relative;
-  max-width: 860px;
-  margin: clamp(32px, 4vw, 48px) auto 0;
-  aspect-ratio: 16 / 9;
-  border-radius: 20px;
+  aspect-ratio: 9 / 16;
+  border-radius: 24px;
   overflow: hidden;
-  box-shadow: 0 24px 64px rgba(2, 81, 89, 0.18);
+  box-shadow: 0 24px 64px rgba(2, 81, 89, 0.22);
   background: var(--gray-900);
 }
 
@@ -119,6 +142,74 @@ const STREAM_CUSTOMER = 'customer-81ckzyr1xmvagtrr';
   width: 100%;
   height: 100%;
   border: none;
+}
+
+.video-aside h2 {
+  font-family: var(--font-display);
+  font-size: clamp(20px, 2vw, 26px);
+  font-weight: 600;
+  color: var(--gray-900);
+  margin-bottom: 20px;
+  line-height: 1.3;
+}
+
+.video-points {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.video-points li {
+  position: relative;
+  padding-left: 30px;
+  font-size: 15px;
+  color: var(--gray-600);
+  line-height: 1.55;
+}
+
+.video-points li::before {
+  content: "✓";
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--teal-100);
+  color: var(--teal-700);
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.video-aside-note {
+  display: inline-block;
+  background: var(--teal-50);
+  border-left: 3px solid var(--teal-400);
+  border-radius: 0 12px 12px 0;
+  padding: 14px 18px;
+  font-size: 14px;
+  color: var(--gray-700);
+}
+
+@media (max-width: 800px) {
+  .video-layout {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+  .video-wrapper {
+    width: min(380px, 88vw);
+  }
+  .video-aside {
+    text-align: left;
+    max-width: 440px;
+  }
 }
 
 .next-steps {
@@ -213,6 +304,6 @@ const STREAM_CUSTOMER = 'customer-81ckzyr1xmvagtrr';
 }
 
 @media (max-width: 500px) {
-  .video-wrapper { border-radius: 12px; }
+  .video-wrapper { border-radius: 16px; }
 }
 </style>
